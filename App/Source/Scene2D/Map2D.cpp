@@ -86,7 +86,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	
 
 	// Store the map sizes in cSettings
-	uiCurLevel = 0;
+	uiCurLevel = 1;
 	this->uiNumLevels = uiNumLevels;
 	cSettings->NUM_TILES_XAXIS = uiNumCols;
 	cSettings->NUM_TILES_YAXIS = uiNumRows;
