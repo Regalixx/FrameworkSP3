@@ -138,7 +138,7 @@ bool CPlayer2D::Init(void)
 		return false;
 	}*/
 
-	if (LoadTexture("Image/playertest2.tga", iTextureID) == false)
+	if (LoadTexture("Image/player3.tga", iTextureID) == false)
 	{
 		std::cout << "Failed to load player tile texture" << std::endl;
 		return false;
@@ -149,12 +149,16 @@ bool CPlayer2D::Init(void)
 	powerupActive = false;
 
 	//CS: Create the animated sprite and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 9,
+	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
+		//0.1, 0.13);
+
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	animatedSprites->AddAnimation("idle", 0, 7);
-	animatedSprites->AddAnimation("right", 8, 14);
-	animatedSprites->AddAnimation("left", 15, 21);
+	animatedSprites->AddAnimation("idle", 0, 5);
+	animatedSprites->AddAnimation("right", 6, 11);
+	animatedSprites->AddAnimation("left", 12, 17);
+	animatedSprites->AddAnimation("jump", 18, 20);
 	//CS: Play the "idle animation as default
 	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
@@ -321,6 +325,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//CS: Change Color
 		//playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
 	}
+
+	
 	//if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	//{
 	//	// Calculate the new position up
@@ -395,8 +401,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 2.3f));
 			}
 		}
+
+		animatedSprites->PlayAnimation("jump", -1, 1.0f);
 	}
 
+
+
+		
+	
 	// Update Jump or Fall
 	//CS: Will cause error when debugging. Set to default elapsed time
 	UpdateJumpFall(dElapsedTime);
