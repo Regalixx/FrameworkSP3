@@ -546,7 +546,7 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 23)
+			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) >= 100)
 			{
 				return false;
 			}
@@ -555,8 +555,8 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 23 ||
-				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 1) || cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 23)
+			if ((cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) >= 100) ||
+				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) >= 100))
 			{
 				return false;
 			}
@@ -575,7 +575,7 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 23)
+			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100)
 			{
 				return false;
 			}
@@ -584,8 +584,8 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 23 ||
-				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) == 1) || cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) == 23)
+			if ((cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100) ||
+				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) >= 100))
 			{
 				return false;
 			}
@@ -605,7 +605,7 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 23)
+			if (cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) >= 100)
 			{
 				return false;
 			}
@@ -614,8 +614,8 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 1) || cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 23 ||
-				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) == 1) || cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) == 23)
+			if ((cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) >= 100) ||
+				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) >= 100))
 			{
 				return false;
 			}
@@ -627,7 +627,7 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 23)
+			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) >= 100)
 			{
 				return false;
 			}
@@ -636,8 +636,8 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 23 ||
-				(cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 1) || (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 23))
+			if ((cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) >= 100) ||
+				(cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100))
 			{
 				return false;
 			}
@@ -645,7 +645,7 @@ bool CEnemy3::CheckPosition(DIRECTION eDirection)
 	}
 	else
 	{
-		cout << "CEnemy3::CheckPosition: Unknown direction." << endl;
+		cout << "CPlayer2D::CheckPosition: Unknown direction." << endl;
 	}
 
 	return true;
