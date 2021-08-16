@@ -99,7 +99,8 @@ bool CMenuState::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\intromusic2.ogg"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\intromusic.ogg"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\buttonSound.ogg"), 10, true);
 	cSoundController->PlaySoundByID(9);
 
 	
@@ -126,8 +127,8 @@ bool CMenuState::Update(const double dElapsedTime)
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoNav;
 
-	float buttonWidth = 300;
-	float buttonHeight = 180;
+	float buttonWidth = 270;
+	float buttonHeight = 150;
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
@@ -137,18 +138,19 @@ bool CMenuState::Update(const double dElapsedTime)
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
 		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/1.4 - buttonWidth/2.0, 
-			CSettings::GetInstance()->iWindowHeight/7.0));				// Set the top-left of the window at (10,10)
+			CSettings::GetInstance()->iWindowHeight/4.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
 		ImGuiStyle& style = ImGui::GetStyle();
+	//	cSoundController->PlaySoundByID(10);
 		style.FrameRounding = 50.0f;
 		
 		// Add codes for Start button here
 		if (ImGui::ImageButton((ImTextureID)startButtonData.textureID, 
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
-
+			
 			cSoundController->SetVolumeTo0();
 	
 			// Reset the CKeyboardController

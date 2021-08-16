@@ -73,7 +73,7 @@ bool CIntroState::Init(void)
 	cSoundController = CSoundController::GetInstance();
 
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\intromusic2.ogg"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\intromusic.ogg"), 9, true);
 	cSoundController->PlaySoundByID(9);
 	
 
