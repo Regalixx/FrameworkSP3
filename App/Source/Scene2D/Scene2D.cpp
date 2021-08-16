@@ -88,8 +88,6 @@ CScene2D::~CScene2D(void)
 bool CScene2D::Init(void)
 {
 
-	
-
 	//// Include Shader Manager
 	//CShaderManager::GetInstance()->Add("2DShader", "Shader//Scene2D.vs", "Shader//Scene2D.fs");
 	CShaderManager::GetInstance()->Use("2DShader");
@@ -108,14 +106,13 @@ bool CScene2D::Init(void)
 		return false;
 	}
 
-
-	
 	// Load the map into an array
 	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == false)
 	{
 		// The loading of a map has failed. Return false
 		return false;
 	}
+
 	//// Load the map into an array
 	//if (cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false)
 	//{
@@ -130,11 +127,11 @@ bool CScene2D::Init(void)
 	//	return false;
 	//}
 
-	if (cMap2D->LoadMap("Maps/WinScreen.csv", 3) == false)
-	{
-		// The loading of a map has failed. Return false
-		return false;
-	}
+	//if (cMap2D->LoadMap("Maps/WinScreen.csv", 3) == false)
+	//{
+	//	// The loading of a map has failed. Return false
+	//	return false;
+	//}
 	
 	//Load Scene 2DColor into ShaderManager
 	CShaderManager::GetInstance()->Add("2DColorShader", "Shader//Scene2DColor.vs", "Shader//Scene2DColor.fs");
@@ -208,12 +205,8 @@ bool CScene2D::Init(void)
 
 	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\intromusic2.ogg"), 9, true);
 
-
-
 	//Create and initialise the CEnemy2D
 	
-	
-
 	return true;
 }
 

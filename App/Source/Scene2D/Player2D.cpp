@@ -582,7 +582,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 23)
+			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) >= 100)
 			{
 				return false;
 			}
@@ -591,8 +591,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 23 ||
-				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 1 ) || cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 23)
+			if ((cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) >= 100) ||
+				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) >= 100))
 			{
 				return false;
 			}
@@ -611,7 +611,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 23)
+			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100)
 			{
 				return false;
 			}
@@ -620,8 +620,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 1  || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 23 ||
-				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) == 1) || cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) == 23)
+			if ((cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100) ||
+				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) >= 100))
 			{
 				return false;
 			}
@@ -641,7 +641,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y+1, i32vec2Index.x) == 23)
+			if (cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) >= 100)
 			{
 				return false;
 			}
@@ -650,8 +650,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 1) || cMap2D->GetMapInfo(i32vec2Index.y+1, i32vec2Index.x) == 23 ||
-				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) == 1) || cMap2D->GetMapInfo(i32vec2Index.y+1, i32vec2Index.x+1) == 23)
+			if ((cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) >= 100) ||
+				(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) >= 100))
 			{
 				return false;
 			}
@@ -663,7 +663,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 1 || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 23  )
+			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) >= 100)
 			{
 				return false;
 			}
@@ -672,8 +672,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 1  || cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 23 ||
-				(cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 1 ) || (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) == 23))
+			if ((cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) >= 100) ||
+				(cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100))
 			{
 				return false;
 			}
@@ -709,14 +709,11 @@ void CPlayer2D::ResetMap()
 	//Check if there is no lives left..
 	if (cInventoryItem->GetCount() < 0)
 	{
-	
 		CGameManager::GetInstance()->bPlayerLost = false;
 		cMap2D->LoadMap("Maps/DM2213_Map_Level_01.csv",0);
 		cMap2D->SetLevel(0);
 		cout << "player lost" << endl;
 		cInventoryItem->Add(1);
-		
-
 	}
 			
 	if (cMap2D->GetLevel() == 0) {
@@ -869,7 +866,7 @@ void CPlayer2D::InteractWithMap(void)
 	
 	switch (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x))
 	{
-	case 2:
+	case 1:
 		//keys
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		//Increase the tree by 1
@@ -882,14 +879,13 @@ void CPlayer2D::InteractWithMap(void)
 			activateDoor = true;
 		}
 		break;
-	case 3:
+	case 2:
 		//fastermovement powerup
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		speedboost = true;
 		cSoundController->PlaySoundByID(4);
 		break;
-	case 4:
-
+	case 3:
 		//coins
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		cInventoryItem = cInventoryManager->GetItem("Coins");
@@ -897,7 +893,6 @@ void CPlayer2D::InteractWithMap(void)
 		cSoundController->PlaySoundByID(4);
 		break;
 	case 5:
-
 		//lives
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		//Increase the lives by 1
@@ -905,7 +900,7 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem->Add(1);
 		break;
 	case 6:
-		// invisible  powerup
+		// invisible powerup
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		powerupActive = true;
 		playerColour = glm::vec4(0.0, 0.0, 1.0, 1.0);
