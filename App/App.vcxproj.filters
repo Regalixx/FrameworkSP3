@@ -92,6 +92,9 @@
     <ClCompile Include="Source\GameStateManagement\GameOverState.cpp">
       <Filter>GameStateManagement</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\CreditsState.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -164,6 +167,9 @@
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\GameOverState.h">
+      <Filter>GameStateManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\CreditsState.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
   </ItemGroup>

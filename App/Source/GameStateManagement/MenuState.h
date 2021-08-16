@@ -54,6 +54,7 @@ protected:
 	ButtonData exitButtonData;
 	ButtonData ControlButtonData;
 	ButtonData AboutButtonData;
+	ButtonData CreditsButtonData;
 	CGameManager* cGameManager;
 	CSoundInfo* soundController;
 	CSoundController* cSoundController;

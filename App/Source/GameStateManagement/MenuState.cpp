@@ -66,7 +66,7 @@ bool CMenuState::Init(void)
 	cGameManager = CGameManager::GetInstance();
 
 	//Create Background Entity
-	background = new CBackgroundEntity("Image/menuBackground.jpg");
+	background = new CBackgroundEntity("Image/MenuScreen.png");
 	background->SetShader("2DShader");
 	background->Init();
 
@@ -86,14 +86,16 @@ bool CMenuState::Init(void)
 
 	// Load the images for buttons
 	CImageLoader* il = CImageLoader::GetInstance();
-	startButtonData.fileName = "Image\\GUI\\PlayButton2.png";
+	startButtonData.fileName = "Image\\GUI\\PlayButton.png";
 	startButtonData.textureID = il->LoadTextureGetID(startButtonData.fileName.c_str(), false);
-	exitButtonData.fileName = "Image\\GUI\\ExitButton2.png";
+	exitButtonData.fileName = "Image\\GUI\\ExitButton.png";
 	exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
 	ControlButtonData.fileName = "Image\\GUI\\ControlButton.png";
 	ControlButtonData.textureID = il->LoadTextureGetID(ControlButtonData.fileName.c_str(), false);
 	AboutButtonData.fileName = "Image\\GUI\\AboutButton.png";
 	AboutButtonData.textureID = il->LoadTextureGetID(AboutButtonData.fileName.c_str(), false);
+	CreditsButtonData.fileName = "Image\\GUI\\CreditsButton.png";
+	CreditsButtonData.textureID = il->LoadTextureGetID(CreditsButtonData.fileName.c_str(), false);
 
 	cSoundController = CSoundController::GetInstance();
 
@@ -124,8 +126,8 @@ bool CMenuState::Update(const double dElapsedTime)
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoNav;
 
-	float buttonWidth = 220;
-	float buttonHeight = 120;
+	float buttonWidth = 300;
+	float buttonHeight = 180;
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
@@ -134,7 +136,7 @@ bool CMenuState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/1.4 - buttonWidth/2.0, 
 			CSettings::GetInstance()->iWindowHeight/7.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
@@ -157,17 +159,7 @@ bool CMenuState::Update(const double dElapsedTime)
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 		}
 		// Add codes for Exit button here
-		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// Reset the CKeyboardController
-			CKeyboardController::GetInstance()->Reset();
-
-			// Load the menu state
-		//	cout << "Quitting the game from MenuState" << endl;
-
-			return false;
-		}
+		
 
 		if (ImGui::ImageButton((ImTextureID)ControlButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
@@ -189,6 +181,29 @@ bool CMenuState::Update(const double dElapsedTime)
 			// Load the menu state
 		//	cout << "Loading MenuState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("AboutState");
+		}
+
+		if (ImGui::ImageButton((ImTextureID)CreditsButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the menu state
+		//	cout << "Loading MenuState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("AboutState");
+		}
+
+		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the menu state
+		//	cout << "Quitting the game from MenuState" << endl;
+
+			return false;
 		}
 		ImGui::End();
 
