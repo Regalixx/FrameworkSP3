@@ -191,7 +191,7 @@ bool CMenuState::Update(const double dElapsedTime)
 
 			// Load the menu state
 		//	cout << "Loading MenuState" << endl;
-			CGameStateManager::GetInstance()->SetActiveGameState("AboutState");
+			CGameStateManager::GetInstance()->SetActiveGameState("CreditsState");
 		}
 
 		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,

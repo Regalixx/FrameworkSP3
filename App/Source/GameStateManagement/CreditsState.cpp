@@ -64,7 +64,7 @@ bool CCreditsState::Init(void)
 	CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	//Create Background Entity
-	background = new CBackgroundEntity("Image/About.png");
+	background = new CBackgroundEntity("Image/Credits.png");
 	background->SetShader("2DShader");
 	background->Init();
 
