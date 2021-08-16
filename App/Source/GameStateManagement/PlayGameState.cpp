@@ -55,7 +55,7 @@ bool CPlayGameState::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\bg_music.ogg"), 6, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\bg_music2.ogg"), 6, true);
 	cSoundController->PlaySoundByID(6);
 
 	

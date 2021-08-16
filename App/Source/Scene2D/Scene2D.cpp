@@ -202,7 +202,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Jump.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\coin_sound.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\powerup.ogg"), 5, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\bg_music.ogg"), 6, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\bg_music2.ogg"), 6, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\victorytheme.ogg"), 7, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
 

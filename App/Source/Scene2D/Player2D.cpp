@@ -138,7 +138,7 @@ bool CPlayer2D::Init(void)
 		return false;
 	}*/
 
-	if (LoadTexture("Image/character.tga", iTextureID) == false)
+	if (LoadTexture("Image/playertest2.tga", iTextureID) == false)
 	{
 		std::cout << "Failed to load player tile texture" << std::endl;
 		return false;
@@ -149,12 +149,12 @@ bool CPlayer2D::Init(void)
 	powerupActive = false;
 
 	//CS: Create the animated sprite and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 3,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 9,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	animatedSprites->AddAnimation("idle", 0, 2);
-	animatedSprites->AddAnimation("left", 3, 5);
-	animatedSprites->AddAnimation("right", 6, 8);
+	animatedSprites->AddAnimation("idle", 0, 7);
+	animatedSprites->AddAnimation("right", 8, 14);
+	animatedSprites->AddAnimation("left", 15, 21);
 	//CS: Play the "idle animation as default
 	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
