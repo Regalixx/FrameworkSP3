@@ -105,7 +105,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 	// Load and create textures
 	// Load the ground texture
-	if (LoadTexture("Image/lavatile.tga", 1) == false)
+	if (LoadTexture("Image/tile.tga", 1) == false)
 	{
 		std::cout << "Failed to load ground tile texture" << std::endl;
 		return false;
@@ -156,26 +156,108 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
+	if (LoadTexture("Image/door.tga", 8) == false)
+	{
+		std::cout << "Failed to load door texture" << std::endl;
+		return false;
+	}
+
+	if (LoadTexture("Image/toptile.tga", 9) == false)
+	{
+		std::cout << "Failed to load toptile texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/bottomtile.tga", 10) == false)
+	{
+		std::cout << "Failed to load bottomtile texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/toptileLeft.tga", 11) == false)
+	{
+		std::cout << "Failed to load toptileLeft texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/toptileRight.tga", 12) == false)
+	{
+		std::cout << "Failed to load toptileRight texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/rightWallTile.tga", 13) == false)
+	{
+		std::cout << "Failed to load rightWall texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/topFull.tga", 14) == false)
+	{
+		std::cout << "Failed to load topFull texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/tileFull.tga", 15) == false)
+	{
+		std::cout << "Failed to load tileFull texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/tileFullConnect.tga", 16) == false)
+	{
+		std::cout << "Failed to load tileFullConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/tileRightConnect.tga", 17) == false)
+	{
+		std::cout << "Failed to load tileRightConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/tileLeftConnect.tga", 18) == false)
+	{
+		std::cout << "Failed to load tileLeftConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/bottomLeftConnect.tga", 19) == false)
+	{
+		std::cout << "Failed to load bottomLeftConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/bottomRightConnect.tga", 20) == false)
+	{
+		std::cout << "Failed to load bottomRightConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/leftWallTile.tga", 21) == false)
+	{
+		std::cout << "Failed to load leftWallTile texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/bottomtileLeft.tga", 22) == false)
+	{
+		std::cout << "Failed to load bottomtileLeft texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/bottomtileRight.tga", 23) == false)
+	{
+		std::cout << "Failed to load bottomtileRight texture" << std::endl;
+		return false;
+	}
+
 	//Load the spike texture
-	if (LoadTexture("Image/fire.tga", 20) == false)
+	if (LoadTexture("Image/fire.tga", 24) == false)
 	{
 		std::cout << "Failed to load Scene2D_Spikes tile texture" << std::endl;
 		return false;
 	}
 	//Load the spa texture
-	if (LoadTexture("Image/healingpotion.tga", 21) == false)
+	if (LoadTexture("Image/healingpotion.tga", 25) == false)
 	{
 		std::cout << "Failed to load Scene2D_Spa tile texture" << std::endl;
 		return false;
 	}
 
-	if (LoadTexture("Image/spike.tga", 22) == false)
+	if (LoadTexture("Image/spike.tga", 26) == false)
 	{
 		std::cout << "Failed to load Scene2D_Spikes tile texture" << std::endl;
 		return false;
 	}
 
-	if (LoadTexture("Image/Scene2D_GroundTile2.tga", 23) == false)
+	if (LoadTexture("Image/Scene2D_GroundTile2.tga", 27) == false)
 	{
 		std::cout << "Failed to load Scene2D_Spikes tile texture" << std::endl;
 		return false;
