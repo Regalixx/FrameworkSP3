@@ -180,8 +180,9 @@ bool Application::Init(void)
 #endif
 
 	//Create a window and create its OpenGL context
-	cSettings->pWindow = glfwCreateWindow(	cSettings->iWindowWidth, cSettings->iWindowHeight,
-											"NYP Framework", glfwGetPrimaryMonitor(), NULL);
+	//cSettings->pWindow = glfwCreateWindow(	cSettings->iWindowWidth, cSettings->iWindowHeight, "NYP Framework", glfwGetPrimaryMonitor(), NULL);
+	cSettings->pWindow = glfwCreateWindow(cSettings->iWindowWidth, cSettings->iWindowHeight,
+										"NYP Framework", NULL, NULL);
 	//If the window couldn't be created, then return false
 	if (cSettings->pWindow == NULL)
 	{

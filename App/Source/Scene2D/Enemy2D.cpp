@@ -92,8 +92,6 @@ bool CEnemy2D::Init(void)
 	//override the Init()
 	//override update function
 
-
-
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -120,7 +118,7 @@ bool CEnemy2D::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	if (LoadTexture("Image/enemysprite.tga", iTextureID) == false)
+	if (LoadTexture("Image/_simenemy.png", iTextureID) == false)
 	{
 		std::cout << "Failed to load enemy2D tile texture" << std::endl;
 		return false;
@@ -135,14 +133,16 @@ bool CEnemy2D::Init(void)
 
 
 	cInventoryManager = CInventoryManager::GetInstance();
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 3,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 6,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	animatedSprites->AddAnimation("idle", 0, 2);
-	animatedSprites->AddAnimation("left", 3, 5);
-	animatedSprites->AddAnimation("right", 6, 8);
+	//Enemy has no idle animation at the moment
+	//For some reason they are doing the opposite direction animation
+	animatedSprites->AddAnimation("right", 0, 5);
+	animatedSprites->AddAnimation("left", 6, 11);
+	animatedSprites->AddAnimation("attack", 12, 16);
 	//CS: Play the "idle animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	animatedSprites->PlayAnimation("left", -1, 1.0f);
 
 
 	// If this class is initialised properly, then set the bIsActive to true
@@ -826,6 +826,8 @@ void CEnemy2D::UpdatePosition(void)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
+		
+		animatedSprites->PlayAnimation("right", -1, 1.0f);
 
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(RIGHT) == false)
@@ -841,7 +843,6 @@ void CEnemy2D::UpdatePosition(void)
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 		}
 
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
 		// Interact with the Player
 		InteractWithPlayer();
 	}
@@ -855,7 +856,7 @@ void CEnemy2D::UpdatePosition(void)
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
+		//animatedSprites->PlayAnimation("idle", -1, 1.0f);
 	}
 
 }
