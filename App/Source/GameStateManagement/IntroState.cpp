@@ -66,7 +66,7 @@ bool CIntroState::Init(void)
 	CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	//Create Background Entity
-	background = new CBackgroundEntity("Image/IntroBackground.png");
+	background = new CBackgroundEntity("Image/IntroBG.png");
 	background->SetShader("2DShader");
 	background->Init();
 
@@ -91,7 +91,7 @@ bool CIntroState::Update(const double dElapsedTime)
 	
 
 	//cout << "CIntroState::Update()\n" << endl;
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_SPACE))
+	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_P))
 	{
 		
 
