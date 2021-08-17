@@ -103,8 +103,9 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		cSettings->TILE_WIDTH,
 		cSettings->TILE_HEIGHT);
 
+
 	// Load and create textures
-	if (LoadTexture("Image/key.tga", 1) == false) //Original: 2
+	if (LoadTexture("Image/portalpiece.tga", 1) == false) //Original: 2
 	{
 		std::cout << "Failed to load key texture" << std::endl;
 		return false;

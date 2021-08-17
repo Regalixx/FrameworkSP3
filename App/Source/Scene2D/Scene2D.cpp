@@ -17,6 +17,7 @@ CScene2D::CScene2D(void)
 	, cGUI_Scene2D(NULL)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
+	, background(NULL)
 {
 }
 
@@ -55,6 +56,12 @@ CScene2D::~CScene2D(void)
 	if (cSoundController)
 	{
 		cSoundController = NULL;
+	}
+
+	if (background)
+	{
+		delete background;
+		background = NULL;
 	}
 
 	
@@ -113,6 +120,8 @@ bool CScene2D::Init(void)
 		return false;
 	}
 
+
+
 	//// Load the map into an array
 	//if (cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false)
 	//{
@@ -132,6 +141,10 @@ bool CScene2D::Init(void)
 	//	// The loading of a map has failed. Return false
 	//	return false;
 	//}
+
+	background = new CBackgroundEntity("Image/mapbackground3.png");
+	background->SetShader("2DShader");
+	background->Init();
 	
 	//Load Scene 2DColor into ShaderManager
 	CShaderManager::GetInstance()->Add("2DColorShader", "Shader//Scene2DColor.vs", "Shader//Scene2DColor.fs");
@@ -427,9 +440,12 @@ void CScene2D::PreRender(void)
 
 	// Clear the screen and buffer
 
-	if (cGameManager->bPlayerWon == false) {
+	/*if (cGameManager->bPlayerWon == false) {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	}
+	}*/
+
+	
+
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Enable 2D texture rendering
@@ -442,6 +458,8 @@ void CScene2D::PreRender(void)
 void CScene2D::Render(void)
 {
 	
+	background->Render();
+
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 		//Call the CEnemy2D's PreRender()
@@ -474,6 +492,8 @@ void CScene2D::Render(void)
 
 	// Call the Map2D's PreRender()
 	cMap2D->PreRender();
+
+	
 
 	// Call the Map2D's Render()
 	cMap2D->Render();

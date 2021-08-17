@@ -80,7 +80,7 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryManager = CInventoryManager::GetInstance();
 	//Add a Tree as one of the inventory items
 	//cInventoryItem = cInventoryManager->Add("Tree", "Image/Scene2D_TreeTile.tga", 5, 0);
-	cInventoryItem = cInventoryManager->Add("Tree", "Image/key.tga", 5, 0);
+	cInventoryItem = cInventoryManager->Add("Tree", "Image/portalpiece.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Coins", "Image/coins.tga",100000, 0);
 	cInventoryItem->vec2Size = glm::vec2(30, 30);
@@ -193,6 +193,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 
+
 	//Render the inventory items
 	cInventoryItem = cInventoryManager->GetItem("Tree");
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
@@ -213,7 +214,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 		ImGui::SameLine();
 		ImGui::SetWindowFontScale(1.5f);
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Key: %d / %d",
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Pieces: %d / %d",
 		cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 
 	
