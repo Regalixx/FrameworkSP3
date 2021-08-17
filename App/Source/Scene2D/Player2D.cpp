@@ -716,7 +716,6 @@ bool CPlayer2D::IsMidAir(void)
 
 void CPlayer2D::ResetMap()
 {
-
 	cInventoryItem = cInventoryManager->GetItem("Lives");
 	//Check if there is no lives left..
 	if (cInventoryItem->GetCount() < 0)
