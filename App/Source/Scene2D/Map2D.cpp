@@ -239,6 +239,106 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load rightFull texture" << std::endl;
 		return false;
 	}
+	if (LoadTexture("Image/dimension_tile.png", 120) == false) 
+	{
+		std::cout << "Failed to load dtimetile texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_toptile.png", 121) == false) 
+	{
+		std::cout << "Failed to load dtoptile texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_bottomtile.png", 122) == false) 
+	{
+		std::cout << "Failed to load dbottomtile texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_toptileLeft.png", 123) == false) 
+	{
+		std::cout << "Failed to load dtoptileLeft texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_toptileRight.png", 124) == false) 
+	{
+		std::cout << "Failed to load dtoptileRight texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_rightWallTile.png", 125) == false) 
+	{
+		std::cout << "Failed to load drightWall texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_topFull.png", 126) == false) 
+	{
+		std::cout << "Failed to load dtopFull texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_tileFull.png", 127) == false) 
+	{
+		std::cout << "Failed to load dtileFull texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_tileFullConnect.png", 128) == false) 
+	{
+		std::cout << "Failed to load dtileFullConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_tileRightConnect.png", 129) == false) 
+	{
+		std::cout << "Failed to load dtileRightConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_tileLeftConnect.png", 130) == false) 
+	{
+		std::cout << "Failed to load dtileLeftConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_bottomLeftConnect.png", 131) == false) 
+	{
+		std::cout << "Failed to load dbottomLeftConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_bottomRightConnect.png", 132) == false) 
+	{
+		std::cout << "Failed to load dbottomRightConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_leftWallTile.png", 133) == false) 
+	{
+		std::cout << "Failed to load dleftWallTile texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_bottomtileLeft.png", 134) == false) 
+	{
+		std::cout << "Failed to load dbottomtileLeft texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_bottomtileRight.png", 135) == false) 
+	{
+		std::cout << "Failed to load dbottomtileRight texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_bottomFull.png", 136) == false) 
+	{
+		std::cout << "Failed to load dbottomFull texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_bottomFullConnect.png", 137) == false) 
+	{
+		std::cout << "Failed to load dbottomFullConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_leftFull.png", 138) == false) 
+	{
+		std::cout << "Failed to load dleftFull texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/dimension_rightFull.png", 139) == false) 
+	{
+		std::cout << "Failed to load drightFull texture" << std::endl;
+		return false;
+	}
 
 	// Initialise the variables for AStar
 	m_weight = 1;

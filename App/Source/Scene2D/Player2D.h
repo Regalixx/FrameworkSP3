@@ -147,8 +147,8 @@ protected:
 	// Check if the player is in mid-air
 	bool IsMidAir(void);
 
-	
-
+	bool dimension(void);
+	void dimensionchange();
 
 	// Update Jump or Fall
 	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
