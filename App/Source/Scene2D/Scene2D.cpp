@@ -223,17 +223,17 @@ bool CScene2D::Init(void)
 	cSoundController = CSoundController::GetInstance();
 	//cSoundController->Init();
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Bell.ogg"), 1, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\game_over.ogg"), 2, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Jump.ogg"), 3, true);
+	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Bell.ogg"), 1, true);
+	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\game_over.ogg"), 2, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_jump.wav"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\coin_sound.ogg"), 4, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\powerup.ogg"), 5, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\bg_music2.ogg"), 6, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\victorytheme.ogg"), 7, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
-
-	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\intromusic2.ogg"), 9, true);
-
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.wav"), 5, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_background.ogg"), 6, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_victory.ogg"), 7, true);
+	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_die.ogg"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_nextlevel.wav"), 10, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_time.ogg"), 11, true);
 	//Create and initialise the CEnemy2D
 	
 	return true;

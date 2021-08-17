@@ -1016,7 +1016,7 @@ void CPlayer2D::InteractWithMap(void)
 		// teleport next level
 		if (activateDoor == true) {
 			cGameManager->bLevelCompleted = true;
-			cSoundController->PlaySoundByID(8);
+			cSoundController->PlaySoundByID(9);
 			cInventoryItem = cInventoryManager->GetItem("Health");
 			cInventoryItem->Add(100);
 			cInventoryItem = cInventoryManager->GetItem("Tree");
@@ -1088,7 +1088,7 @@ void CPlayer2D::UpdateHealthLives(void)
 		//But we  redeuce the lives by 1.
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
-
+		cSoundController->PlaySoundByID(9);
 	
 		//Check if there is no lives left..
 		if (cInventoryItem->GetCount() <= 0)
