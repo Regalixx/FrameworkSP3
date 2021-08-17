@@ -714,46 +714,32 @@ bool CPlayer2D::IsMidAir(void)
 	return false;
 }
 
-void CPlayer2D::ResetMap()
+bool CPlayer2D::ResetMap()
 {
-	cInventoryItem = cInventoryManager->GetItem("Lives");
-	//Check if there is no lives left..
-	if (cInventoryItem->GetCount() < 0)
-	{
-		CGameManager::GetInstance()->bPlayerLost = false;
-		cMap2D->LoadMap("Maps/DM2213_Map_Level_01.csv",0);
-		cMap2D->SetLevel(0);
-		cout << "player lost" << endl;
-		cInventoryItem->Add(1);
-	}
-			
-	if (cMap2D->GetLevel() == 0) {
-		cMap2D->LoadMap("Maps/DM2213_Map_Level_01.csv");
-		cMap2D->SetLevel(0);
-	}
-	if (cMap2D->GetLevel() == 1)
-	{
-		cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1);
-		cMap2D->SetLevel(1);
-	}
-		
+	unsigned int uiRow = -1;
+	unsigned int uiCol = -1;
+	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
+		return false;    // Unable to find the start position of the player, so quit this game
 
+	// Erase the value of the player in the arrMapInfo
+	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
-		unsigned int uiRow = -1;
-		unsigned int uiCol = -1;
-		cMap2D->FindValue(200, uiRow, uiCol);
+	// Set the start position of the Player to iRow and iCol
+	i32vec2Index = glm::i32vec2(uiCol, uiRow);
+	// By default, microsteps should be zero
+	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
+	//Set it to fall upon entering new level
+	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 
+	//CS: Reset double jump
+	//jumpCount = 0;
 
-		// Erase the value of the player in the arrMapInfo
-		cMap2D->SetMapInfo(uiRow, uiCol, 0);
+	//CS: Play the "idle" animation as default
+	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
-		// Set the start position of the Player to iRow and iCol
-		i32vec2Index = glm::i32vec2(uiCol, uiRow);
-		// By default, microsteps should be zero
-		i32vec2NumMicroSteps = glm::i32vec2(0, 0);
-
-		cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1);
+	//CS: Init the color to white
+	playerColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
 	
 
@@ -989,6 +975,7 @@ void CPlayer2D::UpdateHealthLives(void)
 	//Check if a life is lost
 	if (cInventoryItem->GetCount() <= 0)
 	{
+		CGameManager::GetInstance()->bGameToRestart = true;
 		//Reset the health to max value
 		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
 		//But we  redeuce the lives by 1.
@@ -1010,14 +997,14 @@ void CPlayer2D::UpdateHealthLives(void)
 			jumppoweractive = false;
 			speedboost = false;
 
-			if (cMap2D->GetLevel() == 0) {
+			/*if (cMap2D->GetLevel() == 0) {
 
 				ResetMap();
 			}
 			if (cMap2D->GetLevel() == 1) {
 
 				ResetMap();
-			}
+			}*/
 
 		}
 	}

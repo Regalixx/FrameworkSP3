@@ -69,6 +69,8 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	bool ResetMap();
+
 	glm::i32vec2 i32vec2OldIndex;
 
 	glm::vec4 playerColour;
@@ -145,7 +147,7 @@ protected:
 	// Check if the player is in mid-air
 	bool IsMidAir(void);
 
-	void ResetMap();
+	
 
 
 	// Update Jump or Fall

@@ -97,7 +97,12 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 
 	// Load and create textures
+
 	if (LoadTexture("Image/portalpiece.tga", 1) == false) //Original: 2
+
+	// 1 - 99 : Non-Collision Objects
+	if (LoadTexture("Image/key.tga", 1) == false) //Original: 2
+
 	{
 		std::cout << "Failed to load key texture" << std::endl;
 		return false;

@@ -289,6 +289,20 @@ void CScene2D::Update(const double dElapsedTime)
 	}
 
 
+	if (cGameManager->bGameToRestart == true)
+	{
+		cMap2D->GetLevel();
+		if (cMap2D->GetLevel() == 0)
+		{
+			cMap2D->SetLevel(0);
+			cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == true;
+			//cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false;
+		}
+		cPlayer2D->ResetMap();
+		cSoundController->PlaySoundByID(2);
+		cGameManager->bGameToRestart = false;
+	}
+
 	//Check if the game should go to the next level
 	if (cGameManager->bLevelCompleted == true)
 	{
