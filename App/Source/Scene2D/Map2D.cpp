@@ -219,6 +219,26 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load bottomtileRight texture" << std::endl;
 		return false;
 	}
+	if (LoadTexture("Image/bottomFull.png", 116) == false) //Original: 23
+	{
+		std::cout << "Failed to load bottomFull texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/bottomFullConnect.png", 117) == false) //Original: 23
+	{
+		std::cout << "Failed to load bottomFullConnect texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/leftFull.png", 118) == false) //Original: 23
+	{
+		std::cout << "Failed to load leftFull texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/rightFull.png", 119) == false) //Original: 23
+	{
+		std::cout << "Failed to load rightFull texture" << std::endl;
+		return false;
+	}
 
 	// Initialise the variables for AStar
 	m_weight = 1;
