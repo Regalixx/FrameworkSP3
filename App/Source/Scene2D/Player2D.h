@@ -130,6 +130,9 @@ protected:
 	bool slowMovementSpeed;
 	bool jumppoweractive;
 
+	float cooldownTimer;
+	float freezeDuration;
+
 	//Remote Bool
 	bool isRemote = false;
 	

@@ -110,6 +110,9 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("background", "Image/dimensionstate.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+	cooldownTimer = 0;
+	freezeDuration = 0;
+
 	
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
@@ -187,6 +190,16 @@ void CPlayer2D::Update(const double dElapsedTime)
 {
 	// Store the old position
 	i32vec2OldIndex = i32vec2Index;
+
+	if (TimeStop == true)
+	{
+		freezeDuration += dElapsedTime;
+		if (freezeDuration >= 5)
+		{
+			TimeStop = 0;
+			freezeDuration = 0;
+		}
+	}
 
 	if (speedboost == true)
 		{
@@ -383,7 +396,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
 	{
 		TimeStop = true;
+		//cooldownTimer += dElapsedTime
 	}
+
+	
+
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote)
 	{
@@ -702,99 +719,101 @@ bool CPlayer2D::IsMidAir(void)
 
 bool CPlayer2D::dimension(void)
 {
-	dimensionchange();
+	/*dimensionchange();
 
+	return false;*/
 	return false;
 }
 
 void CPlayer2D::dimensionchange()
 {
-	//to change into dimension mode
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_T))
-	{
-		while (cMap2D->FindValue(100, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 120);
-		}
-		while (cMap2D->FindValue(101, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 121);
-		}
-		while (cMap2D->FindValue(102, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 122);
-		}
-		while (cMap2D->FindValue(103, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 123);
-		}
-		while (cMap2D->FindValue(104, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 124);
-		}
-		while (cMap2D->FindValue(105, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 125);
-		}
-		while (cMap2D->FindValue(106, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 126);
-		}
-		while (cMap2D->FindValue(107, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 127); //changes tile to dimensiontile
-		}
-		while (cMap2D->FindValue(108, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 128);
-		}
-		while (cMap2D->FindValue(109, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 129);
-		}
-		while (cMap2D->FindValue(110, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 130);
-		}
-		while (cMap2D->FindValue(111, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 131);
-		}
-		while (cMap2D->FindValue(112, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 132);
-		}
-		while (cMap2D->FindValue(113, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 133);
-		}
-		while (cMap2D->FindValue(114, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 134);
-		}
-		while (cMap2D->FindValue(115, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 135);
-		}
-		while (cMap2D->FindValue(116, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 136);
-		}
-		while (cMap2D->FindValue(117, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 137);
-		}
-		while (cMap2D->FindValue(118, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 138);
-		}
-		while (cMap2D->FindValue(119, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 139);
-		}
-	}
+	////to change into dimension mode
+	//unsigned int uiRow = -1;
+	//unsigned int uiCol = -1;
+	//if (cKeyboardController->IsKeyPressed(GLFW_KEY_T))
+	//{
+	//	while (cMap2D->FindValue(100, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 120);
+	//	}
+	//	while (cMap2D->FindValue(101, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 121);
+	//	}
+	//	while (cMap2D->FindValue(102, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 122);
+	//	}
+	//	while (cMap2D->FindValue(103, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 123);
+	//	}
+	//	while (cMap2D->FindValue(104, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 124);
+	//	}
+	//	while (cMap2D->FindValue(105, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 125);
+	//	}
+	//	while (cMap2D->FindValue(106, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 126);
+	//	}
+	//	while (cMap2D->FindValue(107, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 127); //changes tile to dimensiontile
+	//	}
+	//	while (cMap2D->FindValue(108, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 128);
+	//	}
+	//	while (cMap2D->FindValue(109, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 129);
+	//	}
+	//	while (cMap2D->FindValue(110, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 130);
+	//	}
+	//	while (cMap2D->FindValue(111, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 131);
+	//	}
+	//	while (cMap2D->FindValue(112, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 132);
+	//	}
+	//	while (cMap2D->FindValue(113, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 133);
+	//	}
+	//	while (cMap2D->FindValue(114, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 134);
+	//	}
+	//	while (cMap2D->FindValue(115, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 135);
+	//	}
+	//	while (cMap2D->FindValue(116, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 136);
+	//	}
+	//	while (cMap2D->FindValue(117, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 137);
+	//	}
+	//	while (cMap2D->FindValue(118, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 138);
+	//	}
+	//	while (cMap2D->FindValue(119, uiRow, uiCol) == true)
+	//	{
+	//		cMap2D->SetMapInfo(uiRow, uiCol, 139);
+	//	}
+	//}
+
 }
 
 bool CPlayer2D::ResetMap()
