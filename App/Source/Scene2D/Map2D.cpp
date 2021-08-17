@@ -49,12 +49,9 @@ CMap2D::~CMap2D(void)
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
-	/*glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);*/
 
 	// Set this to NULL since it was created elsewhere, so we let it be deleted there.
 	cSettings = NULL;
-
 }
 
 /**
@@ -83,17 +80,12 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		}
 	}
 
-	
-
 	// Store the map sizes in cSettings
 	uiCurLevel = 0;
 	this->uiNumLevels = uiNumLevels;
 	cSettings->NUM_TILES_XAXIS = uiNumCols;
 	cSettings->NUM_TILES_YAXIS = uiNumRows;
 	cSettings->UpdateSpecifications();
-
-
-
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -104,50 +96,44 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		cSettings->TILE_HEIGHT);
 
 	// Load and create textures
+	// 1 - 99 : Non-Collision Objects
 	if (LoadTexture("Image/key.tga", 1) == false) //Original: 2
 	{
 		std::cout << "Failed to load key texture" << std::endl;
 		return false;
 	}
-
 	if (LoadTexture("Image/speedboost.tga", 2) == false) //Original: 3
 	{
 		std::cout << "Failed to load fire tile texture" << std::endl;
 		return false;
 	}
-
-	// Load the tree texture
 	if (LoadTexture("Image/coins.tga", 3) == false) //Original: 4
 	{
 		std::cout << "Failed to load coins texture" << std::endl;
 		return false;
 	}
-
-	
-	if (LoadTexture("Image/Scene2D_Lives.tga", 5) == false) //Original: 5
+	if (LoadTexture("Image/Scene2D_Lives.tga", 4) == false) //Original: 5
 	{
 		std::cout << "Failed to load treasure chest texture" << std::endl;
 		return false;
 	}
-
-	if (LoadTexture("Image/powerup.tga", 6) == false) //Original: 6
+	if (LoadTexture("Image/powerup.tga", 5) == false) //Original: 6
 	{
 		std::cout << "Failed to load powerup texture" << std::endl;
 		return false;
 	}
-
-	if (LoadTexture("Image/jumppowerup.tga", 7) == false) //Original: 7
+	if (LoadTexture("Image/jumppowerup.tga", 6) == false) //Original: 7
 	{
 		std::cout << "Failed to load powerup texture" << std::endl;
 		return false;
 	}
-
-	if (LoadTexture("Image/door.tga", 8) == false) //Original: 8
+	if (LoadTexture("Image/door.tga", 7) == false) //Original: 8
 	{
 		std::cout << "Failed to load door texture" << std::endl;
 		return false;
 	}
 
+	// 100 - 199 : Collidable Objects
 	if (LoadTexture("Image/tile.tga", 100) == false) //Original: 1
 	{
 		std::cout << "Failed to load ground tile texture" << std::endl;
@@ -229,31 +215,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
-	//Load the spike texture
-	if (LoadTexture("Image/fire.tga", 24) == false) //Original: 24
-	{
-		std::cout << "Failed to load Scene2D_Spikes tile texture" << std::endl;
-		return false;
-	}
-	//Load the spa texture
-	if (LoadTexture("Image/healingpotion.tga", 25) == false) //Original: 25
-	{
-		std::cout << "Failed to load Scene2D_Spa tile texture" << std::endl;
-		return false;
-	}
-
-	if (LoadTexture("Image/spike.tga", 26) == false) //Original: 26
-	{
-		std::cout << "Failed to load Scene2D_Spikes tile texture" << std::endl;
-		return false;
-	}
-
-	if (LoadTexture("Image/Scene2D_GroundTile2.tga", 27) == false) //Original: 27
-	{
-		std::cout << "Failed to load Scene2D_Spikes tile texture" << std::endl;
-		return false;
-	}
-
 	// Initialise the variables for AStar
 	m_weight = 1;
 	m_startPos = glm::i32vec2(0, 0);
@@ -316,7 +277,6 @@ void CMap2D::Render(void)
 			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
 															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
 															0.0f));
-			//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
 			// Update the shaders with the latest transform
 			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -372,7 +332,6 @@ void CMap2D::SetNumSteps(const CSettings::AXIS sAxis, const unsigned int uiValue
 	// Check if the value is valid
 	if (uiValue <= 0)
 	{
-		//cout << "CMap2D::SetNumSteps() : value must be more than 0" << endl;
 		return;
 	}
 
@@ -514,7 +473,6 @@ void CMap2D::SetLevel(const unsigned int uiLevel)
 	}
 
 	uiCurLevel = uiLevel;
-	
 }
 
 unsigned int CMap2D::GetLevel(void) const
@@ -764,8 +722,6 @@ void CMap2D::PrintSelf(void) const
  */
 bool CMap2D::isValid(const glm::i32vec2& pos) const
 {
-	//return (pos.x >= 0) && (pos.x < m_dimensions.x) &&
-	//	(pos.y >= 0) && (pos.y < m_dimensions.y);
 	return (pos.x >= 0) && (pos.x < cSettings->NUM_TILES_XAXIS) &&
 		(pos.y >= 0) && (pos.y < cSettings->NUM_TILES_YAXIS);
 }
