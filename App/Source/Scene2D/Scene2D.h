@@ -123,6 +123,7 @@ protected:
 	vector<CEntity2D*> enemyVector3; //for type3 enemy
 
 	CBackgroundEntity* background;
+	CBackgroundEntity* dimensionstate;
 	
 	
 };

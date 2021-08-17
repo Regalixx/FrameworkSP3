@@ -5,6 +5,7 @@
  */
 #include "GUI_Scene2D.h"
 
+
 #include <iostream>
 using namespace std;
 
@@ -17,6 +18,7 @@ CGUI_Scene2D::CGUI_Scene2D(void)
 	, m_fProgressBar(0.0f)
 	, cInventoryManager(NULL)
 	, cInventoryItem(NULL)
+
 {
 }
 
@@ -50,6 +52,8 @@ bool CGUI_Scene2D::Init(void)
 	// Store the CFPSCounter singleton instance here
 	cFPSCounter = CFPSCounter::GetInstance();
 
+
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -74,8 +78,6 @@ bool CGUI_Scene2D::Init(void)
 
 
 	
-
-
 	//Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
 	//Add a Tree as one of the inventory items
@@ -143,29 +145,56 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 		ImGui::End();
 
+	//Render background
+		if (CPlayer2D::GetInstance()->TimeStop == true)
+		{
+			ImGuiWindowFlags dimensionWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoBackground |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
 
-	//Render the Lives
-		ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-			ImGuiWindowFlags_NoBackground |
-			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoMove |
-			ImGuiWindowFlags_NoResize |
-			ImGuiWindowFlags_NoCollapse |
-			ImGuiWindowFlags_NoScrollbar;
 
-		ImGui::Begin("Lives", NULL, livesWindowFlags);
-		ImGui::SetWindowPos(ImVec2(700.0f, 0.0f));
-		ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
-		cInventoryItem = cInventoryManager->GetItem("Lives");
-		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-			ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
-			ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::SameLine();
-		ImGui::SetWindowFontScale(1.5f);
-		ImGui::TextColored(ImVec4(1, 0, 0, 1), "%d / %d",
-			cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
-		ImGui::End();
+			ImGui::Begin("background", NULL, dimensionWindowFlags);
+			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowSize(ImVec2(150.0f, 25.0f));
+			cInventoryItem = cInventoryManager->GetItem("background");
+			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+				ImVec2(2000, 1080),
+				ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::SameLine();
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
 
+			ImGui::End();
+		}
+
+			//Render the Lives
+			ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoBackground |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+
+			ImGui::Begin("Lives", NULL, livesWindowFlags);
+			ImGui::SetWindowPos(ImVec2(700.0f, 0.0f));
+			ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
+			cInventoryItem = cInventoryManager->GetItem("Lives");
+			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+				ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
+				ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::SameLine();
+			ImGui::SetWindowFontScale(1.5f);
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "%d / %d",
+				cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
+			ImGui::End();
+		
 
 	//Render Coins Collected
 
