@@ -138,6 +138,24 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
+
+	if (LoadTexture("Image/PortalClose.png", 10) == false) //Original: 8
+	{
+		std::cout << "Failed to load Open Portal texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/PortalOpen.png", 11) == false) //Original: 8
+	{
+		std::cout << "Failed to load Open Portal texture" << std::endl;
+		return false;
+	}
+
+	if (LoadTexture("Image/Remote.png", 12) == false) //Original: 8
+	{
+		std::cout << "Failed to load Open Portal texture" << std::endl;
+		return false;
+	}
+
 	// 100 - 199 : Collidable Objects
 	if (LoadTexture("Image/tile.tga", 100) == false) //Original: 1
 	{

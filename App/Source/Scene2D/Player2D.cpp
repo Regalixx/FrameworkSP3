@@ -381,6 +381,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 		TimeStop = true;
 	}
 
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote)
+	{
+		i32vec2Index.x = 6;
+		i32vec2Index.y = 11;
+	}
+
 
 
 		
@@ -995,6 +1001,11 @@ void CPlayer2D::InteractWithMap(void)
 			powerupActive = false;
 			jumppoweractive = false;
 		}
+		break;
+	case 12: //Remote
+		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
+		cMap2D->SetMapInfo(11, 6, 11);
+		isRemote = true;
 		break;
 	case 20:
 		// Decrease the health by 1
