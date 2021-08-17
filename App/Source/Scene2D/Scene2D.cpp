@@ -6,6 +6,11 @@ using namespace std;
 #include "RenderControl\ShaderManager.h"
 
 #include "System\filesystem.h"
+#include "System\ImageLoader.h"
+#include <Primitives\MeshBuilder.h>
+
+
+
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -114,7 +119,7 @@ bool CScene2D::Init(void)
 	}
 
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test2.csv") == false)
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == false)
 	{
 		// The loading of a map has failed. Return false
 		return false;
@@ -145,7 +150,16 @@ bool CScene2D::Init(void)
 	background = new CBackgroundEntity("Image/mapbackground3.png");
 	background->SetShader("2DShader");
 	background->Init();
+
+	CImageLoader* il = CImageLoader::GetInstance();
+	healthbar.fileName = "Image/healthbar.png";
+	healthbar.textureID = il->LoadTextureGetID(healthbar.fileName.c_str(), false);
 	
+
+	
+//	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), 5, 5);
+	
+
 	//Load Scene 2DColor into ShaderManager
 	CShaderManager::GetInstance()->Add("2DColorShader", "Shader//Scene2DColor.vs", "Shader//Scene2DColor.fs");
 	CShaderManager::GetInstance()->Use("2DColorShader");
@@ -231,6 +245,11 @@ void CScene2D::Update(const double dElapsedTime)
 	
 	//Call the cPlayer2D's update method
 	cPlayer2D->Update(dElapsedTime);
+
+	// Start the Dear ImGui frame
+
+	
+	
 
 	//Call all the cEnemy2D's update method before Map2D
 	// as we want to capture the updates before map2D update
@@ -474,6 +493,12 @@ void CScene2D::Render(void)
 	
 	background->Render();
 
+	 //Render the tile
+//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+//CS: Render the tile
+//quadMesh->Render();
+
+	
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 		//Call the CEnemy2D's PreRender()

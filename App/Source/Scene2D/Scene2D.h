@@ -36,6 +36,9 @@
 //Game Manager
 #include "GameManager.h"
 
+#include "Primitives/Entity2D.h"
+
+
 
 //Include SoundController
 #include "..\SoundController\SoundController.h"
@@ -53,7 +56,16 @@
 
 #include <vector>
 
+
 #include "../Scene2D/BackgroundEntity.h"
+
+
+
+struct GUI
+{
+	std::string fileName;
+	unsigned textureID;
+};
 
 
 class CScene2D : public CSingletonTemplate<CScene2D>
@@ -81,6 +93,8 @@ protected:
 	CMap2D* cMap2D;
 	CPlayer2D* cPlayer2D;
 
+	CMesh* quadMesh;
+
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 
@@ -102,11 +116,14 @@ protected:
 	//Handler to the CSoundController
 	CSoundController* cSoundController;
 
+	GUI healthbar;
+
 	vector<CEntity2D*> enemyVector; //for type1 enemy
 	vector<CEntity2D*> enemyVector2; //for type2 enemy
 	vector<CEntity2D*> enemyVector3; //for type3 enemy
 
 	CBackgroundEntity* background;
+	
 	
 };
 

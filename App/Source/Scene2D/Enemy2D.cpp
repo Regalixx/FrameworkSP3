@@ -186,7 +186,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			// Patrol around
 			// Update the Enemy2D's position for patrol
-			UpdatePosition();
+			if (cPlayer2D->TimeStop == false) {
+				UpdatePosition();
+			}
 		}
 		iFSMCounter++;
 		break;
@@ -249,7 +251,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		UpdatePosition();
+		if (cPlayer2D->TimeStop == false) {
+			UpdatePosition();
+		}
 		break;
 	default:
 		break;

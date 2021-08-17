@@ -75,6 +75,7 @@ public:
 
 	glm::vec4 playerColour;
 
+	bool TimeStop;
 	
 
 protected:
@@ -127,6 +128,7 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
+	
 	
 	
 	// Constructor

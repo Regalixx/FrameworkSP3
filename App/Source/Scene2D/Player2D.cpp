@@ -128,7 +128,7 @@ bool CPlayer2D::Init(void)
 	//CS: Create the Quad Mesh using the mesh builder
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 
 	// Load the player texture
@@ -147,6 +147,7 @@ bool CPlayer2D::Init(void)
 	jumppoweractive = false;
 	speedboost = false;
 	powerupActive = false;
+	TimeStop = false;
 
 	//CS: Create the animated sprite and setup the animation
 	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
@@ -327,36 +328,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	
-	//if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
-	//{
-	//	// Calculate the new position up
-	//	if (i32vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
-	//	{
-	//		i32vec2NumMicroSteps.y++;
-	//		if (i32vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
-	//		{
-	//			i32vec2NumMicroSteps.y = 0;
-	//			i32vec2Index.y++;
-	//		}
-	//	}
-
-	//	// Constraint the player's position within the screen boundary
-	//	Constraint(UP);
-
-	//	if (powerupActive == false) {
-	//		if (CheckPosition(UP) == false)
-	//		{
-	//			i32vec2NumMicroSteps.y = 0;
-	//		}
-	//	}
-
-
-	//	//CS: Play the "idle" animation
-	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-
-	//	//CS: Change Color
-	//	//playerColour = glm::vec4(0.0, 1.0, 1.0, 0.5);
-	//}
+	
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
 	{
 		// Calculate the new position down
@@ -402,8 +374,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 2.3f));
 			}
 		}
+	}
 
-		
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
+	{
+		TimeStop = true;
 	}
 
 

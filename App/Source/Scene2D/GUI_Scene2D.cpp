@@ -134,10 +134,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
 		ImVec2(0, 1), ImVec2(1, 0));
 	ImGui::SameLine();
-	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 			ImGui::ProgressBar(cInventoryItem->GetCount() /
-				(float)cInventoryItem->GetMaxCount(), ImVec2(100.0f, 20.0f));
+				(float)cInventoryItem->GetMaxCount(), ImVec2(300.0f, 20.0f));
 			ImGui::PopStyleColor();
 		ImGui::PopStyleColor();
 
