@@ -130,7 +130,7 @@ bool CGameOverState::Update(const double dElapsedTime)
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
 		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
-			CSettings::GetInstance()->iWindowHeight/7.0));				// Set the top-left of the window at (10,10)
+			CSettings::GetInstance()->iWindowHeight/3.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
@@ -148,18 +148,6 @@ bool CGameOverState::Update(const double dElapsedTime)
 	//		cout << "Loading PlayGameState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 		}
-		// Add codes for Exit button here
-		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// Reset the CKeyboardController
-			CKeyboardController::GetInstance()->Reset();
-
-			// Load the menu state
-		//	cout << "Quitting the game from MenuState" << endl;
-
-			return false;
-		}
 
 		if (ImGui::ImageButton((ImTextureID)MenuButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
@@ -173,6 +161,21 @@ bool CGameOverState::Update(const double dElapsedTime)
 			CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
 			cSoundController->PlaySoundByID(8);
 		}
+
+		// Add codes for Exit button here
+		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the menu state
+		//	cout << "Quitting the game from MenuState" << endl;
+
+			return false;
+		}
+
+		
 
 		ImGui::End();
 

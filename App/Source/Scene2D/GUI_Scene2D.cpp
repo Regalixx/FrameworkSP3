@@ -206,7 +206,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::Begin("Image", NULL, inventoryWindowFlags);
 
 	ImGui::Begin("Image");
-		ImGui::SetWindowPos(ImVec2(25.0f, 550.0f));
+		ImGui::SetWindowPos(ImVec2(25.0f, 850.0f));
 		ImGui::SetWindowSize(ImVec2(200.0f, 25.0f));
 		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
 			ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
