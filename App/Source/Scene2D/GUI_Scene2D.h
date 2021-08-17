@@ -35,10 +35,16 @@
 #define IMGUI_ACTIVE
 #endif
 
+
+//Include Player
+#include "Player2D.h"
+
 #include "GameControl/Settings.h"
 
 //Include CInventoryManager
 #include "InventoryManager.h"
+
+
 
 #include <string>
 using namespace std;
@@ -62,13 +68,18 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	
+
 protected:
 	// Constructor
+	
+
 	CGUI_Scene2D(void);
 
 	// Destructor
 	virtual ~CGUI_Scene2D(void);
 
+	
 	// FPS Control
 	CFPSCounter* cFPSCounter;
 
@@ -84,4 +95,6 @@ protected:
 	CInventoryManager* cInventoryManager;
 	//The handler containing the instance of CInventoryItem
 	CInventoryItem* cInventoryItem;
+
+	
 };

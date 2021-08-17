@@ -69,6 +69,7 @@ CScene2D::~CScene2D(void)
 		background = NULL;
 	}
 
+
 	
 
 	//Destroy the enemies
@@ -150,6 +151,7 @@ bool CScene2D::Init(void)
 	background = new CBackgroundEntity("Image/mapbackground3.png");
 	background->SetShader("2DShader");
 	background->Init();
+
 
 	CImageLoader* il = CImageLoader::GetInstance();
 	healthbar.fileName = "Image/healthbar.png";
@@ -272,6 +274,7 @@ void CScene2D::Update(const double dElapsedTime)
 	cMap2D->Update(dElapsedTime);
 
 
+
 	// Get keyboard updates
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_F6))
 	{
@@ -299,6 +302,8 @@ void CScene2D::Update(const double dElapsedTime)
 		cMap2D->SetLevel(cMap2D->GetLevel() + 1);
 	}
 
+
+	
 	//Call the cGUI_Scene2D's update method
 	cGUI_Scene2D->Update(dElapsedTime);
 
@@ -491,13 +496,18 @@ void CScene2D::PreRender(void)
 void CScene2D::Render(void)
 {
 	
+
+	
+	
 	background->Render();
 
-	 //Render the tile
+
+
+	 //Render the tile=
 //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 //CS: Render the tile
 //quadMesh->Render();
-
+	
 	
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
@@ -539,12 +549,7 @@ void CScene2D::Render(void)
 	// Call the Map2D's PostRender()
 	cMap2D->PostRender();
 
-	//Call the cPlayer2D's PreRender()
-	cPlayer2D->PreRender();
-	//Call the cPlayer2D's Render()
-	cPlayer2D->Render();
-	//Call the CPlayer2D's PostRender()
-	cPlayer2D->PostRender();
+	
 
 	// Call the cGUI's PreRender()
 	cGUI_Scene2D->PreRender();
@@ -552,6 +557,15 @@ void CScene2D::Render(void)
 	cGUI_Scene2D->Render();
 	// Call the cGUI's PostRender()
 	cGUI_Scene2D->PostRender();
+
+	//Call the cPlayer2D's PreRender()
+	cPlayer2D->PreRender();
+	//Call the cPlayer2D's Render()
+	cPlayer2D->Render();
+	//Call the CPlayer2D's PostRender()
+	cPlayer2D->PostRender();
+
+
 }
 
 /**
