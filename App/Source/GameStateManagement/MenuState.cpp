@@ -99,8 +99,8 @@ bool CMenuState::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\intromusic.ogg"), 9, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\buttonSound.ogg"), 10, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_menu.ogg"), 12, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\buttonSound.ogg"), 13, true);
 	cSoundController->PlaySoundByID(9);
 
 	
