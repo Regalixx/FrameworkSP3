@@ -426,6 +426,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		if (canUsepower == true)
 		{
 			TimeStop = true;
+
 		}
 		//cooldownTimer += dElapsedTime
 	}

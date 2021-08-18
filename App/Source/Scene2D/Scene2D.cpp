@@ -354,7 +354,7 @@ void CScene2D::Update(const double dElapsedTime)
 		cGameManager->bLevelCompleted = false;
 	}
 
-	if (cMap2D->GetLevel() == 4)
+	if (cMap2D->GetLevel() == 5)
 	{
 		cGameManager->bPlayerWon = true;
 		cSoundController->PlaySoundByID(7);
