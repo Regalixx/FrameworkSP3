@@ -137,6 +137,16 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load door texture" << std::endl;
 		return false;
 	}
+	if (LoadTexture("Image/SwitchOff.png", 8) == false)
+	{
+		std::cout << "Failed to load switchoff texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/SwitchOn.png", 9) == false)
+	{
+		std::cout << "Failed to load switchon texture" << std::endl;
+		return false;
+	}
 
 
 	if (LoadTexture("Image/PortalClose.png", 10) == false) //Original: 8
