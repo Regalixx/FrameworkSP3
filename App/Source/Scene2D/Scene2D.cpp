@@ -122,13 +122,12 @@ bool CScene2D::Init(void)
 		return false;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+
 	//Level 1
 	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test_Level.csv") == false)
-=======
-=======
->>>>>>> 0f5613b523d878f6c53d36be83a70cf6eca8e760
+
+
 	// Load the map into an array
 	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == false)
 	{
@@ -136,8 +135,7 @@ bool CScene2D::Init(void)
 		return false;
 	}
 	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test2.csv", 1) == false)
-<<<<<<< HEAD
->>>>>>> 0f5613b523d878f6c53d36be83a70cf6eca8e760
+
 	{
 		// The loading of a map has failed. Return false
 		return false;
@@ -145,8 +143,7 @@ bool CScene2D::Init(void)
 
 	//Level 2
 	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test2.csv", 1) == false)
-=======
->>>>>>> 0f5613b523d878f6c53d36be83a70cf6eca8e760
+
 	{
 		// The loading of a map has failed. Return false
 		return false;
