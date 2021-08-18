@@ -167,11 +167,13 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	}
 
 
+
 	if (LoadTexture("Image/scifidoor2.tga", 13) == false)
 	{
 		std::cout << "Failed to load exit texture" << std::endl;
 		return false;
 	}
+
 
 
 	//load down lift switch texture
