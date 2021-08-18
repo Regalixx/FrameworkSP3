@@ -162,6 +162,7 @@ bool CPlayer2D::Init(void)
 	speedboost = false;
 	powerupActive = false;
 	TimeStop = false;
+	canUsepower = true;
 
 	//CS: Create the animated sprite and setup the animation
 	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
@@ -203,9 +204,23 @@ void CPlayer2D::Update(const double dElapsedTime)
 		freezeDuration += dElapsedTime;
 		if (freezeDuration >= 5)
 		{
-			TimeStop = 0;
+			TimeStop = false;
 			freezeDuration = 0;
+			canUsepower = false;
 		}
+	}
+
+	if (canUsepower == false)
+	{
+		cooldownTimer += dElapsedTime;
+	}
+	
+
+	if (cooldownTimer > 6)
+	{
+		cooldownTimer = 0;
+		canUsepower = true;
+
 	}
 
 	if (speedboost == true)
@@ -402,7 +417,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
 	{
-		TimeStop = true;
+		if (canUsepower == true)
+		{
+			TimeStop = true;
+		}
 		//cooldownTimer += dElapsedTime
 	}
 
@@ -780,7 +798,7 @@ void CPlayer2D::dimensionchange()
 	////to change into dimension mode
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_T))
+	if (TimeStop == true)
 	{
 		while (cMap2D->FindValue(100, uiRow, uiCol) == true)
 		{

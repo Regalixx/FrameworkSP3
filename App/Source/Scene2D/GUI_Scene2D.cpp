@@ -165,8 +165,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImVec2(2000, 1080),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
-			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
-			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
 			ImGui::PopStyleColor();
 			ImGui::PopStyleColor();
 

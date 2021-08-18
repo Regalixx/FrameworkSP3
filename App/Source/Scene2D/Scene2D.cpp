@@ -511,10 +511,10 @@ void CScene2D::PreRender(void)
 void CScene2D::Render(void)
 {
 
-
+	background->Render();
 	
 	if (cPlayer2D->TimeStop == false) {
-		background->Render();
+	
 
 
 		//Render the tile=
@@ -582,21 +582,24 @@ void CScene2D::Render(void)
 
 		if (cPlayer2D->TimeStop == true)
 		{
+			
+
+			
 			cMap2D->PreRender();
 			// Call the Map2D's Render()
 			cMap2D->Render();
 			// Call the Map2D's PostRender()
 			cMap2D->PostRender();
+			// Call the Map2D's PreRender()
 
 			// Call the cGUI's PreRender()
-		
+
 			cGUI_Scene2D->PreRender();
 			// Call the cGUI's Render()
 			cGUI_Scene2D->Render();
 			// Call the cGUI's PostRender()
 			cGUI_Scene2D->PostRender();
-			
-			// Call the Map2D's PreRender()
+
 		
 
 			for (int i = 0; i < enemyVector.size(); i++)
