@@ -1023,7 +1023,7 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem->Add(1);
 		//Play a bell sound
 		cSoundController->PlaySoundByID(1);
-		if (cInventoryItem->GetCount() == 5 || cMap2D->GetLevel() == 3)
+		if (cInventoryItem->GetCount() == 1)
 		{
 			activateDoor = true;
 		}
