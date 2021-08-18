@@ -103,8 +103,13 @@ bool CPlayer2D::Init(void)
 	//cInventoryItem->Add(3);
 
 	//Add a Health icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryItem = cInventoryManager->Add("Health", "Image/healthbar.png", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(35, 35);
+
+
+	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/timestop.png", 6, cooldownTimer);
+	cInventoryItem->vec2Size = glm::vec2(35, 35);
+
 
 
 	cInventoryItem = cInventoryManager->Add("background", "Image/dimension2.png", 0, 0);
@@ -216,7 +221,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	
 
-	if (cooldownTimer > 6)
+	if (cooldownTimer >= 6)
 	{
 		cooldownTimer = 0;
 		canUsepower = true;
