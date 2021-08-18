@@ -75,8 +75,11 @@ CPlayer2D::~CPlayer2D(void)
 bool CPlayer2D::Init(void)
 {
 
+	cooldownTimer = 0;
+	freezeDuration = 0;
+	switchesActivated = 0;
 	
-	
+
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 	// Reset all keys since we are starting a new game
@@ -107,7 +110,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 
-	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/timestop.png", 6, cooldownTimer);
+	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/timestop.png", 6, freezeDuration);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 
@@ -121,9 +124,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("dimensiontext", "Image/dimensiontext.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cooldownTimer = 0;
-	freezeDuration = 0;
-	switchesActivated = 0;
+	
 
 	
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D

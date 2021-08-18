@@ -77,7 +77,11 @@ public:
 
 	glm::vec4 playerColour;
 
+	float freezeDuration;
+
 	bool TimeStop;
+
+	
 	
 
 protected:
@@ -131,7 +135,7 @@ protected:
 	bool jumppoweractive;
 
 	float cooldownTimer;
-	float freezeDuration;
+	
 	bool canUsepower;
 	int switchesActivated;
 
