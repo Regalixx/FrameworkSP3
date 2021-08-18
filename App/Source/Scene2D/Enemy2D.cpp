@@ -131,6 +131,8 @@ bool CEnemy2D::Init(void)
 	cPhysics2D.Init();
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 
+	cSoundController = CSoundController::GetInstance();
+	
 
 	cInventoryManager = CInventoryManager::GetInstance();
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 6,
@@ -200,6 +202,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			// Update the Enemy2D's position for patrol
 			if (cPlayer2D->TimeStop == false) {
 				UpdatePosition();
+				cSoundController->PlaySoundByID(13);
 			}
 		}
 		iFSMCounter++;

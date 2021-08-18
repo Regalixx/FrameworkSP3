@@ -161,6 +161,8 @@ protected:
 	//InventoryItem
 	CInventoryItem* cInventoryItem;
 
+	CSoundController* cSoundController;
+
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
 

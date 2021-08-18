@@ -1075,6 +1075,7 @@ void CPlayer2D::InteractWithMap(void)
 		//Increase the tree by 1
 		cInventoryItem = cInventoryManager->GetItem("Tree");
 		cInventoryItem->Add(1);
+		cSoundController->PlaySoundByID(12);
 		//Play a bell sound
 		//cSoundController->PlaySoundByID(1);
 		if (cInventoryItem->GetCount() == 1)

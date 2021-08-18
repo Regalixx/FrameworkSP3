@@ -246,7 +246,7 @@ bool CScene2D::Init(void)
 	cSoundController = CSoundController::GetInstance();
 	//cSoundController->Init();
 
-	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Bell.ogg"), 1, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\robot2.ogg"), 1, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\game_over.ogg"), 2, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_jump.wav"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\coin_sound.ogg"), 4, true);
@@ -257,6 +257,10 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_die.ogg"), 9, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_nextlevel.wav"), 10, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_time.ogg"), 11, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.ogg"), 12, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemy1.ogg"), 13, true);
+	
+
 	//Create and initialise the CEnemy2D
 	
 	return true;

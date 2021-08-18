@@ -27,6 +27,7 @@ using namespace std;
 #include "InventoryManager.h"
 
 #include "InventoryItem.h"
+#include <System\filesystem.h>
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -98,6 +99,8 @@ bool Monster2D::Init(void)
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
+
+	
 	// Set the start position of the Player to iRow and iCol
 	i32vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
@@ -124,6 +127,8 @@ bool Monster2D::Init(void)
 	cPhysics2D.Init();
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 
+	cSoundController = CSoundController::GetInstance();
+	
 
 
 	cInventoryManager = CInventoryManager::GetInstance();
@@ -223,6 +228,7 @@ void Monster2D::Update(const double dElapsedTime)
 			// Patrol around
 			// Update the Enemy2D's position for patrol
 			UpdatePosition();
+			cSoundController->PlaySoundByID(1);
 		}
 		iFSMCounter++;
 		break;
@@ -277,6 +283,7 @@ void Monster2D::Update(const double dElapsedTime)
 			iFSMCounter++;
 		}
 		UpdatePosition();
+		cSoundController->PlaySoundByID(1);
 		break;
 		
 
@@ -342,6 +349,7 @@ void Monster2D::Update(const double dElapsedTime)
 			iFSMCounter++;
 		}
 		UpdatePosition();
+		cSoundController->PlaySoundByID(1);
 		break;
 	default:
 		break;
