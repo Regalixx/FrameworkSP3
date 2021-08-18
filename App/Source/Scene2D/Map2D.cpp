@@ -174,8 +174,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
-
-
 	//load down lift switch texture
 	if (LoadTexture("Image/Scene2D_liftSwitch.png", 14) == false)
 	{

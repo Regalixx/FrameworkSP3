@@ -373,16 +373,14 @@ void CScene2D::Update(const double dElapsedTime)
 
 		while (cMap2D->GetLevel() == 1)
 		{
-
-			
-			CEnemy2D* cEnemy2D = new CEnemy2D();
+			Monster2D* cEnemy2D = new Monster2D();
 
 			//Pass shader to cEnemy2D
 			cEnemy2D->SetShader("2DColorShader");
 			//Initialise the instance
 			if (cEnemy2D->Init() == true)
 			{
-				cout << "hello" << std::endl;
+				//cout << "hello" << std::endl;
 				cEnemy2D->SetPlayer2D(cPlayer2D);
 				enemyVector2.push_back(cEnemy2D);
 			}
