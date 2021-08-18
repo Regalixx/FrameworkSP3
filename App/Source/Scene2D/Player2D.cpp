@@ -435,9 +435,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote) //Teleporting
 	{
-		i32vec2Index.x = 6;
-		i32vec2Index.y = 11;
-		i32vec2NumMicroSteps.x = 0;
+		if (cMap2D->GetLevel() == 2)
+		{
+			i32vec2Index.x = 30;
+			i32vec2Index.y = 21;
+			i32vec2NumMicroSteps.x = 0;
+		}
 	}
 
 
@@ -1139,7 +1142,7 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 	case 12: //Remote
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-		cMap2D->SetMapInfo(11, 6, 11);
+		cMap2D->SetMapInfo(21, 30, 11);
 		isRemote = true;
 		break;
 	case 13:

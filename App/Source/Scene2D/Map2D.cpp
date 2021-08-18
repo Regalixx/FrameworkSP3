@@ -177,7 +177,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 
 	//load down lift switch texture
-	if (LoadTexture("Image/Scene2D_liftSwitch.png", 13) == false)
+	if (LoadTexture("Image/Scene2D_liftSwitch.png", 14) == false)
 	{
 		std::cout << "Failed to load liftswitch texture" << std::endl;
 		return false;
@@ -387,6 +387,11 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	if (LoadTexture("Image/Scene2D_liftU.png", 140) == false)
 	{
 		std::cout << "Failed to load up lift texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/sidetileFull.png", 141) == false)
+	{
+		std::cout << "Failed to load sidetileFull texture" << std::endl;
 		return false;
 	}
 
