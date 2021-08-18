@@ -152,6 +152,11 @@ protected:
 	// Check if the player is in mid-air
 	bool IsMidAir(void);
 
+	//move lift
+	bool IsLiftMoving(void);
+	bool IsLiftSwitchStepped(void);
+
+	//for timestop dimension
 	bool dimension(void);
 	void dimensionchange();
 

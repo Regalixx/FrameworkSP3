@@ -407,6 +407,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	dimension();
 
+	//lift controls
+	IsLiftMoving();
+	IsLiftSwitchStepped();
+
 	//CS: Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
 
@@ -698,6 +702,45 @@ bool CPlayer2D::IsMidAir(void)
 		return true;
 	}
 	
+	return false;
+}
+
+bool CPlayer2D::IsLiftMoving(void)
+{
+	if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x) == 140)
+	{
+		if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) != 100)
+		{
+			i32vec2Index.y++;
+			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 140); //replace air with lift block
+			cMap2D->SetMapInfo(i32vec2Index.y - 2, i32vec2Index.x, 0); //delete prev block
+		}
+
+		else
+		{
+			cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
+			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 100);
+		}
+	}
+	return false;
+}
+
+bool CPlayer2D::IsLiftSwitchStepped(void)
+{
+	//for how high the lift goes
+	for (int i = 1; i < 8; i++)
+	{
+		//if pressure plate activated reset lift
+		if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 13)
+		{
+			//if the right side of player has lift or changedblock, rsets lift block and airblocks
+			if ((cMap2D->GetMapInfo(i32vec2Index.y + i, i32vec2Index.x + 1) == 100) || (cMap2D->GetMapInfo(i32vec2Index.y + i, i32vec2Index.x + 1) == 140))
+			{
+				cMap2D->SetMapInfo(i32vec2Index.y + i, i32vec2Index.x + 1, 0);
+				cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x + 1, 140);
+			}
+		}
+	}
 	return false;
 }
 
