@@ -111,6 +111,8 @@ protected:
 
 	float MapLevel;
 
+	bool enemyCleared = false;
+
 	CGameManager* cGameManager;
 
 	//Handler to the CSoundController

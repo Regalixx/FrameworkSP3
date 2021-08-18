@@ -112,6 +112,7 @@ bool CPlayer2D::Init(void)
 
 	cooldownTimer = 0;
 	freezeDuration = 0;
+	switchesActivated = 0;
 
 	
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -1034,28 +1035,28 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem->Add(1);
 		cSoundController->PlaySoundByID(4);
 		break;
-	case 5:
-		//lives
-		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-		//Increase the lives by 1
-		cInventoryItem = cInventoryManager->GetItem("Lives");
-		cInventoryItem->Add(1);
-		break;
-	case 6:
-		// invisible powerup
-		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-		powerupActive = true;
-		playerColour = glm::vec4(0.0, 0.0, 1.0, 1.0);
-		cSoundController->PlaySoundByID(5);
-		break;
+	//case 4:
+	//	//lives
+	//	cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
+	//	//Increase the lives by 1
+	//	cInventoryItem = cInventoryManager->GetItem("Lives");
+	//	cInventoryItem->Add(1);
+	//	break;
+	//case 5:
+	//	// invisible powerup
+	//	cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
+	//	powerupActive = true;
+	//	playerColour = glm::vec4(0.0, 0.0, 1.0, 1.0);
+	//	cSoundController->PlaySoundByID(5);
+	//	break;
+	//case 6:
+	//	// higher jump
+	//	cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
+	//	jumppoweractive = true;
+	//	playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
+	//	cSoundController->PlaySoundByID(5);
+	//	break;
 	case 7:
-		// higher jump
-		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-		jumppoweractive = true;
-		playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
-		cSoundController->PlaySoundByID(5);
-		break;
-	case 8:
 		// teleport next level
 		if (activateDoor == true) {
 			cGameManager->bLevelCompleted = true;
@@ -1067,6 +1068,44 @@ void CPlayer2D::InteractWithMap(void)
 			powerupActive = false;
 			jumppoweractive = false;
 		}
+		break;
+	case 8:
+		// Switches.
+		switchesActivated += 1;
+		if (cMap2D->GetLevel() == 1)
+		{
+			if (switchesActivated == 1)
+			{
+				//First Gate blocking the player from dropping down
+				cMap2D->SetMapInfo(16, 15, 0);
+				cMap2D->SetMapInfo(16, 16, 0);
+				cMap2D->SetMapInfo(17, 15, 0);
+				cMap2D->SetMapInfo(17, 16, 0);
+				cMap2D->SetMapInfo(18, 15, 0);
+				cMap2D->SetMapInfo(18, 16, 0);
+				//Second Gate to the left
+				cMap2D->SetMapInfo(15, 3, 0);
+				cMap2D->SetMapInfo(14, 3, 0);
+				cMap2D->SetMapInfo(13, 3, 0);
+				cMap2D->SetMapInfo(12, 3, 0);
+				//Third Gate to the right
+				cMap2D->SetMapInfo(15, 22, 0);
+				cMap2D->SetMapInfo(14, 22, 0);
+				cMap2D->SetMapInfo(13, 22, 0);
+				cMap2D->SetMapInfo(12, 22, 0);
+			}
+			if (switchesActivated == 2)
+			{
+				cMap2D->SetMapInfo(11, 15, 0);
+				cMap2D->SetMapInfo(11, 16, 0);
+			}
+			if (switchesActivated == 3)
+			{
+				cMap2D->SetMapInfo(10, 15, 0);
+				cMap2D->SetMapInfo(10, 16, 0);
+			}
+		}
+		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 9);
 		break;
 	case 12: //Remote
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);

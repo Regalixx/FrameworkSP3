@@ -120,7 +120,12 @@ bool CScene2D::Init(void)
 	}
 
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test_Level.csv") == false)
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == false)
+	{
+		// The loading of a map has failed. Return false
+		return false;
+	}
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test2.csv", 1) == false)
 	{
 		// The loading of a map has failed. Return false
 		return false;
@@ -350,16 +355,18 @@ void CScene2D::Update(const double dElapsedTime)
 
 		while (cMap2D->GetLevel() == 1)
 		{
-			Monster2D* cMonster2D = new Monster2D();
+
+			
+			CEnemy2D* cEnemy2D = new CEnemy2D();
 
 			//Pass shader to cEnemy2D
-			cMonster2D->SetShader("2DColorShader");
+			cEnemy2D->SetShader("2DColorShader");
 			//Initialise the instance
-			if (cMonster2D->Init() == true)
+			if (cEnemy2D->Init() == true)
 			{
 				cout << "hello" << std::endl;
-				cMonster2D->SetPlayer2D(cPlayer2D);
-				enemyVector2.push_back(cMonster2D);
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector2.push_back(cEnemy2D);
 			}
 			else
 			{
