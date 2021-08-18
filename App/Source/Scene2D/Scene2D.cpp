@@ -247,7 +247,7 @@ bool CScene2D::Init(void)
 	//cSoundController->Init();
 
 	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Bell.ogg"), 1, true);
-	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\game_over.ogg"), 2, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\game_over.ogg"), 2, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_jump.wav"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\coin_sound.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.wav"), 5, true);

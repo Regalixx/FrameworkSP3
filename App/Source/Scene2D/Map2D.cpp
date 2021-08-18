@@ -392,7 +392,11 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load sidetileFull texture" << std::endl;
 		return false;
 	}
-
+	if (LoadTexture("Image/Scene2D_Platform.tga", 142) == false)
+	{
+		std::cout << "Failed to load platform tile texture" << std::endl;
+		return false;
+	}
 
 	// Initialise the variables for AStar
 	m_weight = 1;
