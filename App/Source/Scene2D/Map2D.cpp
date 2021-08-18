@@ -132,7 +132,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load powerup texture" << std::endl;
 		return false;
 	}
-	if (LoadTexture("Image/door.tga", 7) == false) //Original: 8
+	if (LoadTexture("Image/scifidoor2.tga", 7) == false) //Original: 8
 	{
 		std::cout << "Failed to load door texture" << std::endl;
 		return false;

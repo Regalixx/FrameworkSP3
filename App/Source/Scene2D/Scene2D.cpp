@@ -125,7 +125,7 @@ bool CScene2D::Init(void)
 
 
 	//Level 1
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test_Level.csv") == false)
+	
 
 
 	// Load the map into an array
@@ -513,76 +513,133 @@ void CScene2D::Render(void)
 
 
 	
-	
-	background->Render();
-
-	
+	if (cPlayer2D->TimeStop == false) {
+		background->Render();
 
 
+		//Render the tile=
+   //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+   //CS: Render the tile
+   //quadMesh->Render();
 
-	 //Render the tile=
-//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-//CS: Render the tile
-//quadMesh->Render();
-	
-	
-	for (int i = 0; i < enemyVector.size(); i++)
-	{
-		//Call the CEnemy2D's PreRender()
-		enemyVector[i]->PreRender();
-		// Call the CEnemy2D's Render()
-		enemyVector[i]->Render();
-		// Call the CEnemy2D's PostRender()
-		enemyVector[i]->PostRender();
+
+		for (int i = 0; i < enemyVector.size(); i++)
+		{
+			//Call the CEnemy2D's PreRender()
+			enemyVector[i]->PreRender();
+			// Call the CEnemy2D's Render()
+			enemyVector[i]->Render();
+			// Call the CEnemy2D's PostRender()
+			enemyVector[i]->PostRender();
+		}
+
+		for (int i = 0; i < enemyVector2.size(); i++)
+		{
+			//Call the CEnemy2D's PreRender()
+			enemyVector2[i]->PreRender();
+			// Call the CEnemy2D's Render()
+			enemyVector2[i]->Render();
+			// Call the CEnemy2D's PostRender()
+			enemyVector2[i]->PostRender();
+		}
+
+		for (int i = 0; i < enemyVector3.size(); i++)
+		{
+			//Call the CEnemy2D's PreRender()
+			enemyVector3[i]->PreRender();
+			// Call the CEnemy2D's Render()
+			enemyVector3[i]->Render();
+			// Call the CEnemy2D's PostRender()
+			enemyVector3[i]->PostRender();
+		}
+
+		// Call the Map2D's PreRender()
+		cMap2D->PreRender();
+		// Call the Map2D's Render()
+		cMap2D->Render();
+		// Call the Map2D's PostRender()
+		cMap2D->PostRender();
+
+
+
+		// Call the cGUI's PreRender()
+		cGUI_Scene2D->PreRender();
+		// Call the cGUI's Render()
+		cGUI_Scene2D->Render();
+		// Call the cGUI's PostRender()
+		cGUI_Scene2D->PostRender();
+
+
+
+		//Call the cPlayer2D's PreRender()
+		cPlayer2D->PreRender();
+		//Call the cPlayer2D's Render()
+		cPlayer2D->Render();
+		//Call the CPlayer2D's PostRender()
+		cPlayer2D->PostRender();
+
 	}
 
-	for (int i = 0; i < enemyVector2.size(); i++)
-	{
-		//Call the CEnemy2D's PreRender()
-		enemyVector2[i]->PreRender();
-		// Call the CEnemy2D's Render()
-		enemyVector2[i]->Render();
-		// Call the CEnemy2D's PostRender()
-		enemyVector2[i]->PostRender();
-	}
+		if (cPlayer2D->TimeStop == true)
+		{
+			// Call the Map2D's PreRender()
+			cMap2D->PreRender();
+			// Call the Map2D's Render()
+			cMap2D->Render();
+			// Call the Map2D's PostRender()
+			cMap2D->PostRender();
 
-	for (int i = 0; i < enemyVector3.size(); i++)
-	{
-		//Call the CEnemy2D's PreRender()
-		enemyVector3[i]->PreRender();
-		// Call the CEnemy2D's Render()
-		enemyVector3[i]->Render();
-		// Call the CEnemy2D's PostRender()
-		enemyVector3[i]->PostRender();
-	}
+			// Call the cGUI's PreRender()
+		
+			cGUI_Scene2D->PreRender();
+			// Call the cGUI's Render()
+			cGUI_Scene2D->Render();
+			// Call the cGUI's PostRender()
+			cGUI_Scene2D->PostRender();
 
-	// Call the Map2D's PreRender()
-	cMap2D->PreRender();
+			for (int i = 0; i < enemyVector.size(); i++)
+			{
+				//Call the CEnemy2D's PreRender()
+				enemyVector[i]->PreRender();
+				// Call the CEnemy2D's Render()
+				enemyVector[i]->Render();
+				// Call the CEnemy2D's PostRender()
+				enemyVector[i]->PostRender();
+			}
 
-	
+			//Call the cPlayer2D's PreRender()
+			cPlayer2D->PreRender();
+			//Call the cPlayer2D's Render()
+			cPlayer2D->Render();
+			//Call the CPlayer2D's PostRender()
+			cPlayer2D->PostRender();
 
-	// Call the Map2D's Render()
-	cMap2D->Render();
-	// Call the Map2D's PostRender()
-	cMap2D->PostRender();
+		
 
-	
+			for (int i = 0; i < enemyVector2.size(); i++)
+			{
+				//Call the CEnemy2D's PreRender()
+				enemyVector2[i]->PreRender();
+				// Call the CEnemy2D's Render()
+				enemyVector2[i]->Render();
+				// Call the CEnemy2D's PostRender()
+				enemyVector2[i]->PostRender();
+			}
 
-	// Call the cGUI's PreRender()
-	cGUI_Scene2D->PreRender();
-	// Call the cGUI's Render()
-	cGUI_Scene2D->Render();
-	// Call the cGUI's PostRender()
-	cGUI_Scene2D->PostRender();
+			for (int i = 0; i < enemyVector3.size(); i++)
+			{
+				//Call the CEnemy2D's PreRender()
+				enemyVector3[i]->PreRender();
+				// Call the CEnemy2D's Render()
+				enemyVector3[i]->Render();
+				// Call the CEnemy2D's PostRender()
+				enemyVector3[i]->PostRender();
+			}
 
-	//Call the cPlayer2D's PreRender()
-	cPlayer2D->PreRender();
-	//Call the cPlayer2D's Render()
-	cPlayer2D->Render();
-	//Call the CPlayer2D's PostRender()
-	cPlayer2D->PostRender();
+		
 
-	
+
+		}
 
 }
 

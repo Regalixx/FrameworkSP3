@@ -113,6 +113,9 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("border", "Image/dimensionborder.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+	cInventoryItem = cInventoryManager->Add("dimensiontext", "Image/dimensiontext.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 	cooldownTimer = 0;
 	freezeDuration = 0;
 	switchesActivated = 0;
@@ -766,9 +769,9 @@ bool CPlayer2D::IsLiftSwitchStepped(void)
 
 bool CPlayer2D::dimension(void)
 {
-	/*dimensionchange();
+	dimensionchange();
 
-	return false;*/
+	
 	return false;
 }
 
