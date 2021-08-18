@@ -142,17 +142,6 @@ bool CScene2D::Init(void)
 	}
 
 	//Level 2
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test2.csv", 1) == false)
-
-	{
-		// The loading of a map has failed. Return false
-		return false;
-	}
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test2.csv", 1) == false)
-	{
-		// The loading of a map has failed. Return false
-		return false;
-	}
 
 
 
