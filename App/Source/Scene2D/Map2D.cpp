@@ -156,6 +156,12 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
+	if (LoadTexture("Image/scifidoor2.tga", 13) == false)
+	{
+		std::cout << "Failed to load exit texture" << std::endl;
+		return false;
+	}
+
 	// 100 - 199 : Collidable Objects
 	if (LoadTexture("Image/tile.tga", 100) == false) //Original: 1
 	{
@@ -357,6 +363,8 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load drightFull texture" << std::endl;
 		return false;
 	}
+
+	
 
 	// Initialise the variables for AStar
 	m_weight = 1;

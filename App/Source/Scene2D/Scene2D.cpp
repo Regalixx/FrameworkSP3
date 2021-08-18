@@ -23,6 +23,7 @@ CScene2D::CScene2D(void)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
 	, background(NULL)
+	
 {
 }
 
@@ -68,6 +69,8 @@ CScene2D::~CScene2D(void)
 		delete background;
 		background = NULL;
 	}
+
+	
 
 
 	
@@ -119,8 +122,15 @@ bool CScene2D::Init(void)
 		return false;
 	}
 
-	// Load the map into an array
+	//Level 1
 	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test_Level.csv") == false)
+	{
+		// The loading of a map has failed. Return false
+		return false;
+	}
+
+	//Level 2
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test2.csv", 1) == false)
 	{
 		// The loading of a map has failed. Return false
 		return false;
@@ -151,6 +161,8 @@ bool CScene2D::Init(void)
 	background = new CBackgroundEntity("Image/mapbackground3.png");
 	background->SetShader("2DShader");
 	background->Init();
+
+
 
 
 	CImageLoader* il = CImageLoader::GetInstance();
@@ -495,11 +507,13 @@ void CScene2D::PreRender(void)
  */
 void CScene2D::Render(void)
 {
-	
+
 
 	
 	
 	background->Render();
+
+	
 
 
 
@@ -565,6 +579,7 @@ void CScene2D::Render(void)
 	//Call the CPlayer2D's PostRender()
 	cPlayer2D->PostRender();
 
+	
 
 }
 

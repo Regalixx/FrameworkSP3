@@ -107,7 +107,10 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 
-	cInventoryItem = cInventoryManager->Add("background", "Image/dimensionstate.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("background", "Image/dimension2.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("border", "Image/dimensionborder.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cooldownTimer = 0;
@@ -1030,6 +1033,8 @@ void CPlayer2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(11, 6, 11);
 		isRemote = true;
 		break;
+	case 13:
+		cGameManager->bLevelCompleted = true;
 	case 20:
 		// Decrease the health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
@@ -1050,6 +1055,7 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem->Remove(1);
 		playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
 		break;
+	
 
 	default:
 		if (speedboost == true)
