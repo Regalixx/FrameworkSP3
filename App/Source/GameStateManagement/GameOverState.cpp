@@ -95,7 +95,7 @@ bool CGameOverState::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
+//	cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
 
 	return true;
 }

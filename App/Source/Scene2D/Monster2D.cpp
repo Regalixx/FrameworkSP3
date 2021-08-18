@@ -150,7 +150,7 @@ bool Monster2D::Init(void)
 
 	poisonTimer = 0;
 	stunTimer = 0; // how long player is stunned for
-	stunCooldown = 10; //how long  enemy can stun again
+	stunCooldown = 0; //how long  enemy can stun again
 	StunPlayer = false; // bool to check if the player is stunned
 	canStunPlayer = true;
 
@@ -169,21 +169,37 @@ void Monster2D::Update(const double dElapsedTime)
 	animatedSprites->PlayAnimation("idle", -1, 1.5f);
 
 	if (StunPlayer == true) {
-		stunCooldown -= dElapsedTime;
 		stunTimer += dElapsedTime;
 		cPlayer2D->playerColour = glm::vec4(1.0, 0.5, 0.0, 1.0);
 		cPlayer2D->i32vec2NumMicroSteps.x = 0;
 		cPlayer2D->i32vec2NumMicroSteps.y = 0;
 		cPlayer2D->i32vec2Index = cPlayer2D->i32vec2OldIndex;
-		
-		if (stunTimer >= 3 && StunPlayer == true)
+		if (stunTimer >= 2)
 		{
+
 			
-			canStunPlayer = false;
 			StunPlayer = false;
 			stunTimer = 0; //player is no longer stunned
+			canStunPlayer = false;
 		}
 	}
+
+	
+
+	if (canStunPlayer == false)
+	{
+		stunCooldown += dElapsedTime;
+	}
+
+	if (stunCooldown >= 4)
+	{
+		stunCooldown = 0;
+		canStunPlayer = true;
+	}
+
+	
+
+
 
 	cInventoryItem = cInventoryManager->GetItem("Health");
 	if (playerPoisoned == true)
@@ -214,7 +230,7 @@ void Monster2D::Update(const double dElapsedTime)
 	case PATROL:
 		if (iFSMCounter > iMaxFSMCounter)
 		{
-			sCurrentFSM = IDLE; //Change to poison
+			sCurrentFSM = POISON; //Change to poison
 			iFSMCounter = 0;
 			cout << "Switching to Idle State" << endl;
 		}
@@ -227,14 +243,16 @@ void Monster2D::Update(const double dElapsedTime)
 		{
 			// Patrol around
 			// Update the Enemy2D's position for patrol
-			UpdatePosition();
+			if (cPlayer2D->TimeStop == false) {
+				UpdatePosition();
+			}
 			cSoundController->PlaySoundByID(1);
 		}
 		iFSMCounter++;
 		break;
 	case POISON:
 
-		stateColour = glm::vec4(1.0, 0.0, 1.0, 1.0);
+		stateColour = glm::vec4(0.0, 1.0, 1.0, 1.0);
 		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
 		{
 			
@@ -282,7 +300,9 @@ void Monster2D::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		UpdatePosition();
+		if (cPlayer2D->TimeStop == false) {
+			UpdatePosition();
+		}
 		cSoundController->PlaySoundByID(1);
 		break;
 		
@@ -348,7 +368,9 @@ void Monster2D::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		UpdatePosition();
+		if (cPlayer2D->TimeStop == false) {
+			UpdatePosition();
+		}
 		cSoundController->PlaySoundByID(1);
 		break;
 	default:
@@ -815,7 +837,9 @@ bool Monster2D::InteractWithPlayer(void)
 
 		if(canStunPlayer == true && sCurrentFSM == FREEZE)
 		{ 
+			std::cout << "froze" << std::endl;
 			StunPlayer = true;
+			canStunPlayer = false;
 			
 		}
 		if (sCurrentFSM == POISON)

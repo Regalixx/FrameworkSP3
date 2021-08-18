@@ -181,6 +181,12 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
+	if (LoadTexture("Image/time_powerup.png", 15) == false)
+	{
+		std::cout << "Failed to load liftswitch texture" << std::endl;
+		return false;
+	}
+
 	// 100 - 199 : Collidable Objects
 	if (LoadTexture("Image/tile.tga", 100) == false) //Original: 1
 	{

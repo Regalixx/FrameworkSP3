@@ -100,7 +100,7 @@ bool CPlayer2D::Init(void)
 
 	cInventoryManager = CInventoryManager::GetInstance();
 	//Add a Lives icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 1);
+	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	//cInventoryItem = cInventoryManager->GetItem("Lives");
 	//cInventoryItem->Add(3);
@@ -110,7 +110,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 
-	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/timestop.png", 6, freezeDuration);
+	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 0);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 
@@ -425,10 +425,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
 	{
-		cSoundController->PlaySoundByID(11);
-		if (canUsepower == true)
+		
+		cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
+	
+		if (canUsepower == true && cInventoryItem->GetCount() > 0)
 		{
+			cSoundController->PlaySoundByID(11);
 			TimeStop = true;
+			cInventoryItem->Remove(1);
 
 		}
 		//cooldownTimer += dElapsedTime
@@ -1259,6 +1263,12 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 	case 13:
 		cGameManager->bLevelCompleted = true;
+		break;
+	case 15:
+		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
+		cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
+		cInventoryItem->Add(1);
+		break;
 	case 20:
 		// Decrease the health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
