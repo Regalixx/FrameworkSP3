@@ -159,6 +159,18 @@ void CEnemy2D::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
+	if (cPlayer2D->TimeStop == true)
+	{
+		currentColor = glm::vec4(0, 1.0, 1.0, 1.0);
+	}
+
+	if (cPlayer2D->TimeStop == false)
+	{
+		currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
+	}
+
+	
+
 	switch (sCurrentFSM)
 	{
 	case IDLE:

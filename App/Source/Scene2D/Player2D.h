@@ -132,6 +132,7 @@ protected:
 
 	float cooldownTimer;
 	float freezeDuration;
+	bool canUsepower;
 	int switchesActivated;
 
 	//Remote Bool
