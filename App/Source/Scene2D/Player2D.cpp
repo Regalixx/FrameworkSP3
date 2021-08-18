@@ -402,10 +402,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 	
 
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote)
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote) //Teleporting
 	{
 		i32vec2Index.x = 6;
 		i32vec2Index.y = 11;
+		i32vec2NumMicroSteps.x = 0;
 	}
 
 
@@ -731,7 +732,6 @@ bool CPlayer2D::IsLiftMoving(void)
 			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 140); //replace air with lift block
 			cMap2D->SetMapInfo(i32vec2Index.y - 2, i32vec2Index.x, 0); //delete prev block
 		}
-
 		else
 		{
 			cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);

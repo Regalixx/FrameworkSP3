@@ -250,9 +250,6 @@ void CScene2D::Update(const double dElapsedTime)
 
 	// Start the Dear ImGui frame
 
-	
-	
-
 	//Call all the cEnemy2D's update method before Map2D
 	// as we want to capture the updates before map2D update
 	for (int i = 0; i < enemyVector.size(); i++)
@@ -343,7 +340,6 @@ void CScene2D::Update(const double dElapsedTime)
 
 	if (cMap2D->GetLevel() == 1)
 	{
-		//std::cout << "hello" << std::endl;
 		for (int i = 0; i < enemyVector.size(); i++)
 		{
 			delete enemyVector[i];
@@ -354,8 +350,6 @@ void CScene2D::Update(const double dElapsedTime)
 
 		while (cMap2D->GetLevel() == 1)
 		{
-
-			
 			Monster2D* cMonster2D = new Monster2D();
 
 			//Pass shader to cEnemy2D
