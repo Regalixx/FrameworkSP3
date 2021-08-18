@@ -124,8 +124,10 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("dimensiontext", "Image/dimensiontext.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	
-
+	cooldownTimer = 0;
+	freezeDuration = 0;
+	switchesActivated = 0;
+	fallTimer = 3;
 	
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
@@ -423,6 +425,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
 	{
+		cSoundController->PlaySoundByID(11);
 		if (canUsepower == true)
 		{
 			TimeStop = true;
@@ -458,6 +461,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 	UpdateHealthLives();
 
 	dimension();
+
+	//update platform
+	IsPlaformStepped(dElapsedTime);
 
 	//lift controls
 	IsLiftMoving();
@@ -926,6 +932,26 @@ bool CPlayer2D::ResetMap()
 
 }
 
+void CPlayer2D::IsPlaformStepped(double dt)
+{
+	if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x) == 142)
+	{
+
+		fallTimer -= dt;
+		if ((fallTimer <= 1.5) && (fallTimer > 0))
+		{
+			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 0);
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+
+		}
+
+	}
+	else
+	{
+		fallTimer = 3; //platform will not fall if player keeps moving as timer remains at start
+	}
+}
+
 void CPlayer2D::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
@@ -1050,7 +1076,7 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem = cInventoryManager->GetItem("Tree");
 		cInventoryItem->Add(1);
 		//Play a bell sound
-		cSoundController->PlaySoundByID(1);
+		//cSoundController->PlaySoundByID(1);
 		if (cInventoryItem->GetCount() == 1)
 		{
 			activateDoor = true;
@@ -1094,7 +1120,7 @@ void CPlayer2D::InteractWithMap(void)
 		// teleport next level
 		if (activateDoor == true) {
 			cGameManager->bLevelCompleted = true;
-			cSoundController->PlaySoundByID(9);
+			cSoundController->PlaySoundByID(10);
 			cInventoryItem = cInventoryManager->GetItem("Health");
 			cInventoryItem->Add(100);
 			cInventoryItem = cInventoryManager->GetItem("Tree");

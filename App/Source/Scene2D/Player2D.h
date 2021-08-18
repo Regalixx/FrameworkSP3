@@ -169,6 +169,11 @@ protected:
 	bool dimension(void);
 	void dimensionchange();
 
+	//timer to fall
+	double fallTimer;
+	//check if player step on platform
+	void IsPlaformStepped(double dt);
+
 	// Update Jump or Fall
 	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
 
