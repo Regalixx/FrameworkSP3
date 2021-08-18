@@ -165,8 +165,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load Open Portal texture" << std::endl;
 		return false;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 	if (LoadTexture("Image/scifidoor2.tga", 13) == false)
 	{
@@ -174,19 +173,14 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
-=======
-=======
->>>>>>> 0f5613b523d878f6c53d36be83a70cf6eca8e760
+
 	//load down lift switch texture
 	if (LoadTexture("Image/Scene2D_liftSwitch.png", 13) == false)
 	{
 		std::cout << "Failed to load liftswitch texture" << std::endl;
 		return false;
 	}
-<<<<<<< HEAD
->>>>>>> 0f5613b523d878f6c53d36be83a70cf6eca8e760
-=======
->>>>>>> 0f5613b523d878f6c53d36be83a70cf6eca8e760
+
 	// 100 - 199 : Collidable Objects
 	if (LoadTexture("Image/tile.tga", 100) == false) //Original: 1
 	{
@@ -393,11 +387,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load up lift texture" << std::endl;
 		return false;
 	}
-<<<<<<< HEAD
 
-	
-=======
->>>>>>> 0f5613b523d878f6c53d36be83a70cf6eca8e760
 
 	// Initialise the variables for AStar
 	m_weight = 1;
