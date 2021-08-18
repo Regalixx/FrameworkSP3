@@ -582,7 +582,6 @@ void CScene2D::Render(void)
 
 		if (cPlayer2D->TimeStop == true)
 		{
-			// Call the Map2D's PreRender()
 			cMap2D->PreRender();
 			// Call the Map2D's Render()
 			cMap2D->Render();
@@ -596,6 +595,9 @@ void CScene2D::Render(void)
 			cGUI_Scene2D->Render();
 			// Call the cGUI's PostRender()
 			cGUI_Scene2D->PostRender();
+			
+			// Call the Map2D's PreRender()
+		
 
 			for (int i = 0; i < enemyVector.size(); i++)
 			{
