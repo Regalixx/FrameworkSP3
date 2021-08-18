@@ -387,6 +387,11 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load up lift texture" << std::endl;
 		return false;
 	}
+	if (LoadTexture("Image/sidetileFull.png", 141) == false)
+	{
+		std::cout << "Failed to load sidetileFull texture" << std::endl;
+		return false;
+	}
 
 
 	// Initialise the variables for AStar
