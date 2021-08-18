@@ -814,6 +814,7 @@ void CPlayer2D::dimensionchange()
 	////to change into dimension mode
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
+	//if (TimeStop == true)
 	if (TimeStop == true)
 	{
 		while (cMap2D->FindValue(100, uiRow, uiCol) == true)
@@ -895,6 +896,89 @@ void CPlayer2D::dimensionchange()
 		while (cMap2D->FindValue(119, uiRow, uiCol) == true)
 		{
 			cMap2D->SetMapInfo(uiRow, uiCol, 139);
+		}
+	}
+	if (TimeStop ==false)
+	{
+		while (cMap2D->FindValue(120, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 100);
+		}
+		while (cMap2D->FindValue(121, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 101);
+		}
+		while (cMap2D->FindValue(122, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 102);
+		}
+		while (cMap2D->FindValue(123, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 103);
+		}
+		while (cMap2D->FindValue(124, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 104);
+		}
+		while (cMap2D->FindValue(125, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 105);
+		}
+		while (cMap2D->FindValue(126, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 106);
+		}
+		while (cMap2D->FindValue(127, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 107); //changes tile to dimensiontile
+		}
+		while (cMap2D->FindValue(128, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 108);
+		}
+		while (cMap2D->FindValue(129, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 109);
+		}
+		while (cMap2D->FindValue(130, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 110);
+		}
+		while (cMap2D->FindValue(131, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 111);
+		}
+		while (cMap2D->FindValue(132, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 112);
+		}
+		while (cMap2D->FindValue(133, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 113);
+		}
+		while (cMap2D->FindValue(134, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 114);
+		}
+		while (cMap2D->FindValue(135, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 115);
+		}
+		while (cMap2D->FindValue(136, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 116);
+		}
+		while (cMap2D->FindValue(137, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 117);
+		}
+		while (cMap2D->FindValue(138, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 118);
+		}
+		while (cMap2D->FindValue(139, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 119);
 		}
 	}
 
