@@ -110,7 +110,7 @@ bool Monster2D::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	if (LoadTexture("Image/enemy3.tga", iTextureID) == false)
+	if (LoadTexture("Image/Enemy2.png", iTextureID) == false)
 	{
 		std::cout << "Failed to load enemy2D tile texture" << std::endl;
 		return false;
@@ -129,14 +129,15 @@ bool Monster2D::Init(void)
 	cInventoryManager = CInventoryManager::GetInstance();
 
 	cInventoryManager = CInventoryManager::GetInstance();
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 3,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 16,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	animatedSprites->AddAnimation("idle", 0, 2);
-	animatedSprites->AddAnimation("left", 3, 5);
-	animatedSprites->AddAnimation("right", 6, 8);
+	animatedSprites->AddAnimation("idle", 0, 10);
+	animatedSprites->AddAnimation("left", 16, 25);
+	animatedSprites->AddAnimation("right", 32, 41);
+	animatedSprites->AddAnimation("attack", 32, 41);
 	//CS: Play the "idle animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	animatedSprites->PlayAnimation("idle", -1, 1.5f);
 	
 
 	// If this class is initialised properly, then set the bIsActive to true
@@ -148,7 +149,6 @@ bool Monster2D::Init(void)
 	StunPlayer = false; // bool to check if the player is stunned
 	canStunPlayer = true;
 
-
 	return true;
 }
 
@@ -159,6 +159,9 @@ void Monster2D::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return;
+
+	//Setting animation back to idle
+	animatedSprites->PlayAnimation("idle", -1, 1.5f);
 
 	if (StunPlayer == true) {
 		stunCooldown -= dElapsedTime;
@@ -206,7 +209,7 @@ void Monster2D::Update(const double dElapsedTime)
 	case PATROL:
 		if (iFSMCounter > iMaxFSMCounter)
 		{
-			sCurrentFSM = POISON;
+			sCurrentFSM = IDLE; //Change to poison
 			iFSMCounter = 0;
 			cout << "Switching to Idle State" << endl;
 		}
@@ -235,7 +238,7 @@ void Monster2D::Update(const double dElapsedTime)
 				heuristic::euclidean,
 				10);
 
-			/*cout << "===Printing out the path ===" << endl;*/
+			//cout << "===Printing out the path ===" << endl;
 
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
@@ -275,24 +278,24 @@ void Monster2D::Update(const double dElapsedTime)
 		}
 		UpdatePosition();
 		break;
+		
 
 	case FREEZE:
-
 		stateColour = glm::vec4(1.0, 0.5, 0.0, 1.0);
 		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
 			// Attack
 			// Calculate a path to the player
 			//cMap2D->PrintSelf();
-			/*cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
-			cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "*/
-				/*<< cPlayer2D->i32vec2Index.y << endl;*/
+			//cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
+			//cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "
+				//<< cPlayer2D->i32vec2Index.y << endl;
 			auto path = cMap2D->PathFind(i32vec2Index,
 				cPlayer2D->i32vec2Index,
 				heuristic::euclidean,
 				10);
 
-			/*cout << "===Printing out the path ===" << endl;*/
+			//cout << "===Printing out the path ===" << endl;
 
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
@@ -317,8 +320,8 @@ void Monster2D::Update(const double dElapsedTime)
 						break;
 				}
 			}
-			/*cout << "i32vec2Destination :" << i32vec2Destination.x << "," << i32vec2Destination.y << endl;
-			cout << "i32vec2Direction :" << i32vec2Direction.x << ", " << i32vec2Direction.y << endl;*/
+			//cout << "i32vec2Destination :" << i32vec2Destination.x << "," << i32vec2Destination.y << endl;
+		    //cout << "i32vec2Direction :" << i32vec2Direction.x << ", " << i32vec2Direction.y << endl;
 			//system("pause");
 
 			//Calcu
@@ -340,7 +343,6 @@ void Monster2D::Update(const double dElapsedTime)
 		}
 		UpdatePosition();
 		break;
-	
 	default:
 		break;
 	}
