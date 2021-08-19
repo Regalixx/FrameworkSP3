@@ -209,7 +209,7 @@ bool CScene2D::Init(void)
 
 
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test_Level.csv") == false) //Changed
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == false) //Changed
 	{
 		// The loading of a map has failed. Return false
 		return false;
