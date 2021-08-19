@@ -162,14 +162,14 @@ bool CClone::Init(void)
 void CClone::Update(const double dElapsedTime)
 {
 
-	if (cPlayer2D->clone == true)
+	if (cPlayer2D->clone == true && cPlayer2D->canUseClone == false)
 	{
 	
 		i32vec2OldIndex = i32vec2Index;
 		
 
 	}
-	if (cPlayer2D->clone == false)
+	if (cPlayer2D->clone == false && cPlayer2D->canUseClone == true)
 	{
 		//bIsActive = true;
 		i32vec2Index = cPlayer2D->i32vec2Index; // follow the player

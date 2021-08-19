@@ -85,6 +85,8 @@ public:
 
 	bool clone;
 
+	bool canUseClone;
+
 	bool targetClone;
 	
 	
@@ -141,6 +143,8 @@ protected:
 	
 
 	float cooldownTimer;
+	float cloneDuration;
+	
 	
 	bool canUsepower;
 	int switchesActivated;

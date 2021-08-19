@@ -18,12 +18,15 @@
 
 
 
+
+
 struct GLFWwindow;
 
 class CSettings;
 
 class Application : public CSingletonTemplate<Application>
 {
+
 	friend CSingletonTemplate<Application>;
 public:
 	// Initialise this class instance
@@ -51,6 +54,8 @@ protected:
 
 	// The handler to the CFPSCounter instance
 	CFPSCounter* cFPSCounter;
+
+
 
 	// Constructor
 	Application(void);
