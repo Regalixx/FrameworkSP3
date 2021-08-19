@@ -58,6 +58,7 @@
 
 
 #include "../Scene2D/BackgroundEntity.h"
+
 #include "Clone.h"
 
 
@@ -93,8 +94,10 @@ protected:
 	CMap2D* cMap2D;
 	CPlayer2D* cPlayer2D;
 
+
 	CMesh* quadMesh;
 
+	CClone* cClone;
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 

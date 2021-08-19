@@ -51,8 +51,8 @@ CClone::CClone(void)
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
 
-	i32vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
-	i32vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
+	//i32vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
+	//i32vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
 }
 
 /**
@@ -93,11 +93,13 @@ bool CClone::Init(void)
 	//override update function
 
 	// Get the handler to the CMap2D instance
+
+	cPlayer2D = CPlayer2D::GetInstance();
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(303, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(304, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 	
 	//if (cMap2D->FindValue(301, uiRow, uiCol) == false)
@@ -118,11 +120,23 @@ bool CClone::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	if (LoadTexture("Image/_simenemy.png", iTextureID) == false)
+	if (LoadTexture("Image/player3.tga", iTextureID) == false)
 	{
 		std::cout << "Failed to load enemy2D tile texture" << std::endl;
 		return false;
 	}
+
+	cInventoryManager = CInventoryManager::GetInstance();
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
+		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	//Enemy has no idle animation at the moment
+	//For some reason they are doing the opposite direction animation
+	animatedSprites->AddAnimation("idle", 0, 5);
+	animatedSprites->AddAnimation("right", 6, 11);
+	animatedSprites->AddAnimation("left", 12, 17);
+	animatedSprites->AddAnimation("jump", 18, 20);
+	//CS: Play the "idle animation as default
+	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
 	//CS: Init the color to white
 	currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -131,25 +145,14 @@ bool CClone::Init(void)
 	cPhysics2D.Init();
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 
-	cSoundController = CSoundController::GetInstance();
-	
 
-	cInventoryManager = CInventoryManager::GetInstance();
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 6,
-		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	//Enemy has no idle animation at the moment
-	//For some reason they are doing the opposite direction animation
-	animatedSprites->AddAnimation("right", 0, 5);
-	animatedSprites->AddAnimation("left", 6, 11);
-	animatedSprites->AddAnimation("attack", 12, 16);
-	//CS: Play the "idle animation as default
-	animatedSprites->PlayAnimation("left", -1, 1.0f);
 
 
 	// If this class is initialised properly, then set the bIsActive to true
+	
 	bIsActive = true;
-
+	followPlayer = true;
 	return true;
 }
 
@@ -158,121 +161,34 @@ bool CClone::Init(void)
  */
 void CClone::Update(const double dElapsedTime)
 {
-	if (!bIsActive)
-		return;
 
-	/*if (cPlayer2D->TimeStop == true)
+	if (cPlayer2D->clone == true)
 	{
-		currentColor = glm::vec4(0, 1.0, 1.0, 1.0);
-	}
-
-	if (cPlayer2D->TimeStop == false)
-	{
-		currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
-	}*/
-
 	
+		i32vec2OldIndex = i32vec2Index;
+		
 
-	switch (sCurrentFSM)
-	{
-	case IDLE:
-		if (iFSMCounter > iMaxFSMCounter)
-		{
-			//sCurrentFSM = PATROL;
-			iFSMCounter = 0;
-			//cout << "Switching to Patrol State" << endl;
-		}
-		iFSMCounter++;
-		break;
-	//case PATROL:
-	//	if (iFSMCounter > iMaxFSMCounter)
-	//	{
-	//		sCurrentFSM = IDLE;
-	//		iFSMCounter = 0;
-	//		//cout << "Switching to Idle State" << endl;
-	//	}
-	//	else if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
-	//	{
-	//		sCurrentFSM = ATTACK;
-	//		iFSMCounter = 0;
-	//	}
-	//	else
-	//	{
-	//		// Patrol around
-	//		// Update the Enemy2D's position for patrol
-	//		//if (cPlayer2D->TimeStop == false) {
-	//		//	//UpdatePosition();
-	//		//	cSoundController->PlaySoundByID(13);
-	//		//}
-	//	}
-	//	iFSMCounter++;
-	//	break;
-	//case ATTACK:
-	//	if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f))
-	//	{
-	//		// Attack
-	//		// Calculate a path to the player
-	//		//cMap2D->PrintSelf();
-	//		/*cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
-	//		cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "*/
-	//			/*<< cPlayer2D->i32vec2Index.y << endl;*/
-	//		auto path = cMap2D->PathFind(i32vec2Index,
-	//			cPlayer2D->i32vec2Index,
-	//			heuristic::euclidean,
-	//			10);
-
-	//		/*cout << "===Printing out the path ===" << endl;*/
-
-	//		bool bFirstPosition = true;
-	//		for (const auto& coord : path)
-	//		{
-	//			//std::cout << coord.x << "," << coord.y << "\n";
-	//			if (bFirstPosition == true)
-	//			{
-	//				//Set a destination
-	//				i32vec2Destination = coord;
-	//				//Calculate the direction between enemy2D and this destiination
-	//				i32vec2Direction = i32vec2Destination - i32vec2Index;
-	//				bFirstPosition = false;
-	//			}
-	//			else
-	//			{
-	//				if ((coord - i32vec2Destination) == i32vec2Direction)
-	//				{
-	//					//Set a destination
-	//					i32vec2Destination = coord;
-	//				}
-	//				else
-	//					break;
-	//			}
-	//		}
-	//		/*cout << "i32vec2Destination :" << i32vec2Destination.x << "," << i32vec2Destination.y << endl;
-	//		cout << "i32vec2Direction :" << i32vec2Direction.x << ", " << i32vec2Direction.y << endl;*/
-	//		//system("pause");
-
-	//		//Calcu
-	//		//UpdateDirection();
-
-	//		// Update the Enemy2D's position for attack
-	//		
-	//	}
-	//	else
-	//	{
-	//		if (iFSMCounter > iMaxFSMCounter)
-	//		{
-	//			sCurrentFSM = PATROL;
-	//			iFSMCounter = 0;
-	//			cout << "ATTACK : Reset counter: " << iFSMCounter << endl;
-	//		}
-	//		iFSMCounter++;
-	//	}
-	//	if (cPlayer2D->TimeStop == false) {
-	//		UpdatePosition();
-	//	}
-	//	break;
-	default:
-		break;
 	}
+	if (cPlayer2D->clone == false)
+	{
+		//bIsActive = true;
+		i32vec2Index = cPlayer2D->i32vec2Index; // follow the player
+	}
+
+	if (i32vec2Index.x >= 0)
+	{
+		animatedSprites->PlayAnimation("left", -1, 1.0f);
+	}
+
+	if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS) {
+		animatedSprites->PlayAnimation("right", -1, 1.0f);
+	}
+	
+		
+
+
+
+	//UpdatePosition();
 
 	//Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
@@ -357,34 +273,34 @@ void CClone::PostRender(void)
 @param iIndex_XAxis A const int variable which stores the index in the x-axis
 @param iIndex_YAxis A const int variable which stores the index in the y-axis
 */
-void CClone::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
-{
-	this->i32vec2Index.x = iIndex_XAxis;
-	this->i32vec2Index.y = iIndex_YAxis;
-}
-
-/**
-@brief Set the number of microsteps of the enemy2D
-@param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
-@param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
-*/
-void CClone::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
-{
-	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
-	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
-}
-
-/**
- @brief Set the handle to cPlayer to this class instance
- @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
- */
-void CClone::SetPlayer2D(CPlayer2D* cPlayer2D)
-{
-	this->cPlayer2D = cPlayer2D;
-
-	// Update the enemy's direction
-	UpdateDirection();
-}
+//void CClone::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
+//{
+//	this->i32vec2Index.x = iIndex_XAxis;
+//	this->i32vec2Index.y = iIndex_YAxis;
+//}
+//
+///**
+//@brief Set the number of microsteps of the enemy2D
+//@param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
+//@param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
+//*/
+//void CClone::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
+//{
+//	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
+//	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
+//}
+//
+///**
+// @brief Set the handle to cPlayer to this class instance
+// @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
+// */
+//void CClone::SetPlayer2D(CPlayer2D* cPlayer2D)
+//{
+//	this->cPlayer2D = cPlayer2D;
+//
+//	// Update the enemy's direction
+//	UpdateDirection();
+//}
 
 
 /**
@@ -717,165 +633,158 @@ void CClone::UpdateJumpFall(const double dElapsedTime)
 /**
  @brief Let enemy2D interact with the player.
  */
-bool CClone::InteractWithPlayer(void)
-{
-	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->i32vec2Index;
-	
-	// Check if the enemy2D is within 1.5 indices of the player2D
-	if (((i32vec2Index.x >= i32vec2PlayerPos.x - 0.5) && 
-		(i32vec2Index.x <= i32vec2PlayerPos.x + 0.5))
-		&& 
-		((i32vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
-		(i32vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
-	{
-		//cout << "Gotcha!" << endl;
+//bool CClone::InteractWithPlayer(void)
+//{
+//	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->i32vec2Index;
+//	
+//	// Check if the enemy2D is within 1.5 indices of the player2D
+//	if (((i32vec2Index.x >= i32vec2PlayerPos.x - 0.5) && 
+//		(i32vec2Index.x <= i32vec2PlayerPos.x + 0.5))
+//		&& 
+//		((i32vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
+//		(i32vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
+//	{
+//		//cout << "Gotcha!" << endl;
+//
+//		cPlayer2D->playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+//		cInventoryItem = cInventoryManager->GetItem("Health");
+//		cInventoryItem->Remove(25);
+//
+//		// Since the player has been caught, then reset the FSM
+//		sCurrentFSM = IDLE;
+//		iFSMCounter = 0;
+//
+//
+//		return true;
+//	}
+//	return false;
+//}
 
-		cPlayer2D->playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(25);
 
-		// Since the player has been caught, then reset the FSM
-		sCurrentFSM = IDLE;
-		iFSMCounter = 0;
-
-
-		return true;
-	}
-	return false;
-}
 
 /**
  @brief Update the enemy's direction.
  */
-void CClone::UpdateDirection(void)
-{
-	// Set the destination to the player
-	i32vec2Destination = cPlayer2D->i32vec2Index;
-
-	// Calculate the direction between enemy2D and player2D
-	i32vec2Direction = i32vec2Destination - i32vec2Index;
-
-	// Calculate the distance between enemy2D and player2D
-	float fDistance = cPhysics2D.CalculateDistance(i32vec2Index, i32vec2Destination);
-	if (fDistance >= 0.01f)
-	{
-		// Calculate direction vector.
-		// We need to round the numbers as it is easier to work with whole numbers for movements
-		i32vec2Direction.x = (int)round(i32vec2Direction.x / fDistance);
-		i32vec2Direction.y = (int)round(i32vec2Direction.y / fDistance);
-	}
-	else
-	{
-		// Since we are not going anywhere, set this to 0.
-		i32vec2Direction = glm::i32vec2(0);
-	}
-}
+//void CClone::UpdateDirection(void)
+//{
+//	// Set the destination to the player
+//	i32vec2Destination = cPlayer2D->i32vec2Index;
+//
+//	// Calculate the direction between enemy2D and player2D
+//	i32vec2Direction = i32vec2Destination - i32vec2Index;
+//
+//	// Calculate the distance between enemy2D and player2D
+//	float fDistance = cPhysics2D.CalculateDistance(i32vec2Index, i32vec2Destination);
+//	if (fDistance >= 0.01f)
+//	{
+//		// Calculate direction vector.
+//		// We need to round the numbers as it is easier to work with whole numbers for movements
+//		i32vec2Direction.x = (int)round(i32vec2Direction.x / fDistance);
+//		i32vec2Direction.y = (int)round(i32vec2Direction.y / fDistance);
+//	}
+//	else
+//	{
+//		// Since we are not going anywhere, set this to 0.
+//		i32vec2Direction = glm::i32vec2(0);
+//	}
+//}
 
 /**
  @brief Flip horizontal direction. For patrol use only
  */
-void CClone::FlipHorizontalDirection(void)
-{
-	i32vec2Direction.x *= -1;
-}
+//void CClone::FlipHorizontalDirection(void)
+//{
+//	i32vec2Direction.x *= -1;
+//}
 
 /**
 @brief Update position.
 */
-void CClone::UpdatePosition(void)
-{
-
-	// Store the old position
-	i32vec2OldIndex = i32vec2Index;
-
-	//// if the player is to the left or right of the enemy2D, then jump to attack
-	//if (i32vec2Direction.x < 0 && CheckPosition(LEFT) == true)
-	//{
-	//	// Move left
-	//	const int iOldIndex = i32vec2Index.x;
-	//	if (i32vec2Index.x >= 0)
-	//	{
-	//		i32vec2NumMicroSteps.x--;
-	//		if (i32vec2NumMicroSteps.x < 0)
-	//		{
-	//			i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-	//			i32vec2Index.x--;
-	//		}
-	//	}
-
-	//	// Constraint the enemy2D's position within the screen boundary
-	//	Constraint(LEFT);
-
-	//	//CS: play the "left animation
-	//	animatedSprites->PlayAnimation("left", -1, 1.0f);
-
-
-
-	//	// Find a feasible position for the enemy2D's current position
-	//	if (CheckPosition(LEFT) == false)
-	//	{
-	//		FlipHorizontalDirection();
-	//		i32vec2Index = i32vec2OldIndex;
-	//		i32vec2NumMicroSteps.x = 0;
-	//	}
-
-	//	// Check if enemy2D is in mid-air, such as walking off a platform
-	//	if (IsMidAir() == true)
-	//	{
-	//		cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-	//	}
-
-	//	// Interact with the Player
-	//	InteractWithPlayer();
-	//}
-	//else if (i32vec2Direction.x > 0 && CheckPosition(RIGHT) == true)
-	//{
-	//	// Move right
-	//	const int iOldIndex = i32vec2Index.x;
-	//	if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-	//	{
-	//		i32vec2NumMicroSteps.x++;
-
-	//		if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
-	//		{
-	//			i32vec2NumMicroSteps.x = 0;
-	//			i32vec2Index.x++;
-	//		}
-	//	}
-
-	//	// Constraint the enemy2D's position within the screen boundary
-	//	Constraint(RIGHT);
-	//	
-	//	animatedSprites->PlayAnimation("right", -1, 1.0f);
-
-	//	// Find a feasible position for the enemy2D's current position
-	//	if (CheckPosition(RIGHT) == false)
-	//	{
-	//		FlipHorizontalDirection();
-	//		i32vec2Index = i32vec2OldIndex;
-	//		i32vec2NumMicroSteps.x = 0;
-	//	}
-
-	//	// Check if enemy2D is in mid-air, such as walking off a platform
-	//	if (IsMidAir() == true)
-	//	{
-	//		cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-	//	}
-
-	//	// Interact with the Player
-	//	InteractWithPlayer();
-	//}
-
-	//// if the player is above the enemy2D, then jump to attack
-	//if (i32vec2Direction.y > 0)
-	//{
-	//	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
-	//	{
-	//		cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-	//		cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
-	//	}
-
-	//	//animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	//}
-
-}
+//void CClone::UpdatePosition(void)
+//{
+//
+//	// Store the old position
+//	i32vec2OldIndex = i32vec2Index;
+//	
+//	
+//
+//	if (i32vec2Direction.x < 0 && CheckPosition(LEFT) == true)
+//	{
+//		// Move left
+//		const int iOldIndex = i32vec2Index.x;
+//		if (i32vec2Index.x >= 0)
+//		{
+//			i32vec2NumMicroSteps.x--;
+//			if (i32vec2NumMicroSteps.x < 0)
+//			{
+//				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+//				i32vec2Index.x--;
+//			}
+//		}
+//
+//		// Constraint the enemy2D's position within the screen boundary
+//		Constraint(LEFT);
+//
+//		//CS: play the "left animation
+//		animatedSprites->PlayAnimation("left", -1, 1.0f);
+//
+//
+//
+//		// Find a feasible position for the enemy2D's current position
+//		if (CheckPosition(LEFT) == false)
+//		{
+//			//FlipHorizontalDirection();
+//			i32vec2Index = i32vec2OldIndex;
+//			i32vec2NumMicroSteps.x = 0;
+//		}
+//
+//		// Check if enemy2D is in mid-air, such as walking off a platform
+//		if (IsMidAir() == true)
+//		{
+//			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+//		}
+//
+//		// Interact with the Player
+//		//InteractWithPlayer();
+//	}
+//	else if (i32vec2Direction.x > 0 && CheckPosition(RIGHT) == true)
+//	{
+//		// Move right
+//		const int iOldIndex = i32vec2Index.x;
+//		if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+//		{
+//			i32vec2NumMicroSteps.x++;
+//
+//			if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+//			{
+//				i32vec2NumMicroSteps.x = 0;
+//				i32vec2Index.x++;
+//			}
+//		}
+//
+//		// Constraint the enemy2D's position within the screen boundary
+//		Constraint(RIGHT);
+//		
+//		animatedSprites->PlayAnimation("right", -1, 1.0f);
+//
+//		// Find a feasible position for the enemy2D's current position
+//		if (CheckPosition(RIGHT) == false)
+//		{
+//			//FlipHorizontalDirection();
+//			i32vec2Index = i32vec2OldIndex;
+//			i32vec2NumMicroSteps.x = 0;
+//		}
+//
+//		// Check if enemy2D is in mid-air, such as walking off a platform
+//		if (IsMidAir() == true)
+//		{
+//			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+//		}
+//
+//	
+//	}
+//
+//	
+//
+//
+//}

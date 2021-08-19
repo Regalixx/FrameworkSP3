@@ -28,11 +28,15 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
+#include "Clone.h"
+
 #include "InventoryItem.h"
 
 #include "InventoryManager.h"
 
 #include "Primitives//SpriteAnimation.h"
+
+
 
 class CEnemy2D : public CEntity2D
 {
@@ -78,6 +82,9 @@ public:
 
 	// Set the handle to cPlayer to this class instance
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
+
+	// Set the handle to cClone to this class instance
+	void CEnemy2D::SetClone2D(CClone* cClone);
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
@@ -140,6 +147,7 @@ protected:
 
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
+	CClone* cClone;
 
 	// Current FSM
 	FSM sCurrentFSM;

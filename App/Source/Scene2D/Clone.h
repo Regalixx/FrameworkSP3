@@ -34,7 +34,7 @@ class CMap2D;
 
 #include "Primitives//SpriteAnimation.h"
 
-class CClone : public CEntity2D
+class CClone : public CSingletonTemplate<CClone>, public CEntity2D
 {
 public:
 	// Constructor
@@ -82,6 +82,9 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	bool followPlayer;
+
+	//glm::i32vec2 i32vec2Index;
 	
 
 protected:
@@ -105,6 +108,8 @@ protected:
 
 	glm::i32vec2 i32vec2OldIndex;
 
+
+	CSpriteAnimation* animatedSprites;
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
 
@@ -115,7 +120,7 @@ protected:
 	glm::mat4 transform;
 
 	// The i32vec2 which stores the indices of the enemy2D in the Map2D
-	glm::i32vec2 i32vec2Index;
+	
 
 	// The i32vec2 variable which stores The number of microsteps from the tile indices for the enemy2D. 
 	// A tile's width or height is in multiples of these microsteps
@@ -144,7 +149,7 @@ protected:
 	// Current FSM
 	FSM sCurrentFSM;
 
-	CSpriteAnimation* animatedSprites;
+
 
 	//InventoryManager
 	CInventoryManager* cInventoryManager;
@@ -177,13 +182,15 @@ protected:
 	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
 
 	// Let enemy2D interact with the player
-	bool InteractWithPlayer(void);
+	//bool InteractWithPlayer(void);
+
+	
 
 	// Update direction
 	void UpdateDirection(void);
 
 	// Flip horizontal direction. For patrol use only
-	void FlipHorizontalDirection(void);
+	//void FlipHorizontalDirection(void);
 
 	// Update position
 	void UpdatePosition(void);

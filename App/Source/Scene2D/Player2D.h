@@ -51,6 +51,8 @@ class CMap2D;
 
 
 
+
+
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -81,6 +83,9 @@ public:
 
 	bool TimeStop;
 
+	bool clone;
+
+	bool targetClone;
 	
 	
 
@@ -133,6 +138,7 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
+	
 
 	float cooldownTimer;
 	
