@@ -331,7 +331,7 @@ void Application::Run(void)
 		// Comment out these 2 lines if you do not want FPS limitation
 		
 		
-		dDelayTime = cSettings->frameTime - dElapsedTime * 500; //initlally 1000
+		dDelayTime = cSettings->frameTime - dElapsedTime * 1000; //initlally 1000
 		cStopWatch.WaitUntil((const long long)dDelayTime);
 
 		// Update the FPS Counter

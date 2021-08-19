@@ -113,7 +113,8 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 0);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
-
+	cInventoryItem = cInventoryManager->Add("ClonePowerup", "Image/clone_powerup.png", 6, 0);
+	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 	cInventoryItem = cInventoryManager->Add("background", "Image/dimension2.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -452,8 +453,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_C))
 	{
-		clone = true;
-		//targetClone = true;
+		cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
+
+		if (cInventoryItem->GetCount() > 0)
+		{
+			cSoundController->PlaySoundByID(11);
+			clone = true;
+			cInventoryItem->Remove(1);
+
+		}
 	}
 	
 
@@ -1300,6 +1308,11 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+		break;
+	case 18:
+		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
+		cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
+		cInventoryItem->Add(1);
 		break;
 
 		/*
