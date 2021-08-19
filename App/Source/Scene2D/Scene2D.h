@@ -114,6 +114,9 @@ protected:
 
 	float MapLevel;
 	float LaserTimer = 0;
+	int blocks_0 = 0;
+	int blocks_1 = 0;
+	bool LaserStopped = false;
 
 	bool enemyCleared = false;
 
@@ -133,7 +136,9 @@ protected:
 	CBackgroundEntity* dimensionstate;
 	
 	//Laser Beam pew pew
-	void LaserFire(int dir, float row, float col);
+	bool LaserFireVertical(float row, float col, int blocks);
+
+	bool LaserFireHorizontal(float row, float col, int blocks);
 
 	//Reset
 	void ResetLaser(int dir, float row, float col);

@@ -113,36 +113,29 @@ CScene2D::~CScene2D(void)
 	cloneVector.clear();
 }
 
-void CScene2D::LaserFire(int dir, float row, float col)
+bool CScene2D::LaserFireVertical(float row, float col, int blocks)
 {
-	int i = 0;
-
-	while (true)
+	if (cMap2D->GetMapInfo(row + blocks, col) == 0)
 	{
-		if (dir == 0)
-		{
-			if (cMap2D->GetMapInfo(row + i, col) != 0)
-			{
-				break;
-			}
-			else
-			{
-				cMap2D->SetMapInfo(row + i, col, 16);
-					
-			}
-		}
-		else if (dir == 1)
-		{
-			if (cMap2D->GetMapInfo(row, col + i) != 0)
-			{
-				break;
-			}
-			else
-			{
-				cMap2D->SetMapInfo(row, col + i, 17);
-			}
-		}
-		i++;
+		cMap2D->SetMapInfo(row + blocks, col, 16);
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+bool CScene2D::LaserFireHorizontal(float row, float col, int blocks)
+{
+	if (cMap2D->GetMapInfo(row, col + blocks) == 0)
+	{
+		cMap2D->SetMapInfo(row, col + blocks, 17);
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }
 
@@ -154,7 +147,7 @@ void CScene2D::ResetLaser(int dir, float row, float col)
 	{
 		if (dir == 0)
 		{
-			if (cMap2D->GetMapInfo(row + i, col) == 18)
+			if (cMap2D->GetMapInfo(row + i, col) == 16)
 			{
 				cMap2D->SetMapInfo(row + i, col, 0);
 			}
@@ -165,7 +158,7 @@ void CScene2D::ResetLaser(int dir, float row, float col)
 		}
 		else if (dir == 1)
 		{
-			if (cMap2D->GetMapInfo(row, col + i) == 21)
+			if (cMap2D->GetMapInfo(row, col + i) == 17)
 			{
 				cMap2D->SetMapInfo(row, col + i, 0);
 			}
@@ -209,7 +202,7 @@ bool CScene2D::Init(void)
 
 
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == false) //Changed
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_BigTest.csv") == false)
 	{
 		// The loading of a map has failed. Return false
 		return false;
@@ -365,6 +358,7 @@ void CScene2D::Update(const double dElapsedTime)
 	if (cPlayer2D->TimeStop != true)
 	{
 		LaserTimer += dElapsedTime;
+		//cout << LaserTimer << endl;
 	}
 
 	//Call the cPlayer2D's update method
@@ -464,22 +458,33 @@ void CScene2D::Update(const double dElapsedTime)
 	if (cMap2D->GetLevel() == 5)
 	{
 		cGameManager->bPlayerWon = true;
-		cSoundController->PlaySoundByID(7);
-		std::cout << "game won" << std::endl;
+		//cSoundController->PlaySoundByID(7);
+		//std::cout << "game won" << std::endl;
 	}
 
 	if (cMap2D->GetLevel() == 0)
 	{
 		if (LaserTimer >= 5.f)
 		{
-			//ResetLaser(0, 6, 19);
-			//ResetLaser(1, 18, 11);
+			ResetLaser(0, 6, 19);
+			ResetLaser(1, 18, 11);
 			LaserTimer = 0;
+			blocks_0 = 0;
+			blocks_1 = 0;
 		}
 		else if (LaserTimer >= 3.0f)
-		{
-			//LaserFire(0, 6, 19);
-			//LaserFire(1, 18, 11);
+		{	
+			if (LaserFireVertical(12, 19, blocks_0) == false)
+			{
+				LaserFireVertical(12, 19, blocks_0);
+				blocks_0--;
+			}
+			
+			if (LaserFireHorizontal(18, 20, blocks_1) == false)
+			{
+				LaserFireHorizontal(18, 20, blocks_1);
+				blocks_1--;
+			}
 		}
 	}
 
@@ -548,17 +553,48 @@ void CScene2D::Update(const double dElapsedTime)
 				break;
 			}
 		}
-	}
-
-	if (cMap2D->GetLevel() == 2)
-	{
-
-		for (int i = 0; i < enemyVector2.size(); i++)
+		if (LaserTimer >= 5.f)
 		{
-			delete enemyVector2[i];
-			enemyVector2[i] = NULL;
+			//ResetLaser(0, 6, 19);
+			//ResetLaser(1, 18, 11);
+			//Vertical
+			ResetLaser(0, 20, 13);
+			ResetLaser(0, 20, 16);
+			ResetLaser(0, 20, 19);
+			ResetLaser(0, 4, 13);
+			ResetLaser(0, 4, 16);
+			ResetLaser(0, 4, 19);
+			//Horizontal
+			ResetLaser(1, 20, 2);
+			ResetLaser(1, 16, 2);
+			ResetLaser(1, 12, 2);
+			ResetLaser(1, 8, 2);
+			LaserTimer = 0;
+			blocks_0 = 0;
+			blocks_1 = 0;
 		}
-		enemyVector2.clear();
+		else if (LaserTimer >= 3.0f)
+		{
+			if (LaserFireVertical(21, 13, blocks_0) == false)
+			{
+				LaserFireVertical(21, 13, blocks_0);
+				LaserFireVertical(21, 16, blocks_0);
+				LaserFireVertical(21, 19, blocks_0);
+				LaserFireVertical(5, 13, blocks_0);
+				LaserFireVertical(5, 16, blocks_0);
+				LaserFireVertical(5, 19, blocks_0);
+				blocks_0--;
+			}
+
+			if (LaserFireHorizontal(20, 2, blocks_1) == false)
+			{
+				LaserFireHorizontal(20, 2, blocks_1);
+				LaserFireHorizontal(16, 2, blocks_1);
+				LaserFireHorizontal(12, 2, blocks_1);
+				LaserFireHorizontal(8, 2, blocks_1);
+				blocks_1++;
+			}
+		}
 	}
 
 
