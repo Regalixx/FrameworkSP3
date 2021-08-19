@@ -453,7 +453,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_C))
 	{
 		clone = true;
-		//targetClone = true;
+		cSoundController->PlaySoundByID(16);
 	}
 	
 

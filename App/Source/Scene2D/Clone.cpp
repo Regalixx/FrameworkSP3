@@ -152,7 +152,7 @@ bool CClone::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	
 	bIsActive = true;
-	followPlayer = true;
+	
 	return true;
 }
 
