@@ -127,6 +127,7 @@ bool CPlayer2D::Init(void)
 
 	cooldownTimer = 0;
 	freezeDuration = 0;
+	cloneDuration = 0;
 	switchesActivated = 0;
 	fallTimer = 3;
 	
@@ -172,6 +173,7 @@ bool CPlayer2D::Init(void)
 	powerupActive = false;
 	TimeStop = false;
 	canUsepower = true;
+	canUseClone = true;
 	clone = false;
 
 	//CS: Create the animated sprite and setup the animation
@@ -211,7 +213,19 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	
 
-	
+	if (clone == true)
+	{
+		cloneDuration += dElapsedTime;
+		if (cloneDuration >= 5)
+		{
+			clone = false;
+			cloneDuration = 0;
+			canUseClone = true;
+		}
+	}
+
+
+
 	
 	
 	if (TimeStop == true)
@@ -455,10 +469,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
 
-		if (cInventoryItem->GetCount() > 0)
+		if (canUseClone == true && cInventoryItem->GetCount() > 0)
 		{
 			cSoundController->PlaySoundByID(11);
 			clone = true;
+			canUseClone = false;
 			cInventoryItem->Remove(1);
 
 		}
