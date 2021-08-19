@@ -23,6 +23,7 @@ CScene2D::CScene2D(void)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
 	, background(NULL)
+	, cClone(NULL)
 	
 {
 }
@@ -53,6 +54,13 @@ CScene2D::~CScene2D(void)
 		cPlayer2D = NULL;
 	}
 
+	if (cClone)
+	{
+		cClone->Destroy();
+		cClone = NULL;
+	}
+
+	
 	if (cGameManager)
 	{
 		cGameManager->Destroy();
@@ -96,6 +104,13 @@ CScene2D::~CScene2D(void)
 		enemyVector3[i] = NULL;
 	}
 	enemyVector3.clear();
+
+	for (int i = 0; i < cloneVector.size(); i++)
+	{
+		delete cloneVector[i];
+		cloneVector[i] = NULL;
+	}
+	cloneVector.clear();
 }
 
 void CScene2D::LaserFire(int dir, float row, float col)
@@ -257,6 +272,8 @@ bool CScene2D::Init(void)
 	
 	//Create and initialise the cPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
+	cClone = CClone::GetInstance();
+
 	//Pass  shader to cPlayer2D
 	cPlayer2D->SetShader("2DColorShader");
 	//Initialise the instance
@@ -267,19 +284,28 @@ bool CScene2D::Init(void)
 	}
 	
 
+	cClone->SetShader("2DColorShader");
+	//Initialise the instance
+	if (cClone->Init() == false)
+	{
+		cout << "Failed to load cClone" << endl;
+		return false;
+	}
+
 	enemyVector.clear();
 
 
 	while (cMap2D->GetLevel() == 0)
 	{
 		CEnemy2D* cEnemy2D = new CEnemy2D();
-		
+
 		//Pass shader to cEnemy2D
 		cEnemy2D->SetShader("2DColorShader");
 		//Initialise the instance
 		if (cEnemy2D->Init() == true)
 		{
 			cEnemy2D->SetPlayer2D(cPlayer2D);
+			cEnemy2D->SetClone2D(cClone);
 			enemyVector.push_back(cEnemy2D);
 		}
 		else
@@ -287,10 +313,10 @@ bool CScene2D::Init(void)
 			//Break out of this loop if the enemy has all been loaded
 		//	cEnemy2D = NULL;
 			break;
-		
-		}
-	}
 
+		}
+
+	}
 
 	// Setup the shaders
 	CShaderManager::GetInstance()->Add("textShader", "Shader//text.vs", "Shader//text.fs");
@@ -344,6 +370,9 @@ void CScene2D::Update(const double dElapsedTime)
 	//Call the cPlayer2D's update method
 	cPlayer2D->Update(dElapsedTime);
 
+	cClone->Update(dElapsedTime);
+
+
 	// Start the Dear ImGui frame
 
 	//Call all the cEnemy2D's update method before Map2D
@@ -361,6 +390,11 @@ void CScene2D::Update(const double dElapsedTime)
 	for (int i = 0; i < enemyVector3.size(); i++)
 	{
 		enemyVector3[i]->Update(dElapsedTime);
+	}
+
+	for (int i = 0; i < cloneVector.size(); i++)
+	{
+		cloneVector[i]->Update(dElapsedTime);
 	}
 
 	// Call the Map2D's update method
@@ -477,7 +511,9 @@ void CScene2D::Update(const double dElapsedTime)
 				//Break out of this loop if the enemy has all been loaded
 				break;
 			}
+	
 		}
+
 
 	}
 
@@ -568,6 +604,13 @@ void CScene2D::Update(const double dElapsedTime)
 		}
 		enemyVector3.clear();
 
+		for (int i = 0; i < cloneVector.size(); i++)
+		{
+			delete cloneVector[i];
+			cloneVector[i] = NULL;
+		}
+		cloneVector.clear();
+
 		cMap2D->SetLevel(0);
 		
 	}
@@ -603,6 +646,15 @@ void CScene2D::Render(void)
 
 	background->Render();
 	
+	for (int i = 0; i < cloneVector.size(); i++)
+	{
+		//Call the CEnemy2D's PreRender()
+		cloneVector[i]->PreRender();
+		// Call the CEnemy2D's Render()
+		cloneVector[i]->Render();
+		// Call the CEnemy2D's PostRender()
+		cloneVector[i]->PostRender();
+	}
 	if (cPlayer2D->TimeStop == false) {
 	
 
@@ -668,7 +720,14 @@ void CScene2D::Render(void)
 		//Call the CPlayer2D's PostRender()
 		cPlayer2D->PostRender();
 
+		cClone->PreRender();
+		//Call the cPlayer2D's Render()
+		cClone->Render();
+		//Call the CPlayer2D's PostRender()
+		cClone->PostRender();
+
 	}
+
 
 		if (cPlayer2D->TimeStop == true)
 		{
@@ -701,6 +760,12 @@ void CScene2D::Render(void)
 				// Call the CEnemy2D's PostRender()
 				enemyVector[i]->PostRender();
 			}
+
+			cClone->PreRender();
+			//Call the cPlayer2D's Render()
+			cClone->Render();
+			//Call the CPlayer2D's PostRender()
+			cClone->PostRender();
 
 			//Call the cPlayer2D's PreRender()
 			cPlayer2D->PreRender();

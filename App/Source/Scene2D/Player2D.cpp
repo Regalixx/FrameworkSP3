@@ -171,6 +171,7 @@ bool CPlayer2D::Init(void)
 	powerupActive = false;
 	TimeStop = false;
 	canUsepower = true;
+	clone = false;
 
 	//CS: Create the animated sprite and setup the animation
 	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
@@ -207,6 +208,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 	i32vec2OldIndex = i32vec2Index;
 
+	
+
+	
+	
+	
 	if (TimeStop == true)
 	{
 		freezeDuration += dElapsedTime;
@@ -320,6 +326,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		//CS: Play the "left" animation
 		animatedSprites->PlayAnimation("left", -1, 1.0f);
+		
 
 		//CS: Change Color
 		//playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
@@ -346,6 +353,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			i32vec2NumMicroSteps.x += 1;
 
+
 		}
 
 
@@ -369,6 +377,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		//CS: Play the "right" animation
 		animatedSprites->PlayAnimation("right", -1, 1.0f);
+	
 
 		//CS: Change Color
 		//playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
@@ -402,6 +411,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		//CS: Play the "idle" animation
 		animatedSprites->PlayAnimation("idle", -1, 1.0f);
+		
 
 		//CS: Change Color
 		//playerColour = glm::vec4(1.0, 0.0, 1.0, 0.5);
@@ -415,6 +425,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//Play a  sound for jump
 			cSoundController->PlaySoundByID(3);
 			animatedSprites->PlayAnimation("jump", -1, 1.0f);
+		
 
 			if (jumppoweractive == true)
 			{
@@ -438,6 +449,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//cooldownTimer += dElapsedTime
 	}
 
+
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_C))
+	{
+		clone = true;
+		//targetClone = true;
+	}
 	
 
 
