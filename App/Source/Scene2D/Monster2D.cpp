@@ -198,15 +198,12 @@ void Monster2D::Update(const double dElapsedTime)
 	}
 
 	
-
-
-
 	cInventoryItem = cInventoryManager->GetItem("Health");
 	if (playerPoisoned == true)
 	{
 		cInventoryItem->Remove(0.2);
 		poisonTimer += dElapsedTime;
-		cPlayer2D->playerColour = glm::vec4(1.0, 0.0, 1.0, 1.0);
+		cPlayer2D->playerColour = glm::vec4(0.0, 1.0, 1.0, 1.0);
 
 		if (poisonTimer >= 3)
 		{
@@ -914,7 +911,7 @@ void Monster2D::UpdatePosition(void)
 			i32vec2NumMicroSteps.x--;
 			if (i32vec2NumMicroSteps.x < 0)
 			{
-				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 0.5;
 				i32vec2Index.x--;
 			}
 		}

@@ -101,7 +101,7 @@ bool CMenuState::Init(void)
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_menu.ogg"), 14, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\buttonSound.ogg"), 15, true);
-	//cSoundController->PlaySoundByID(9);
+	
 
 	
 
@@ -143,14 +143,13 @@ bool CMenuState::Update(const double dElapsedTime)
 
 		//Added rounding for nicer effect
 		ImGuiStyle& style = ImGui::GetStyle();
-	//	cSoundController->PlaySoundByID(10);
 		style.FrameRounding = 50.0f;
 		
 		// Add codes for Start button here
 		if (ImGui::ImageButton((ImTextureID)startButtonData.textureID, 
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
-			
+			cSoundController->PlaySoundByID(15);
 			cSoundController->SetVolumeTo0();
 	
 			// Reset the CKeyboardController
@@ -166,6 +165,7 @@ bool CMenuState::Update(const double dElapsedTime)
 		if (ImGui::ImageButton((ImTextureID)ControlButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
+			cSoundController->PlaySoundByID(15);
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 
@@ -177,6 +177,7 @@ bool CMenuState::Update(const double dElapsedTime)
 		if (ImGui::ImageButton((ImTextureID)AboutButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
+			cSoundController->PlaySoundByID(15);
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 
@@ -188,6 +189,7 @@ bool CMenuState::Update(const double dElapsedTime)
 		if (ImGui::ImageButton((ImTextureID)CreditsButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
+			cSoundController->PlaySoundByID(15);
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 
@@ -213,6 +215,7 @@ bool CMenuState::Update(const double dElapsedTime)
 
 	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
 	{
+		cSoundController->PlaySoundByID(15);
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
 

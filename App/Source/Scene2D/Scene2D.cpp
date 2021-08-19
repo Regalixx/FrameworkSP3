@@ -343,6 +343,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_time.ogg"), 11, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.ogg"), 12, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemy1.ogg"), 13, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 16, true);
 	
 
 	//Create and initialise the CEnemy2D
@@ -768,8 +769,8 @@ void CScene2D::Render(void)
 		if (cPlayer2D->TimeStop == true)
 		{
 			
+			// Call the cGUI's PreRender()
 
-			
 			cMap2D->PreRender();
 			// Call the Map2D's Render()
 			cMap2D->Render();
@@ -777,14 +778,13 @@ void CScene2D::Render(void)
 			cMap2D->PostRender();
 			// Call the Map2D's PreRender()
 
-			// Call the cGUI's PreRender()
-
 			cGUI_Scene2D->PreRender();
 			// Call the cGUI's Render()
 			cGUI_Scene2D->Render();
 			// Call the cGUI's PostRender()
 			cGUI_Scene2D->PostRender();
 
+		
 		
 
 			for (int i = 0; i < enemyVector.size(); i++)

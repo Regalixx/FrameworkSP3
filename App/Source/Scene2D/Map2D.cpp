@@ -196,6 +196,11 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load horizontal laser texture" << std::endl;
 		return false;
 	}
+	if (LoadTexture("Image/clone_powerup.png", 18) == false)
+	{
+		std::cout << "Failed to load clone powerup texture" << std::endl;
+		return false;
+	}
 
 	// 100 - 199 : Collidable Objects
 	if (LoadTexture("Image/tile.tga", 100) == false) //Original: 1

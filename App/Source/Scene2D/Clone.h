@@ -82,7 +82,6 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
-	bool followPlayer;
 
 	//glm::i32vec2 i32vec2Index;
 	
