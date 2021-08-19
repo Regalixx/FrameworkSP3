@@ -452,7 +452,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 
-
+	if (IsMidAir() == true)
+	{
+		if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+		}
+	}
 		
 	
 	// Update Jump or Fall
@@ -759,7 +764,7 @@ bool CPlayer2D::IsMidAir(void)
 		return false;
 	//Check if the tile below the player's current position is empty
 	if ((i32vec2NumMicroSteps.x == 0) &&
-		(cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x) == 0))
+		(cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x) < 100))
 	{
 		return true;
 	}
@@ -771,7 +776,7 @@ bool CPlayer2D::IsLiftMoving(void)
 {
 	if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x) == 140)
 	{
-		if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) != 100)
+		if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) >= 100)
 		{
 			i32vec2Index.y++;
 			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 140); //replace air with lift block
@@ -1269,6 +1274,18 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
 		cInventoryItem->Add(1);
 		break;
+	case 16:
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		cInventoryItem->Remove(1);
+		playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+		break;
+	case 17:
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		cInventoryItem->Remove(1);
+		playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+		break;
+
+		/*
 	case 20:
 		// Decrease the health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
@@ -1289,6 +1306,7 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem->Remove(1);
 		playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
 		break;
+		*/
 	
 
 	default:

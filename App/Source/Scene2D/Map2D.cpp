@@ -166,8 +166,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
-
-
 	if (LoadTexture("Image/scifidoor2.tga", 13) == false)
 	{
 		std::cout << "Failed to load exit texture" << std::endl;
@@ -184,6 +182,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	if (LoadTexture("Image/time_powerup.png", 15) == false)
 	{
 		std::cout << "Failed to load liftswitch texture" << std::endl;
+		return false;
+	}
+
+	
+	if (LoadTexture("Image/LaserVerti.png", 16) == false)
+	{
+		std::cout << "Failed to load vertical laser texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/LaserHori.png", 17) == false)
+	{
+		std::cout << "Failed to load horizontal laser texture" << std::endl;
 		return false;
 	}
 
@@ -403,6 +413,28 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load platform tile texture" << std::endl;
 		return false;
 	}
+
+	if (LoadTexture("Image/LaserBaseUp.png", 143) == false)
+	{
+		std::cout << "Failed to load laserbaseup texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/LaserBaseDown.png", 144) == false)
+	{
+		std::cout << "Failed to load laserbasedown texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/LaserBaseRight.png", 145) == false)
+	{
+		std::cout << "Failed to load laserbaseleft texture" << std::endl;
+		return false;
+	}
+	if (LoadTexture("Image/LaserBaseLeft.png", 146) == false)
+	{
+		std::cout << "Failed to load laserbaseright texture" << std::endl;
+		return false;
+	}
+	
 
 	// Initialise the variables for AStar
 	m_weight = 1;

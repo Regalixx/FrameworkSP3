@@ -110,6 +110,7 @@ protected:
 	CGUI_Scene2D* cGUI_Scene2D;
 
 	float MapLevel;
+	float LaserTimer = 0;
 
 	bool enemyCleared = false;
 
@@ -127,6 +128,10 @@ protected:
 	CBackgroundEntity* background;
 	CBackgroundEntity* dimensionstate;
 	
-	
+	//Laser Beam pew pew
+	void LaserFire(int dir, float row, float col);
+
+	//Reset
+	void ResetLaser(int dir, float row, float col);
 };
 

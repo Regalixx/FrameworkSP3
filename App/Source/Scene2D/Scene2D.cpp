@@ -98,6 +98,71 @@ CScene2D::~CScene2D(void)
 	enemyVector3.clear();
 }
 
+void CScene2D::LaserFire(int dir, float row, float col)
+{
+	int i = 0;
+
+	while (true)
+	{
+		if (dir == 0)
+		{
+			if (cMap2D->GetMapInfo(row + i, col) != 0)
+			{
+				break;
+			}
+			else
+			{
+				cMap2D->SetMapInfo(row + i, col, 16);
+					
+			}
+		}
+		else if (dir == 1)
+		{
+			if (cMap2D->GetMapInfo(row, col + i) != 0)
+			{
+				break;
+			}
+			else
+			{
+				cMap2D->SetMapInfo(row, col + i, 17);
+			}
+		}
+		i++;
+	}
+}
+
+void CScene2D::ResetLaser(int dir, float row, float col)
+{
+	int i = 0;
+
+	while (true)
+	{
+		if (dir == 0)
+		{
+			if (cMap2D->GetMapInfo(row + i, col) == 18)
+			{
+				cMap2D->SetMapInfo(row + i, col, 0);
+			}
+			else
+			{
+				break;
+			}
+		}
+		else if (dir == 1)
+		{
+			if (cMap2D->GetMapInfo(row, col + i) == 21)
+			{
+				cMap2D->SetMapInfo(row, col + i, 0);
+			}
+			else
+			{
+				break;
+			}
+		}
+		i++;
+	}
+}
+
 /**
 @brief Init Initialise this instance
 */
@@ -129,7 +194,7 @@ bool CScene2D::Init(void)
 
 
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == false)
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test_Level.csv") == false) //Changed
 	{
 		// The loading of a map has failed. Return false
 		return false;
@@ -271,7 +336,11 @@ bool CScene2D::Init(void)
 */
 void CScene2D::Update(const double dElapsedTime)
 {
-	
+	if (cPlayer2D->TimeStop != true)
+	{
+		LaserTimer += dElapsedTime;
+	}
+
 	//Call the cPlayer2D's update method
 	cPlayer2D->Update(dElapsedTime);
 
@@ -363,6 +432,21 @@ void CScene2D::Update(const double dElapsedTime)
 		cGameManager->bPlayerWon = true;
 		cSoundController->PlaySoundByID(7);
 		std::cout << "game won" << std::endl;
+	}
+
+	if (cMap2D->GetLevel() == 0)
+	{
+		if (LaserTimer >= 5.f)
+		{
+			//ResetLaser(0, 6, 19);
+			//ResetLaser(1, 18, 11);
+			LaserTimer = 0;
+		}
+		else if (LaserTimer >= 3.0f)
+		{
+			//LaserFire(0, 6, 19);
+			//LaserFire(1, 18, 11);
+		}
 	}
 
 	if (cMap2D->GetLevel() == 1)
