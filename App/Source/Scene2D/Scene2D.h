@@ -58,7 +58,7 @@
 
 
 #include "../Scene2D/BackgroundEntity.h"
-
+#include "Clone.h"
 
 
 struct GUI
@@ -123,6 +123,7 @@ protected:
 	vector<CEntity2D*> enemyVector; //for type1 enemy
 	vector<CEntity2D*> enemyVector2; //for type2 enemy
 	vector<CEntity2D*> enemyVector3; //for type3 enemy
+	vector<CEntity2D*> cloneVector; //for type3 enemy
 
 	CBackgroundEntity* background;
 	CBackgroundEntity* dimensionstate;

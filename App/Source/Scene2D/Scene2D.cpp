@@ -96,6 +96,13 @@ CScene2D::~CScene2D(void)
 		enemyVector3[i] = NULL;
 	}
 	enemyVector3.clear();
+
+	for (int i = 0; i < cloneVector.size(); i++)
+	{
+		delete cloneVector[i];
+		cloneVector[i] = NULL;
+	}
+	cloneVector.clear();
 }
 
 /**
@@ -294,6 +301,11 @@ void CScene2D::Update(const double dElapsedTime)
 		enemyVector3[i]->Update(dElapsedTime);
 	}
 
+	for (int i = 0; i < cloneVector.size(); i++)
+	{
+		cloneVector[i]->Update(dElapsedTime);
+	}
+
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);
 
@@ -374,6 +386,12 @@ void CScene2D::Update(const double dElapsedTime)
 		}
 		enemyVector.clear();
 
+		for (int i = 0; i < cloneVector.size(); i++)
+		{
+			delete cloneVector[i];
+			cloneVector[i] = NULL;
+		}
+		cloneVector.clear();
 
 		while (cMap2D->GetLevel() == 1)
 		{
@@ -393,7 +411,25 @@ void CScene2D::Update(const double dElapsedTime)
 				//Break out of this loop if the enemy has all been loaded
 				break;
 			}
+
+			CClone* cClone = new CClone();
+
+			//Pass shader to cEnemy2D
+			cClone->SetShader("2DColorShader");
+			//Initialise the instance
+			if (cClone->Init() == true)
+			{
+				cout << "hello" << std::endl;
+				cClone->SetPlayer2D(cPlayer2D);
+				cloneVector.push_back(cClone);
+			}
+			else
+			{
+				//Break out of this loop if the enemy has all been loaded
+				break;
+			}
 		}
+
 
 	}
 
@@ -483,6 +519,13 @@ void CScene2D::Update(const double dElapsedTime)
 			enemyVector3[i] = NULL;
 		}
 		enemyVector3.clear();
+
+		for (int i = 0; i < cloneVector.size(); i++)
+		{
+			delete cloneVector[i];
+			cloneVector[i] = NULL;
+		}
+		cloneVector.clear();
 
 		cMap2D->SetLevel(0);
 		
@@ -584,6 +627,16 @@ void CScene2D::Render(void)
 		//Call the CPlayer2D's PostRender()
 		cPlayer2D->PostRender();
 
+	}
+
+	for (int i = 0; i < cloneVector.size(); i++)
+	{
+		//Call the CEnemy2D's PreRender()
+		cloneVector[i]->PreRender();
+		// Call the CEnemy2D's Render()
+		cloneVector[i]->Render();
+		// Call the CEnemy2D's PostRender()
+		cloneVector[i]->PostRender();
 	}
 
 		if (cPlayer2D->TimeStop == true)
