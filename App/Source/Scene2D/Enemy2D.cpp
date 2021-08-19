@@ -275,7 +275,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 
 	//Update Jump or Fall
-	UpdateJumpFall(dElapsedTime);
+	//UpdateJumpFall(dElapsedTime);
 
 	animatedSprites->Update(dElapsedTime);
 

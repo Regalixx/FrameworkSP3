@@ -191,6 +191,8 @@ bool Application::Init(void)
 		return false;
 	}
 
+
+	
 	// Set OpenGL window position
 	glfwSetWindowPos(cSettings->pWindow, cSettings->iWindowPosX, cSettings->iWindowPosY);
 
@@ -327,7 +329,9 @@ void Application::Run(void)
 
 		// Frame rate limiter. Limits each frame to a specified time in ms by sleeping.
 		// Comment out these 2 lines if you do not want FPS limitation
-		dDelayTime = cSettings->frameTime - dElapsedTime * 1000;
+		
+		
+		dDelayTime = cSettings->frameTime - dElapsedTime * 500; //initlally 1000
 		cStopWatch.WaitUntil((const long long)dDelayTime);
 
 		// Update the FPS Counter
