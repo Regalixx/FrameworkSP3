@@ -181,7 +181,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 	if (LoadTexture("Image/time_powerup.png", 15) == false)
 	{
-		std::cout << "Failed to load liftswitch texture" << std::endl;
+		std::cout << "Failed to load time powerup texture" << std::endl;
 		return false;
 	}
 
