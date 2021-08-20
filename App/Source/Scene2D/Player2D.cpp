@@ -187,10 +187,7 @@ bool CPlayer2D::Init(void)
 	canUsepower = true;
 	canUseClone = true;
 	clone = false;
-	pitfallReset = false;
-
-	playerSprinting = false;
-
+	
 
 
 	//CS: Create the animated sprite and setup the animation
@@ -212,6 +209,8 @@ bool CPlayer2D::Init(void)
 
 	powerupActive = false;
 	speedboost = false;
+	pitfallReset = false;
+
 
 	//Set the physics to fall status by default
 	cPhysics2D.Init();
@@ -226,8 +225,33 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 	i32vec2OldIndex = i32vec2Index;
 
+
+
+	if (i32vec2Index.y <= 1) //&& (cInventoryItem->GetCount() > 0))
+	{
+
+		pitfallReset = true;
+		std::cout << "hello" << std::endl;
+	}
+
+	if (pitfallReset == true)
+	{
+		CGameManager::GetInstance()->bGameToRestart = true;
+		cInventoryItem = cInventoryManager->GetItem("Lives");
+		cInventoryItem->Remove(1);
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
+		cSoundController->PlaySoundByID(9);
+		cout << "restarted" << endl;
+		i32vec2Index.x = 0;
+		i32vec2Index.y = 19;
+		
+		
+	}
+
 	
 
+	
 	if (clone == true)
 	{
 		cloneDuration += dElapsedTime;
@@ -239,9 +263,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-
-
-	
 	
 	if (TimeStop == true)
 	{
@@ -522,7 +543,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		if (canUseClone == true && cInventoryItem->GetCount() > 0)
 		{
-			cSoundController->PlaySoundByID(14);
+			cSoundController->PlaySoundByID(16);
 			clone = true;
 			canUseClone = false;
 			cInventoryItem->Remove(1);
@@ -556,6 +577,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Update Jump or Fall
 	//CS: Will cause error when debugging. Set to default elapsed time
 	UpdateJumpFall(dElapsedTime);
+
 
 	// Interact with the Map
 	InteractWithMap();
@@ -730,6 +752,7 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 		{
 			i32vec2Index.y = 0;
 			i32vec2NumMicroSteps.y = 0;
+		
 		}
 	}
 	else
@@ -1111,16 +1134,17 @@ bool CPlayer2D::ResetMap()
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
 	// Set the start position of the Player to iRow and iCol
+//	i32vec2Index = glm::i32vec2(uiCol, uiRow);
 
 	if (cClone->canRespawnToClone == true) {
-	//	std::cout << "hello" << std::endl;
-		cSoundController->PlaySoundByID(15);
+		//	std::cout << "hello" << std::endl;
 		i32vec2Index = cClone->i32vec2RespawnIndex;
-		
 	}
 
-	else if (cClone->canRespawnToClone == false) {
+	else if (clone == false) {
 		i32vec2Index = glm::i32vec2(uiCol, uiRow);
+		//std::cout << i32vec2Index.x << std::endl;
+		std::cout << i32vec2Index.y << std::endl;
 	}
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
@@ -1460,31 +1484,8 @@ void CPlayer2D::InteractWithMap(void)
 
 void CPlayer2D::UpdateHealthLives(void)
 {
+
 	//Update health and lives
-	/*if (pitfallReset == true)
-	{
-		CGameManager::GetInstance()->bGameToRestart = true;
-		cInventoryItem = cInventoryManager->GetItem("Lives");
-		cInventoryItem->Remove(1);
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
-		cSoundController->PlaySoundByID(9);
-		cout << "restarted" << endl;
-		pitfallReset = false;
-	}*/
-	cInventoryItem = cInventoryManager->GetItem("Lives");
-	if (i32vec2Index.y == 1) //&& (cInventoryItem->GetCount() > 0))
-	{
-		ResetMap();
-		//pitfallReset = true;
-		//CGameManager::GetInstance()->bGameToRestart = true;
-		////But we  redeuce the lives by 1.
-		//cInventoryItem->Remove(1);
-		//cInventoryItem = cInventoryManager->GetItem("Health");
-		//cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
-		//cSoundController->PlaySoundByID(9);
-		//cout << "restarted"<<endl;
-	}
 	cInventoryItem = cInventoryManager->GetItem("Health");
 	//Check if a life is lost
 	if (cInventoryItem->GetCount() <= 0)
@@ -1496,7 +1497,7 @@ void CPlayer2D::UpdateHealthLives(void)
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
 		cSoundController->PlaySoundByID(9);
-	
+
 		//Check if there is no lives left..
 		if (cInventoryItem->GetCount() <= 0)
 		{
@@ -1505,12 +1506,12 @@ void CPlayer2D::UpdateHealthLives(void)
 			cSoundController->PlaySoundByID(2);
 
 			cInventoryItem = cInventoryManager->GetItem("Tree");
-				cInventoryItem->Remove(5);
+			cInventoryItem->Remove(5);
 
 			powerupActive = false;
 			jumppoweractive = false;
 			speedboost = false;
-			
+
 			/*if (cMap2D->GetLevel() == 0) {
 
 				ResetMap();
@@ -1522,9 +1523,6 @@ void CPlayer2D::UpdateHealthLives(void)
 
 		}
 	}
-	//if player exits map by pitfall
-
-
 
 	
 }

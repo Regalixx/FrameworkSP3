@@ -439,6 +439,11 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load laserbaseright texture" << std::endl;
 		return false;
 	}
+	if (LoadTexture("Image/respawnPortal.png", 147) == false)
+	{
+		std::cout << "Failed to load respawnPortal" << std::endl;
+		return false;
+	}
 	
 
 	// Initialise the variables for AStar

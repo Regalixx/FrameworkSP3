@@ -92,6 +92,8 @@ public:
 	bool canUseClone;
 
 	bool targetClone;
+
+	bool pitfallReset;
 	
 	
 
@@ -151,7 +153,7 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
-	bool pitfallReset;
+	
 	bool playerSprinting;
 	
 
