@@ -31,6 +31,8 @@
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
 
+class CClone;
+
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
 
@@ -41,6 +43,8 @@ class CMap2D;
 
 //Include InventoryManager
 #include "InventoryManager.h"
+
+
 
 
 #include "InventoryItem.h"
@@ -108,6 +112,8 @@ protected:
 	CMap2D* cMap2D;
 	CMap2D* cMap2D2;
 
+	CClone* cClone;
+
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 
@@ -118,6 +124,7 @@ protected:
 	CSpriteAnimation* animatedSprites;
 
 	//Player's color
+
 
 	//Physics
 	CPhysics2D cPhysics2D;
@@ -130,6 +137,9 @@ protected:
 
 	CGameManager* cGameManager;
 
+	
+	
+
 
 	//Handler to the CSoundController
 	CSoundController* cSoundController;
@@ -140,6 +150,7 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
+	
 	
 
 	float cooldownTimer;

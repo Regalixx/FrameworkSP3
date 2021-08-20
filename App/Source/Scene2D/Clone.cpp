@@ -129,8 +129,11 @@ bool CClone::Init(void)
 	cInventoryManager = CInventoryManager::GetInstance();
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	//Enemy has no idle animation at the moment
-	//For some reason they are doing the opposite direction animation
+
+	
+	respawnToClone = false;
+	canRespawnToClone = false;
+
 	animatedSprites->AddAnimation("idle", 0, 5);
 	animatedSprites->AddAnimation("right", 6, 11);
 	animatedSprites->AddAnimation("left", 12, 17);
@@ -166,8 +169,14 @@ void CClone::Update(const double dElapsedTime)
 	{
 	
 		i32vec2OldIndex = i32vec2Index;
+		canRespawnToClone = true;
 		
 
+	}
+
+	if (canRespawnToClone == true)
+	{
+		i32vec2RespawnIndex = i32vec2OldIndex;
 	}
 	if (cPlayer2D->clone == false && cPlayer2D->canUseClone == true)
 	{
@@ -175,7 +184,8 @@ void CClone::Update(const double dElapsedTime)
 		i32vec2Index = cPlayer2D->i32vec2Index; // follow the player
 	}
 
-	if (i32vec2Index.x >= 0)
+	
+	if (i32vec2NumMicroSteps.x < 0)
 	{
 		animatedSprites->PlayAnimation("left", -1, 1.0f);
 	}
