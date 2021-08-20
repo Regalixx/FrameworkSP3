@@ -217,6 +217,11 @@ bool CScene2D::Init(void)
 		// The loading of a map has failed. Return false
 		return false;
 	}
+	if (cMap2D->LoadMap("Maps/sprintLevel.csv", 3) == false)
+	{
+		// The loading of a map has failed. Return false
+		return false;
+	}
 
 	//Level 2
 
@@ -756,6 +761,11 @@ void CScene2D::Render(void)
 		// Call the cGUI's PostRender()
 		cGUI_Scene2D->PostRender();
 
+		cClone->PreRender();
+		//Call the cPlayer2D's Render()
+		cClone->Render();
+		//Call the CPlayer2D's PostRender()
+		cClone->PostRender();
 
 
 		//Call the cPlayer2D's PreRender()
@@ -765,11 +775,7 @@ void CScene2D::Render(void)
 		//Call the CPlayer2D's PostRender()
 		cPlayer2D->PostRender();
 
-		cClone->PreRender();
-		//Call the cPlayer2D's Render()
-		cClone->Render();
-		//Call the CPlayer2D's PostRender()
-		cClone->PostRender();
+		
 
 	}
 

@@ -114,6 +114,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	
 
 
+
+
 	
 
 	//Render The Health
@@ -135,6 +137,32 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	//ImGui::SameLine();
 	
 
+
+	ImGui::End();
+
+
+	ImGuiWindowFlags staminaWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+
+	ImGui::Begin("Stamina", NULL, staminaWindowFlags);
+	ImGui::SetWindowPos(ImVec2(700.0f, 25.0f));
+	ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
+	cInventoryItem = cInventoryManager->GetItem("Stamina");
+	ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+		ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
+		ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::SameLine();
+	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 1.0f, 1.0f, 1.0f));
+	ImGui::ProgressBar(cInventoryItem->GetCount() /
+		(float)cInventoryItem->GetMaxCount(), ImVec2(200.0f, 20.0f));
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
 
 	ImGui::End();
 
