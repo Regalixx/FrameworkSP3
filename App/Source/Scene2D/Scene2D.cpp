@@ -453,6 +453,9 @@ void CScene2D::Update(const double dElapsedTime)
 	if (cGameManager->bLevelCompleted == true)
 	{
 		cMap2D->SetLevel(cMap2D->GetLevel() + 1);
+		cClone->canRespawnToClone = false;
+		cPlayer2D->clone = false;
+		cPlayer2D->canUseClone = true;
 		cGameManager->bLevelCompleted = false;
 	}
 
