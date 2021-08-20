@@ -202,7 +202,7 @@ bool CScene2D::Init(void)
 
 
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_BigTest.csv") == false)
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == false)
 	{
 		// The loading of a map has failed. Return false
 		return false;
@@ -463,7 +463,7 @@ void CScene2D::Update(const double dElapsedTime)
 		//std::cout << "game won" << std::endl;
 	}
 
-	if (cMap2D->GetLevel() == 0)
+	/*if (cMap2D->GetLevel() == 0)
 	{
 		if (LaserTimer >= 5.f)
 		{
@@ -487,7 +487,7 @@ void CScene2D::Update(const double dElapsedTime)
 				blocks_1--;
 			}
 		}
-	}
+	}*/
 
 	if (cMap2D->GetLevel() == 1)
 	{

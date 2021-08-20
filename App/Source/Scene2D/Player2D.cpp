@@ -21,6 +21,7 @@ using namespace std;
 #include "Primitives/MeshBuilder.h"
 
 #include "Monster2D.h"
+#include "Scene2D.h"
 
 
 /**
@@ -30,6 +31,7 @@ CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
 	, animatedSprites(NULL)
+	//, cClone(NULL)
 	, playerColour(glm::vec4(1.0f))
 	, cSoundController(NULL)
 {
@@ -63,6 +65,10 @@ CPlayer2D::~CPlayer2D(void)
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
+
+	// We won't delete this since it was created elsewhere
+	//cClone = NULL;
+
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -91,9 +97,12 @@ bool CPlayer2D::Init(void)
 
 	cGameManager = CGameManager::GetInstance();
 
+	//cClone = CClone::GetInstance();
 
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
+
+	cClone = CClone::GetInstance();
 
 	cSoundController = CSoundController::GetInstance();
 
@@ -175,6 +184,7 @@ bool CPlayer2D::Init(void)
 	canUsepower = true;
 	canUseClone = true;
 	clone = false;
+	
 
 	//CS: Create the animated sprite and setup the animation
 	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
@@ -199,8 +209,6 @@ bool CPlayer2D::Init(void)
 	//Set the physics to fall status by default
 	cPhysics2D.Init();
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-
-	
 }
 
 /**
@@ -1044,7 +1052,15 @@ bool CPlayer2D::ResetMap()
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
 	// Set the start position of the Player to iRow and iCol
-	i32vec2Index = glm::i32vec2(uiCol, uiRow);
+
+	if (cClone->canRespawnToClone == true) {
+	//	std::cout << "hello" << std::endl;
+		i32vec2Index = cClone->i32vec2RespawnIndex;
+	}
+
+	else if (cClone->canRespawnToClone == false) {
+		i32vec2Index = glm::i32vec2(uiCol, uiRow);
+	}
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 

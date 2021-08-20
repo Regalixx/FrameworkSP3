@@ -219,7 +219,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f))
 		{
 		
-			std::cout << "test" << std::endl;
+			//std::cout << "test" << std::endl;
 				// Attack
 				// Calculate a path to the player
 				//cMap2D->PrintSelf();
@@ -258,7 +258,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f))
 		{
 
-			std::cout << "test" << std::endl;
+			//std::cout << "test" << std::endl;
 			// Attack
 			// Calculate a path to the player
 			//cMap2D->PrintSelf();

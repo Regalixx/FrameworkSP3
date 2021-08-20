@@ -82,6 +82,10 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	glm::i32vec2 i32vec2RespawnIndex;
+
+	bool canRespawnToClone;
+	bool respawnToClone;
 
 	//glm::i32vec2 i32vec2Index;
 	
@@ -106,6 +110,8 @@ protected:
 
 
 	glm::i32vec2 i32vec2OldIndex;
+
+	
 
 
 	CSpriteAnimation* animatedSprites;
