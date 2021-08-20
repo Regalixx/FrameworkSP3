@@ -427,7 +427,7 @@ void CEnemy2D::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int
 }
 
 /**
- @brief Set the handle to cPlayer to this class instance
+ @brief Set the handle to cPlayer to this class instancef
  @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
  */
 void CEnemy2D::SetPlayer2D(CPlayer2D* cPlayer2D)

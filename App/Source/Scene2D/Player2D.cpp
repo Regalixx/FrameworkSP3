@@ -479,7 +479,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		if (canUseClone == true && cInventoryItem->GetCount() > 0)
 		{
-			cSoundController->PlaySoundByID(11);
+			cSoundController->PlaySoundByID(14);
 			clone = true;
 			canUseClone = false;
 			cInventoryItem->Remove(1);
@@ -1055,7 +1055,9 @@ bool CPlayer2D::ResetMap()
 
 	if (cClone->canRespawnToClone == true) {
 	//	std::cout << "hello" << std::endl;
+		//cSoundController->PlaySoundByID(15);
 		i32vec2Index = cClone->i32vec2RespawnIndex;
+		
 	}
 
 	else if (cClone->canRespawnToClone == false) {

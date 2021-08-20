@@ -35,6 +35,7 @@ using namespace std;
 Monster2D::Monster2D(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
+	, cClone(NULL)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
 	, sCurrentFSM(FSM::IDLE)
@@ -65,6 +66,9 @@ Monster2D::~Monster2D(void)
 
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
+
+	// We won't delete this since it was created elsewhere
+	cClone = NULL;
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
@@ -176,8 +180,6 @@ void Monster2D::Update(const double dElapsedTime)
 		cPlayer2D->i32vec2Index = cPlayer2D->i32vec2OldIndex;
 		if (stunTimer >= 2)
 		{
-
-			
 			StunPlayer = false;
 			stunTimer = 0; //player is no longer stunned
 			canStunPlayer = false;
@@ -231,7 +233,12 @@ void Monster2D::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			cout << "Switching to Idle State" << endl;
 		}
-		else if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
+		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
+		{
+			sCurrentFSM = FREEZE;
+			iFSMCounter = 0;
+		}
+		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 3.0f)
 		{
 			sCurrentFSM = FREEZE;
 			iFSMCounter = 0;
@@ -250,12 +257,47 @@ void Monster2D::Update(const double dElapsedTime)
 	case POISON:
 
 		stateColour = glm::vec4(0.0, 1.0, 1.0, 1.0);
-		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
+		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
 		{
 			
-
+			bool bFirstPosition = true;
 			auto path = cMap2D->PathFind(i32vec2Index,
 				cPlayer2D->i32vec2Index,
+				heuristic::euclidean,
+				10);
+
+			//cout << "===Printing out the path ===" << endl;
+
+		
+			for (const auto& coord : path)
+			{
+				//std::cout << coord.x << "," << coord.y << "\n";
+				if (bFirstPosition == true)
+				{
+					//Set a destination
+					i32vec2Destination = coord;
+					//Calculate the direction between enemy2D and this destiination
+					i32vec2Direction = i32vec2Destination - i32vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - i32vec2Destination) == i32vec2Direction)
+					{
+						//Set a destination
+						i32vec2Destination = coord;
+					}
+					else
+						break;
+				}
+			}
+		}
+		if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 3.0f)
+		{
+
+
+			auto path = cMap2D->PathFind(i32vec2Index,
+				cClone->i32vec2Index,
 				heuristic::euclidean,
 				10);
 
@@ -306,7 +348,7 @@ void Monster2D::Update(const double dElapsedTime)
 
 	case FREEZE:
 		stateColour = glm::vec4(1.0, 0.5, 0.0, 1.0);
-		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
+		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
 			// Attack
 			// Calculate a path to the player
@@ -344,6 +386,45 @@ void Monster2D::Update(const double dElapsedTime)
 						break;
 				}
 			}
+		}
+			if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
+			{
+				// Attack
+				// Calculate a path to the player
+				//cMap2D->PrintSelf();
+				//cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
+				//cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "
+					//<< cPlayer2D->i32vec2Index.y << endl;
+				auto path = cMap2D->PathFind(i32vec2Index,
+					cClone->i32vec2Index,
+					heuristic::euclidean,
+					10);
+
+				//cout << "===Printing out the path ===" << endl;
+
+				bool bFirstPosition = true;
+				for (const auto& coord : path)
+				{
+					//std::cout << coord.x << "," << coord.y << "\n";
+					if (bFirstPosition == true)
+					{
+						//Set a destination
+						i32vec2Destination = coord;
+						//Calculate the direction between enemy2D and this destiination
+						i32vec2Direction = i32vec2Destination - i32vec2Index;
+						bFirstPosition = false;
+					}
+					else
+					{
+						if ((coord - i32vec2Destination) == i32vec2Direction)
+						{
+							//Set a destination
+							i32vec2Destination = coord;
+						}
+						else
+							break;
+					}
+				}
 			//cout << "i32vec2Destination :" << i32vec2Destination.x << "," << i32vec2Destination.y << endl;
 		    //cout << "i32vec2Direction :" << i32vec2Direction.x << ", " << i32vec2Direction.y << endl;
 			//system("pause");
@@ -482,6 +563,14 @@ void Monster2D::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const in
 void Monster2D::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
+
+	// Update the enemy's direction
+	UpdateDirection();
+}
+
+void Monster2D::SetClone2D(CClone* cClone)
+{
+	this->cClone = cClone;
 
 	// Update the enemy's direction
 	UpdateDirection();

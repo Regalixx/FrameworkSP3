@@ -30,6 +30,8 @@ class CMap2D;
 
 #include "Enemy2D.h"
 
+#include "Clone.h"
+
 #include "InventoryItem.h"
 
 #include "InventoryManager.h"
@@ -78,6 +80,8 @@ public:
 
 	// Set the handle to cPlayer to this class instance
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
+
+	void SetClone2D(CClone* cClone);
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
@@ -151,6 +155,10 @@ protected:
 
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
+
+	
+	//Handle to the Clone
+	CClone* cClone;
 
 	// Current FSM
 	FSM sCurrentFSM;

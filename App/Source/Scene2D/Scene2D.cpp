@@ -343,7 +343,8 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_time.ogg"), 11, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.ogg"), 12, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemy1.ogg"), 13, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 16, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 14, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 15, true);
 	
 
 	//Create and initialise the CEnemy2D
@@ -445,7 +446,6 @@ void CScene2D::Update(const double dElapsedTime)
 			//cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false;
 		}
 		cPlayer2D->ResetMap();
-		cSoundController->PlaySoundByID(2);
 		cGameManager->bGameToRestart = false;
 	}
 
@@ -501,16 +501,17 @@ void CScene2D::Update(const double dElapsedTime)
 
 		while (cMap2D->GetLevel() == 1)
 		{
-			Monster2D* cEnemy2D = new Monster2D();
+			Monster2D* cMonster2D = new Monster2D();
 
 			//Pass shader to cEnemy2D
-			cEnemy2D->SetShader("2DColorShader");
+			cMonster2D->SetShader("2DColorShader");
 			//Initialise the instance
-			if (cEnemy2D->Init() == true)
+			if (cMonster2D->Init() == true)
 			{
 				//cout << "hello" << std::endl;
-				cEnemy2D->SetPlayer2D(cPlayer2D);
-				enemyVector2.push_back(cEnemy2D);
+				cMonster2D->SetPlayer2D(cPlayer2D);
+				cMonster2D->SetClone2D(cClone);
+				enemyVector2.push_back(cMonster2D);
 			}
 			else
 			{

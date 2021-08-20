@@ -84,7 +84,7 @@ public:
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
 
 	// Set the handle to cClone to this class instance
-	void CEnemy2D::SetClone2D(CClone* cClone);
+	void SetClone2D(CClone* cClone);
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
