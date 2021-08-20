@@ -49,6 +49,8 @@ void CMouseController::UpdateMousePosition(const double _x, const double _y)
 	// Update the position delta
 	delta_posX = curr_posX - prev_posX;
 	delta_posY = prev_posY - curr_posY;
+
+	
 }
 
 /**

@@ -151,8 +151,8 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
+	bool pitfallReset;
 	bool playerSprinting;
-	
 	
 
 	float cooldownTimer;
@@ -185,7 +185,9 @@ protected:
 	bool IsMidAir(void);
 
 	//move lift
-	bool IsLiftMoving(void);
+	//bool IsLiftMoving(void);
+	double liftTimer; //delay timer before lift moves
+	void IsLiftMoving(double dt);
 	bool IsLiftSwitchStepped(void);
 
 	//for timestop dimension

@@ -6,13 +6,11 @@
  By: Toh Da Jun
  Date: July 2021
  */
-
 #include "GameStateBase.h"
 
 #include "Primitives/Mesh.h"
 #include "../Scene2D/BackgroundEntity.h"
 #include "../Scene2D/GameManager.h"
-
 #include <string>
 
  // Include IMGUI
@@ -55,6 +53,7 @@ protected:
 	ButtonData ControlButtonData;
 	ButtonData AboutButtonData;
 	ButtonData CreditsButtonData;
+	ButtonData Arrow;
 	CGameManager* cGameManager;
 	CSoundInfo* soundController;
 	CSoundController* cSoundController;

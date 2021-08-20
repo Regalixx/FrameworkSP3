@@ -83,7 +83,6 @@ bool CMenuState::Init(void)
 	ImGui_ImplGlfw_InitForOpenGL(CSettings::GetInstance()->pWindow, true);
 	const char* glsl_version = "#version 330";
 	ImGui_ImplOpenGL3_Init(glsl_version);
-
 	// Load the images for buttons
 	CImageLoader* il = CImageLoader::GetInstance();
 	startButtonData.fileName = "Image\\GUI\\PlayButton.png";
@@ -96,13 +95,11 @@ bool CMenuState::Init(void)
 	AboutButtonData.textureID = il->LoadTextureGetID(AboutButtonData.fileName.c_str(), false);
 	CreditsButtonData.fileName = "Image\\GUI\\CreditsButton.png";
 	CreditsButtonData.textureID = il->LoadTextureGetID(CreditsButtonData.fileName.c_str(), false);
-
 	cSoundController = CSoundController::GetInstance();
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_menu.ogg"), 14, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\buttonSound.ogg"), 15, true);
 	
-
 	
 
 	return true;
@@ -117,7 +114,6 @@ bool CMenuState::Update(const double dElapsedTime)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -159,7 +155,6 @@ bool CMenuState::Update(const double dElapsedTime)
 		//	cout << "Loading PlayGameState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 		}
-		// Add codes for Exit button here
 		
 
 		if (ImGui::ImageButton((ImTextureID)ControlButtonData.textureID,
@@ -211,6 +206,8 @@ bool CMenuState::Update(const double dElapsedTime)
 		}
 		ImGui::End();
 
+
+		
 	}
 
 	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))

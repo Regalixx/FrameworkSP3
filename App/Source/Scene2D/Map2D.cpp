@@ -403,7 +403,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load drightFull texture" << std::endl;
 		return false;
 	}
-	if (LoadTexture("Image/Scene2D_liftU.png", 140) == false)
+	if (LoadTexture("Image/platform.png", 140) == false)
 	{
 		std::cout << "Failed to load up lift texture" << std::endl;
 		return false;

@@ -141,6 +141,7 @@ bool CPlayer2D::Init(void)
 	cloneDuration = 0;
 	switchesActivated = 0;
 	fallTimer = 3;
+	liftTimer = 2;
 	
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
@@ -186,6 +187,8 @@ bool CPlayer2D::Init(void)
 	canUsepower = true;
 	canUseClone = true;
 	clone = false;
+	pitfallReset = false;
+
 	playerSprinting = false;
 
 
@@ -565,7 +568,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	IsPlaformStepped(dElapsedTime);
 
 	//lift controls
-	IsLiftMoving();
+	IsLiftMoving(dElapsedTime);
 	IsLiftSwitchStepped();
 
 	//CS: Update the animated sprite
@@ -868,15 +871,23 @@ bool CPlayer2D::IsMidAir(void)
 	return false;
 }
 
-bool CPlayer2D::IsLiftMoving(void)
+void CPlayer2D::IsLiftMoving(double dt)
 {
 	if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x) == 140)
 	{
+		liftTimer -= dt; //countdown timer
 		if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) >= 100)
 		{
-			i32vec2Index.y++;
-			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 140); //replace air with lift block
-			cMap2D->SetMapInfo(i32vec2Index.y - 2, i32vec2Index.x, 0); //delete prev block
+			if (liftTimer <= 1)
+			{
+				i32vec2Index.y++;
+				cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 140); //replace air with lift block
+				cMap2D->SetMapInfo(i32vec2Index.y - 2, i32vec2Index.x, 0); //delete prev block
+			}
+			if (liftTimer <= 0)
+			{
+				liftTimer = 2;
+			}
 		}
 		else
 		{
@@ -884,7 +895,7 @@ bool CPlayer2D::IsLiftMoving(void)
 			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 100);
 		}
 	}
-	return false;
+	//return false;
 }
 
 bool CPlayer2D::IsLiftSwitchStepped(void)
@@ -1450,6 +1461,30 @@ void CPlayer2D::InteractWithMap(void)
 void CPlayer2D::UpdateHealthLives(void)
 {
 	//Update health and lives
+	/*if (pitfallReset == true)
+	{
+		CGameManager::GetInstance()->bGameToRestart = true;
+		cInventoryItem = cInventoryManager->GetItem("Lives");
+		cInventoryItem->Remove(1);
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
+		cSoundController->PlaySoundByID(9);
+		cout << "restarted" << endl;
+		pitfallReset = false;
+	}*/
+	cInventoryItem = cInventoryManager->GetItem("Lives");
+	if (i32vec2Index.y == 1) //&& (cInventoryItem->GetCount() > 0))
+	{
+		ResetMap();
+		//pitfallReset = true;
+		//CGameManager::GetInstance()->bGameToRestart = true;
+		////But we  redeuce the lives by 1.
+		//cInventoryItem->Remove(1);
+		//cInventoryItem = cInventoryManager->GetItem("Health");
+		//cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
+		//cSoundController->PlaySoundByID(9);
+		//cout << "restarted"<<endl;
+	}
 	cInventoryItem = cInventoryManager->GetItem("Health");
 	//Check if a life is lost
 	if (cInventoryItem->GetCount() <= 0)
@@ -1475,7 +1510,7 @@ void CPlayer2D::UpdateHealthLives(void)
 			powerupActive = false;
 			jumppoweractive = false;
 			speedboost = false;
-
+			
 			/*if (cMap2D->GetLevel() == 0) {
 
 				ResetMap();
@@ -1487,4 +1522,9 @@ void CPlayer2D::UpdateHealthLives(void)
 
 		}
 	}
+	//if player exits map by pitfall
+
+
+
+	
 }
