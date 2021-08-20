@@ -115,7 +115,7 @@ bool CPlayer2D::Init(void)
 	//cInventoryItem->Add(3);
 
 	//Add a Health icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Health", "Image/healthbar.png", 100, 100);
+	cInventoryItem = cInventoryManager->Add("Health", "Image/healthicon.png", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 	cInventoryItem = cInventoryManager->Add("Stamina", "Image/stamina.png", 100, 100);
@@ -186,7 +186,9 @@ bool CPlayer2D::Init(void)
 	canUsepower = true;
 	canUseClone = true;
 	clone = false;
-	
+	playerSprinting = false;
+
+
 
 	//CS: Create the animated sprite and setup the animation
 	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
@@ -262,49 +264,19 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	}
 
-	if (speedboost == true)
-		{
-			static float lastcooldownTime = 0;
-			lastcooldownTime += dElapsedTime;
-			playerColour = glm::vec4(0, 0, 1.0, 1.0);
+	
+	playerSprinting = false;
 
-			if (lastcooldownTime >= 3)
-			{
 
-				speedboost = false;
-				lastcooldownTime = 0;
-			}
-		}
-
-	if (powerupActive == true)
+	cInventoryItem = cInventoryManager->GetItem("Stamina");
+	if (!playerSprinting)
 	{
-		static float lastInvisibleTime = 0;
-		lastInvisibleTime += dElapsedTime;
-		playerColour = glm::vec4(0, 1.0, 0, 1.0);
-
-		if (lastInvisibleTime >= 6)
-		{
-			powerupActive = false;
-			lastInvisibleTime = 0;
-		}
+		cInventoryItem->Add(0.1);
 	}
 
-	if (jumppoweractive == true)
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_LEFT) && cInventoryItem->GetCount() > 0)
 	{
-		static float lastJumpTime = 0;
-		lastJumpTime += dElapsedTime;
-		playerColour = glm::vec4(1.0, 1.0, 0, 1.0);
-
-		if (lastJumpTime >= 7)
-		{
-			jumppoweractive = false;
-			lastJumpTime = 0;
-		}
-	}
-
-
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_LEFT))
-	{
+		playerSprinting = true;
 		cInventoryItem = cInventoryManager->GetItem("Stamina");
 		cInventoryItem->Remove(1);
 
@@ -320,7 +292,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		Constraint(LEFT);
 
-
+		
+		
 		if (CheckPosition(LEFT) == false)
 		{
 
@@ -383,8 +356,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT))
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT) && cInventoryItem->GetCount() > 0)
 	{
+		playerSprinting = true;
 		cInventoryItem = cInventoryManager->GetItem("Stamina");
 		cInventoryItem->Remove(1);
 
@@ -597,10 +571,16 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//CS: Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
 
-	cInventoryItem = cInventoryManager->GetItem("Health");
+	//cInventoryItem = cInventoryManager->GetItem("Health");
 	/*if (cGameManager->bPlayerWon == false) {
 		cInventoryItem->Remove(0.1);
 	}*/
+
+
+
+
+
+
 
 
 	

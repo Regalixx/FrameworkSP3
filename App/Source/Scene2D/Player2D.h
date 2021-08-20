@@ -125,6 +125,7 @@ protected:
 
 	//Player's color
 
+	
 
 	//Physics
 	CPhysics2D cPhysics2D;
@@ -150,6 +151,7 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
+	bool playerSprinting;
 	
 	
 
