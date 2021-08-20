@@ -338,13 +338,14 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_background.ogg"), 6, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_victory.ogg"), 7, true);
 	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_die.ogg"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_die.wav"), 9, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_nextlevel.wav"), 10, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_time.ogg"), 11, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.ogg"), 12, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemy1.ogg"), 13, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 14, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 15, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 16, true);
 	
 
 	//Create and initialise the CEnemy2D
@@ -445,6 +446,7 @@ void CScene2D::Update(const double dElapsedTime)
 			cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == true;
 			//cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false;
 		}
+		
 		cPlayer2D->ResetMap();
 		cGameManager->bGameToRestart = false;
 	}
@@ -582,6 +584,7 @@ void CScene2D::Update(const double dElapsedTime)
 		{
 			if (LaserFireVertical(21, 13, blocks_0) == false)
 			{
+				cSoundController->PlaySoundByID(16);
 				LaserFireVertical(21, 13, blocks_0);
 				LaserFireVertical(21, 16, blocks_0);
 				LaserFireVertical(21, 19, blocks_0);
@@ -593,6 +596,7 @@ void CScene2D::Update(const double dElapsedTime)
 
 			if (LaserFireHorizontal(20, 2, blocks_1) == false)
 			{
+				cSoundController->PlaySoundByID(16);
 				LaserFireHorizontal(20, 2, blocks_1);
 				LaserFireHorizontal(16, 2, blocks_1);
 				LaserFireHorizontal(12, 2, blocks_1);

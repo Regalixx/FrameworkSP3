@@ -1055,7 +1055,7 @@ bool CPlayer2D::ResetMap()
 
 	if (cClone->canRespawnToClone == true) {
 	//	std::cout << "hello" << std::endl;
-		//cSoundController->PlaySoundByID(15);
+		cSoundController->PlaySoundByID(15);
 		i32vec2Index = cClone->i32vec2RespawnIndex;
 		
 	}
@@ -1320,6 +1320,7 @@ void CPlayer2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 9);
 		break;
 	case 12: //Remote
+		cSoundController->PlaySoundByID(12);
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		cMap2D->SetMapInfo(21, 30, 11);
 		isRemote = true;
@@ -1328,6 +1329,7 @@ void CPlayer2D::InteractWithMap(void)
 		cGameManager->bLevelCompleted = true;
 		break;
 	case 15:
+		cSoundController->PlaySoundByID(12);
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
 		cInventoryItem->Add(1);
@@ -1343,6 +1345,7 @@ void CPlayer2D::InteractWithMap(void)
 		playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
 		break;
 	case 18:
+		cSoundController->PlaySoundByID(12);
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
 		cInventoryItem->Add(1);
