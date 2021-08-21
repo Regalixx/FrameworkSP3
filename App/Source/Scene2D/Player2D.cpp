@@ -187,6 +187,7 @@ bool CPlayer2D::Init(void)
 	canUsepower = true;
 	canUseClone = true;
 	clone = false;
+	respawn = true;
 	
 
 
@@ -227,31 +228,16 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 
 
-	if (i32vec2Index.y <= 1) //&& (cInventoryItem->GetCount() > 0))
+	if (i32vec2Index.y <= 1 && pitfallReset == false) //&& (cInventoryItem->GetCount() > 0))
 	{
-
 		pitfallReset = true;
-		std::cout << "hello" << std::endl;
-	}
-
-	if (pitfallReset == true)
-	{
 		CGameManager::GetInstance()->bGameToRestart = true;
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
-		cSoundController->PlaySoundByID(9);
-		cout << "restarted" << endl;
-		i32vec2Index.x = 0;
-		i32vec2Index.y = 19;
-		
-		
+		//cSoundController->PlaySoundByID(9);
 	}
 
-	
 
-	
 	if (clone == true)
 	{
 		cloneDuration += dElapsedTime;
@@ -1125,16 +1111,12 @@ void CPlayer2D::dimensionchange()
 
 bool CPlayer2D::ResetMap()
 {
+
+	pitfallReset = false;
+	clone == false;
+
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
-		return false;    // Unable to find the start position of the player, so quit this game
-
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
-	// Set the start position of the Player to iRow and iCol
-//	i32vec2Index = glm::i32vec2(uiCol, uiRow);
 
 	if (cClone->canRespawnToClone == true) {
 		//	std::cout << "hello" << std::endl;
@@ -1143,11 +1125,25 @@ bool CPlayer2D::ResetMap()
 
 	else if (clone == false) {
 		i32vec2Index = glm::i32vec2(uiCol, uiRow);
-		//std::cout << i32vec2Index.x << std::endl;
 		std::cout << i32vec2Index.y << std::endl;
 	}
+	
+	
+	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
+		return false;    // Unable to find the start position of the player, so quit this game
+
+	// Erase the value of the player in the arrMapInfo
+	cMap2D->SetMapInfo(uiRow, uiCol, 0);
+
+	i32vec2Index = glm::i32vec2(uiCol, uiRow);
+
+	// Set the start position of the Player to iRow and iCol
+//	i32vec2Index = glm::i32vec2(uiCol, uiRow);
+
+	
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+
 
 	//Set it to fall upon entering new level
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
@@ -1160,8 +1156,6 @@ bool CPlayer2D::ResetMap()
 
 	//CS: Init the color to white
 	playerColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
-	
 
 
 }
@@ -1496,7 +1490,7 @@ void CPlayer2D::UpdateHealthLives(void)
 		//But we  redeuce the lives by 1.
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
-		cSoundController->PlaySoundByID(9);
+		//cSoundController->PlaySoundByID(9);
 
 		//Check if there is no lives left..
 		if (cInventoryItem->GetCount() <= 0)

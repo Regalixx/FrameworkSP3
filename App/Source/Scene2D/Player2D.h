@@ -95,6 +95,7 @@ public:
 
 	bool pitfallReset;
 	
+	CSpriteAnimation* animatedSprites;
 	
 
 protected:
@@ -123,7 +124,7 @@ protected:
 	CMesh* quadMesh;
 
 	//CS: Animated Sprite
-	CSpriteAnimation* animatedSprites;
+	
 
 	//Player's color
 
@@ -155,7 +156,7 @@ protected:
 	bool jumppoweractive;
 	
 	bool playerSprinting;
-	
+	bool respawn;
 
 	float cooldownTimer;
 	float cloneDuration;

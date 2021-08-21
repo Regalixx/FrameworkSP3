@@ -188,17 +188,9 @@ void CClone::Update(const double dElapsedTime)
 	}
 
 	
-	if (i32vec2NumMicroSteps.x < 0)
-	{
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
-	}
 
-	if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS) {
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
-	}
-	
 		
-
+	animatedSprites = cPlayer2D->animatedSprites;
 
 
 	//UpdatePosition();

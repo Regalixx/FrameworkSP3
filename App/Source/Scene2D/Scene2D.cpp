@@ -452,7 +452,7 @@ void CScene2D::Update(const double dElapsedTime)
 			//cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false;
 		}
 		cPlayer2D->ResetMap();
-		cSoundController->PlaySoundByID(2);
+		cSoundController->PlaySoundByID(9);
 		cGameManager->bGameToRestart = false;
 	}
 
