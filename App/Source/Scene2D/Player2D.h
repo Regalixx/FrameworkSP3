@@ -97,6 +97,17 @@ public:
 
 	bool pitfallReset;
 	
+
+	bool canUseUltimate;
+
+
+	bool resetEnemyPos;
+
+	bool useUltimate;
+
+	float ultimateDuration;
+
+
 	CSpriteAnimation* animatedSprites;
 	
 

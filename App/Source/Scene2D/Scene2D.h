@@ -63,6 +63,8 @@
 
 #include "Portal.h"
 
+#include "Blackhole.h"
+
 
 struct GUI
 {
@@ -103,6 +105,8 @@ protected:
 	CClone* cClone; 
 
 	CPortal* cPortal;
+
+	CBlackhole* cBlackhole;
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 

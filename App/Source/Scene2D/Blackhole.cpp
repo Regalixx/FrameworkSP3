@@ -1,9 +1,9 @@
 /**
- CPortal
+ CBlackhole
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "Portal.h"
+#include "Blackhole.h"
 
 #include <iostream>
 using namespace std;
@@ -31,7 +31,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CPortal::CPortal(void)
+CBlackhole::CBlackhole(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
@@ -58,7 +58,7 @@ CPortal::CPortal(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CPortal::~CPortal(void)
+CBlackhole::~CBlackhole(void)
 {
 
 	if (animatedSprites)
@@ -81,7 +81,7 @@ CPortal::~CPortal(void)
 /**
   @brief Initialise this instance
   */
-bool CPortal::Init(void)
+bool CBlackhole::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -100,7 +100,7 @@ bool CPortal::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(305, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(306, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 	
 	//if (cMap2D->FindValue(301, uiRow, uiCol) == false)
@@ -121,7 +121,7 @@ bool CPortal::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	if (LoadTexture("Image/respawnPortal.png", iTextureID) == false)
+	if (LoadTexture("Image/blackhole.png", iTextureID) == false)
 	{
 		std::cout << "Failed to load enemy2D tile texture" << std::endl;
 		return false;
@@ -136,7 +136,7 @@ bool CPortal::Init(void)
 	
 	respawnToClone = false;
 	canRespawnToClone = false;
-	respawnPoint = false;
+	blackholePoint = false;
 
 
 	//CS: Init the color to white
@@ -160,31 +160,31 @@ bool CPortal::Init(void)
 /**
  @brief Update this instance
  */
-void CPortal::Update(const double dElapsedTime)
+void CBlackhole::Update(const double dElapsedTime)
 {
 
 
 
-	if (cPlayer2D->clone == true && cPlayer2D->canUseClone == false)
+	if (cPlayer2D->useUltimate == true && cPlayer2D->canUseUltimate == false)
 	{
 		
 		i32vec2OldIndex = i32vec2Index;
-		respawnPoint = true;
+		blackholePoint = true;
 
 	}
 
-	if (respawnPoint == true)
+	if (blackholePoint == true)
 	{
 		i32vec2RespawnIndex = i32vec2OldIndex;
-	//	std::cout << "hi" << std::endl;
+		//std::cout << "hi" << std::endl;
 		//Initialise the instance
 
 	}
 
-	if (respawnPoint == false || renderPortal == false)
+	if (cPlayer2D->useUltimate == false && cPlayer2D->canUseUltimate == true)
 	{
 		
-		i32vec2Index = cClone->i32vec2RespawnIndex;
+		i32vec2Index = cPlayer2D->i32vec2Index;
 	}
 	
 
@@ -203,7 +203,7 @@ void CPortal::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CPortal::PreRender(void)
+void CBlackhole::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -222,7 +222,7 @@ void CPortal::PreRender(void)
 /**
  @brief Render this instance
  */
-void CPortal::Render(void)
+void CBlackhole::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -260,7 +260,7 @@ void CPortal::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CPortal::PostRender(void)
+void CBlackhole::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -275,7 +275,7 @@ void CPortal::PostRender(void)
 @brief Load a texture, assign it a code and store it in MapOfTextureIDs.
 @param filename A const char* variable which contains the file name of the texture
 */
-bool CPortal::LoadTexture(const char* filename, GLuint& iTextureID)
+bool CBlackhole::LoadTexture(const char* filename, GLuint& iTextureID)
 {
 	// Variables used in loading the texture
 	int width, height, nrChannels;
@@ -317,7 +317,7 @@ bool CPortal::LoadTexture(const char* filename, GLuint& iTextureID)
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-void CPortal::Constraint(DIRECTION eDirection)
+void CBlackhole::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -353,7 +353,7 @@ void CPortal::Constraint(DIRECTION eDirection)
 	}
 	else
 	{
-		cout << "CPortal::Constraint: Unknown direction." << endl;
+		cout << "CBlackhole::Constraint: Unknown direction." << endl;
 	}
 }
 
@@ -361,7 +361,7 @@ void CPortal::Constraint(DIRECTION eDirection)
  @brief Check if a position is possible to move into
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool CPortal::CheckPosition(DIRECTION eDirection)
+bool CBlackhole::CheckPosition(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -475,7 +475,7 @@ bool CPortal::CheckPosition(DIRECTION eDirection)
 }
 
 // Check if the enemy2D is in mid-air
-bool CPortal::IsMidAir(void)
+bool CBlackhole::IsMidAir(void)
 {
 	// if the player is at the bottom row, then he is not in mid-air for sure
 	if (i32vec2Index.y == 0)
@@ -492,7 +492,7 @@ bool CPortal::IsMidAir(void)
 }
 
 // Update Jump or Fall
-void CPortal::UpdateJumpFall(const double dElapsedTime)
+void CBlackhole::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
 	{

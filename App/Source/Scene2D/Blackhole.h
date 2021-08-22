@@ -1,5 +1,5 @@
 /**
- CEnemy2D
+ CClone
  By: Toh Da Jun
  Date: Mar 2020
  */
@@ -28,9 +28,8 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
+// Include Clone
 #include "Clone.h"
-
-#include "Blackhole.h"
 
 #include "InventoryItem.h"
 
@@ -38,16 +37,14 @@ class CMap2D;
 
 #include "Primitives//SpriteAnimation.h"
 
-
-
-class CEnemy2D : public CEntity2D
+class CBlackhole : public CSingletonTemplate<CBlackhole>, public CEntity2D
 {
 public:
 	// Constructor
-	CEnemy2D(void);
+	CBlackhole(void);
 
 	// Destructor
-	virtual ~CEnemy2D(void);
+	virtual ~CBlackhole(void);
 
 	// Init
 	bool Init(void);
@@ -65,32 +62,20 @@ public:
 	void PostRender(void);
 
 	// Set the indices of the enemy2D
-	void Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis);
 
-	// Set the number of microsteps of the enemy2D
-	void Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis);
-
-	// Set the UV coordinates of the enemy2D
-	void Setvec2UVCoordinates(const float fUVCoordinate_XAxis, const float fUVCoordinate_YAxis);
-
-	// Get the indices of the enemy2D
-	glm::i32vec2 Geti32vec2Index(void) const;
-
-	// Get the number of microsteps of the enemy2D
-	glm::i32vec2 Geti32vec2NumMicroSteps(void) const;
-
-	// Set the UV coordinates of the enemy2D
-	glm::vec2 Getvec2UVCoordinates(void) const;
-
-	// Set the handle to cPlayer to this class instance
-	void SetPlayer2D(CPlayer2D* cPlayer2D);
-
-	// Set the handle to cClone to this class instance
-	void SetClone2D(CClone* cClone);
-
+	// Set the handle to cPlayer to this class instanc
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	bool blackholePoint;
+	bool renderBlackhole;
+
+	glm::i32vec2 i32vec2RespawnIndex;
+
+	bool canRespawnToClone;
+	bool respawnToClone;
+
+	//glm::i32vec2 i32vec2Index;
 	
 
 protected:
@@ -114,17 +99,23 @@ protected:
 
 	glm::i32vec2 i32vec2OldIndex;
 
+	
+
+
+	CSpriteAnimation* animatedSprites;
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
 
+	CClone* cClone;
+
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
 	// The i32vec2 which stores the indices of the enemy2D in the Map2D
-	glm::i32vec2 i32vec2Index;
+	
 
 	// The i32vec2 variable which stores The number of microsteps from the tile indices for the enemy2D. 
 	// A tile's width or height is in multiples of these microsteps
@@ -149,14 +140,11 @@ protected:
 
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
-	CClone* cClone;
-	CBlackhole* cBlackhole;
-
 
 	// Current FSM
 	FSM sCurrentFSM;
 
-	CSpriteAnimation* animatedSprites;
+
 
 	//InventoryManager
 	CInventoryManager* cInventoryManager;
@@ -166,6 +154,7 @@ protected:
 
 	//CSoundController
 	CSoundController* cSoundController;
+
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
@@ -189,13 +178,15 @@ protected:
 	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
 
 	// Let enemy2D interact with the player
-	bool InteractWithPlayer(void);
+	//bool InteractWithPlayer(void);
+
+	
 
 	// Update direction
 	void UpdateDirection(void);
 
 	// Flip horizontal direction. For patrol use only
-	void FlipHorizontalDirection(void);
+	//void FlipHorizontalDirection(void);
 
 	// Update position
 	void UpdatePosition(void);
