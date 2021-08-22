@@ -543,6 +543,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cSoundController->PlaySoundByID(16);
 			clone = true;
 			canUseClone = false;
+			cPortal->respawnPoint = false;
+			cPortal->renderPortal = false;
 			cInventoryItem->Remove(1);
 
 		}

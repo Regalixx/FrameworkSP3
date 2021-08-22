@@ -95,6 +95,7 @@ bool CPortal::Init(void)
 	// Get the handler to the CMap2D instance
 
 	cPlayer2D = CPlayer2D::GetInstance();
+	cClone = CClone::GetInstance();
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
@@ -166,7 +167,6 @@ void CPortal::Update(const double dElapsedTime)
 
 	if (cPlayer2D->clone == true && cPlayer2D->canUseClone == false)
 	{
-
 		
 		i32vec2OldIndex = i32vec2Index;
 		respawnPoint = true;
@@ -180,14 +180,15 @@ void CPortal::Update(const double dElapsedTime)
 		//Initialise the instance
 
 	}
+
+	if (respawnPoint == false || renderPortal == false)
+	{
+		
+		i32vec2Index = cClone->i32vec2RespawnIndex;
+	}
 	
 
-	if (cPlayer2D->clone == false && cPlayer2D->canUseClone == true && respawnPoint == false)
-	{
-
-		i32vec2Index = cPlayer2D->i32vec2Index; // follow the player
-	}
-
+	
 	//Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
 

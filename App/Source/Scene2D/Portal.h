@@ -28,6 +28,9 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
+// Include Clone
+#include "Clone.h"
+
 #include "InventoryItem.h"
 
 #include "InventoryManager.h"
@@ -105,6 +108,8 @@ protected:
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
+
+	CClone* cClone;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;

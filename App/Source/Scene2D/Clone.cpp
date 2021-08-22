@@ -171,11 +171,16 @@ void CClone::Update(const double dElapsedTime)
 	{
 		
 		i32vec2OldIndex = i32vec2Index;
-			
+		canRespawnToClone = true;
 	
 		
 		
 		//std::cout << "hello" << std::endl;
+	}
+
+	if (canRespawnToClone == true)
+	{
+		i32vec2RespawnIndex = i32vec2OldIndex;
 	}
 
 	if (cPlayer2D->clone == false && cPlayer2D->canUseClone == true)
