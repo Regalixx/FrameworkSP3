@@ -33,6 +33,8 @@ class CMap2D;
 
 class CClone;
 
+class CPortal;
+
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
 
@@ -113,9 +115,11 @@ protected:
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
-	CMap2D* cMap2D2;
+	
 
 	CClone* cClone;
+
+	CPortal* cPortal;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;

@@ -101,12 +101,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	if (LoadTexture("Image/portalpiece.tga", 1) == false) //Original: 2
 
 	// 1 - 99 : Non-Collision Objects
-	if (LoadTexture("Image/key.tga", 1) == false) //Original: 2
 
-	{
-		std::cout << "Failed to load key texture" << std::endl;
-		return false;
-	}
 	if (LoadTexture("Image/speedboost.tga", 2) == false) //Original: 3
 	{
 		std::cout << "Failed to load fire tile texture" << std::endl;
@@ -439,11 +434,14 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load laserbaseright texture" << std::endl;
 		return false;
 	}
+
 	if (LoadTexture("Image/respawnPortal.png", 147) == false)
 	{
-		std::cout << "Failed to load respawnPortal" << std::endl;
+		std::cout << "Failed to load laserbaseright texture" << std::endl;
 		return false;
 	}
+
+	
 	
 
 	// Initialise the variables for AStar
@@ -599,6 +597,12 @@ void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, cons
 	else
 		arrMapInfo[uiCurLevel][uiRow][uiCol].value = iValue;
 }
+
+
+
+
+
+
 
 /**
  @brief Get the value at certain indices in the arrMapInfo

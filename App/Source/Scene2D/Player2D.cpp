@@ -104,6 +104,8 @@ bool CPlayer2D::Init(void)
 
 	cClone = CClone::GetInstance();
 
+	cPortal = CPortal::GetInstance();
+
 	cSoundController = CSoundController::GetInstance();
 
 
@@ -119,6 +121,9 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 	cInventoryItem = cInventoryManager->Add("Stamina", "Image/stamina.png", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(35, 35);
+
+	cInventoryItem = cInventoryManager->Add("Ultimate", "Image/powerup.tga", 100, 0);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 0);
@@ -241,13 +246,19 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (clone == true)
 	{
 		cloneDuration += dElapsedTime;
-		if (cloneDuration >= 5)
-		{
-			clone = false;
-			cloneDuration = 0;
-			canUseClone = true;
-		}
 	}
+
+	if (cloneDuration >= 5)
+	{
+		clone = false;
+		cloneDuration = 0;
+		canUseClone = true;
+		cPortal->renderPortal = true;
+
+	}
+
+
+
 
 	
 	if (TimeStop == true)
@@ -292,7 +303,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		if (i32vec2Index.x >= 0)
 		{
-			i32vec2NumMicroSteps.x -= 3;
+			i32vec2NumMicroSteps.x -= 2.5;
 			if (i32vec2NumMicroSteps.x < 0)
 			{
 				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -582,25 +593,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//CS: Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
 
-	//cInventoryItem = cInventoryManager->GetItem("Health");
-	/*if (cGameManager->bPlayerWon == false) {
-		cInventoryItem->Remove(0.1);
-	}*/
-
-
-
-
-
-
-
-
-	
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, i32vec2Index.x, false, i32vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, i32vec2Index.y, false, i32vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
-
-	
-
 
 }
 
@@ -1118,9 +1113,9 @@ bool CPlayer2D::ResetMap()
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
 
-	if (cClone->canRespawnToClone == true) {
-		//	std::cout << "hello" << std::endl;
-		i32vec2Index = cClone->i32vec2RespawnIndex;
+	if (cPortal->respawnPoint == true) {
+		std::cout << "hello" << std::endl;
+		i32vec2Index = cPortal->i32vec2RespawnIndex;
 	}
 
 	else if (clone == false) {
@@ -1135,7 +1130,7 @@ bool CPlayer2D::ResetMap()
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
-	i32vec2Index = glm::i32vec2(uiCol, uiRow);
+	//i32vec2Index = glm::i32vec2(uiCol, uiRow);
 
 	// Set the start position of the Player to iRow and iCol
 //	i32vec2Index = glm::i32vec2(uiCol, uiRow);
@@ -1331,13 +1326,13 @@ void CPlayer2D::InteractWithMap(void)
 	//	cInventoryItem = cInventoryManager->GetItem("Lives");
 	//	cInventoryItem->Add(1);
 	//	break;
-	//case 5:
-	//	// invisible powerup
-	//	cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-	//	powerupActive = true;
-	//	playerColour = glm::vec4(0.0, 0.0, 1.0, 1.0);
+	case 5:
+		// invisible powerup
+		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
+		cInventoryItem = cInventoryManager->GetItem("Ultimate");
+		cInventoryItem->Add(10);
 	//	cSoundController->PlaySoundByID(5);
-	//	break;
+		break;
 	//case 6:
 	//	// higher jump
 	//	cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);

@@ -1,9 +1,9 @@
 /**
- CClone
+ CPortal
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "Clone.h"
+#include "Portal.h"
 
 #include <iostream>
 using namespace std;
@@ -31,7 +31,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CClone::CClone(void)
+CPortal::CPortal(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
@@ -58,7 +58,7 @@ CClone::CClone(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CClone::~CClone(void)
+CPortal::~CPortal(void)
 {
 
 	if (animatedSprites)
@@ -81,7 +81,7 @@ CClone::~CClone(void)
 /**
   @brief Initialise this instance
   */
-bool CClone::Init(void)
+bool CPortal::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -99,7 +99,7 @@ bool CClone::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(304, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(305, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 	
 	//if (cMap2D->FindValue(301, uiRow, uiCol) == false)
@@ -120,7 +120,7 @@ bool CClone::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	if (LoadTexture("Image/player3.tga", iTextureID) == false)
+	if (LoadTexture("Image/respawnPortal.png", iTextureID) == false)
 	{
 		std::cout << "Failed to load enemy2D tile texture" << std::endl;
 		return false;
@@ -135,13 +135,8 @@ bool CClone::Init(void)
 	
 	respawnToClone = false;
 	canRespawnToClone = false;
+	respawnPoint = false;
 
-	animatedSprites->AddAnimation("idle", 0, 5);
-	animatedSprites->AddAnimation("right", 6, 11);
-	animatedSprites->AddAnimation("left", 12, 17);
-	animatedSprites->AddAnimation("jump", 18, 20);
-	//CS: Play the "idle animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
 	//CS: Init the color to white
 	currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -164,51 +159,50 @@ bool CClone::Init(void)
 /**
  @brief Update this instance
  */
-void CClone::Update(const double dElapsedTime)
+void CPortal::Update(const double dElapsedTime)
 {
+
+
 
 	if (cPlayer2D->clone == true && cPlayer2D->canUseClone == false)
 	{
+
 		
 		i32vec2OldIndex = i32vec2Index;
-			
-	
-		
-		
-		//std::cout << "hello" << std::endl;
+		respawnPoint = true;
+
 	}
 
-	if (cPlayer2D->clone == false && cPlayer2D->canUseClone == true)
+	if (respawnPoint == true)
 	{
-		
+		i32vec2RespawnIndex = i32vec2OldIndex;
+		std::cout << "hi" << std::endl;
+		//Initialise the instance
+
+	}
+	
+
+	if (cPlayer2D->clone == false && cPlayer2D->canUseClone == true && respawnPoint == false)
+	{
+
 		i32vec2Index = cPlayer2D->i32vec2Index; // follow the player
 	}
-
-	//cMap2D->SetMapInfo(i32vec2Index.x, i32vec2Index.y, 147);
-	
-
-		
-	animatedSprites = cPlayer2D->animatedSprites;
-
-
-	//UpdatePosition();
 
 	//Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
 
-	animatedSprites->Update(dElapsedTime);
 
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, i32vec2Index.x, false, i32vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, i32vec2Index.y, false, i32vec2NumMicroSteps.y*cSettings->MICRO_STEP_YAXIS);
-
+	
 	
 }
 
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CClone::PreRender(void)
+void CPortal::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -227,7 +221,7 @@ void CClone::PreRender(void)
 /**
  @brief Render this instance
  */
-void CClone::Render(void)
+void CPortal::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -254,9 +248,9 @@ void CClone::Render(void)
 	
 	//// Render the tile
 	////glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	//quadMesh->Render();
+	quadMesh->Render();
 
-	animatedSprites->Render();
+
 
 	glBindVertexArray(0);
 
@@ -265,7 +259,7 @@ void CClone::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CClone::PostRender(void)
+void CPortal::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -274,46 +268,13 @@ void CClone::PostRender(void)
 	glDisable(GL_BLEND);
 }
 
-/**
-@brief Set the indices of the enemy2D
-@param iIndex_XAxis A const int variable which stores the index in the x-axis
-@param iIndex_YAxis A const int variable which stores the index in the y-axis
-*/
-//void CClone::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
-//{
-//	this->i32vec2Index.x = iIndex_XAxis;
-//	this->i32vec2Index.y = iIndex_YAxis;
-//}
-//
-///**
-//@brief Set the number of microsteps of the enemy2D
-//@param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
-//@param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
-//*/
-//void CClone::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
-//{
-//	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
-//	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
-//}
-//
-///**
-// @brief Set the handle to cPlayer to this class instance
-// @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
-// */
-//void CClone::SetPlayer2D(CPlayer2D* cPlayer2D)
-//{
-//	this->cPlayer2D = cPlayer2D;
-//
-//	// Update the enemy's direction
-//	UpdateDirection();
-//}
 
 
 /**
 @brief Load a texture, assign it a code and store it in MapOfTextureIDs.
 @param filename A const char* variable which contains the file name of the texture
 */
-bool CClone::LoadTexture(const char* filename, GLuint& iTextureID)
+bool CPortal::LoadTexture(const char* filename, GLuint& iTextureID)
 {
 	// Variables used in loading the texture
 	int width, height, nrChannels;
@@ -355,7 +316,7 @@ bool CClone::LoadTexture(const char* filename, GLuint& iTextureID)
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-void CClone::Constraint(DIRECTION eDirection)
+void CPortal::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -391,7 +352,7 @@ void CClone::Constraint(DIRECTION eDirection)
 	}
 	else
 	{
-		cout << "CClone::Constraint: Unknown direction." << endl;
+		cout << "CPortal::Constraint: Unknown direction." << endl;
 	}
 }
 
@@ -399,7 +360,7 @@ void CClone::Constraint(DIRECTION eDirection)
  @brief Check if a position is possible to move into
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool CClone::CheckPosition(DIRECTION eDirection)
+bool CPortal::CheckPosition(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -513,7 +474,7 @@ bool CClone::CheckPosition(DIRECTION eDirection)
 }
 
 // Check if the enemy2D is in mid-air
-bool CClone::IsMidAir(void)
+bool CPortal::IsMidAir(void)
 {
 	// if the player is at the bottom row, then he is not in mid-air for sure
 	if (i32vec2Index.y == 0)
@@ -530,7 +491,7 @@ bool CClone::IsMidAir(void)
 }
 
 // Update Jump or Fall
-void CClone::UpdateJumpFall(const double dElapsedTime)
+void CPortal::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
 	{
@@ -636,161 +597,4 @@ void CClone::UpdateJumpFall(const double dElapsedTime)
 	}
 }
 
-/**
- @brief Let enemy2D interact with the player.
- */
-//bool CClone::InteractWithPlayer(void)
-//{
-//	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->i32vec2Index;
-//	
-//	// Check if the enemy2D is within 1.5 indices of the player2D
-//	if (((i32vec2Index.x >= i32vec2PlayerPos.x - 0.5) && 
-//		(i32vec2Index.x <= i32vec2PlayerPos.x + 0.5))
-//		&& 
-//		((i32vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
-//		(i32vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
-//	{
-//		//cout << "Gotcha!" << endl;
-//
-//		cPlayer2D->playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
-//		cInventoryItem = cInventoryManager->GetItem("Health");
-//		cInventoryItem->Remove(25);
-//
-//		// Since the player has been caught, then reset the FSM
-//		sCurrentFSM = IDLE;
-//		iFSMCounter = 0;
-//
-//
-//		return true;
-//	}
-//	return false;
-//}
-
-
-
-/**
- @brief Update the enemy's direction.
- */
-//void CClone::UpdateDirection(void)
-//{
-//	// Set the destination to the player
-//	i32vec2Destination = cPlayer2D->i32vec2Index;
-//
-//	// Calculate the direction between enemy2D and player2D
-//	i32vec2Direction = i32vec2Destination - i32vec2Index;
-//
-//	// Calculate the distance between enemy2D and player2D
-//	float fDistance = cPhysics2D.CalculateDistance(i32vec2Index, i32vec2Destination);
-//	if (fDistance >= 0.01f)
-//	{
-//		// Calculate direction vector.
-//		// We need to round the numbers as it is easier to work with whole numbers for movements
-//		i32vec2Direction.x = (int)round(i32vec2Direction.x / fDistance);
-//		i32vec2Direction.y = (int)round(i32vec2Direction.y / fDistance);
-//	}
-//	else
-//	{
-//		// Since we are not going anywhere, set this to 0.
-//		i32vec2Direction = glm::i32vec2(0);
-//	}
-//}
-
-/**
- @brief Flip horizontal direction. For patrol use only
- */
-//void CClone::FlipHorizontalDirection(void)
-//{
-//	i32vec2Direction.x *= -1;
-//}
-
-/**
-@brief Update position.
-*/
-//void CClone::UpdatePosition(void)
-//{
-//
-//	// Store the old position
-//	i32vec2OldIndex = i32vec2Index;
-//	
-//	
-//
-//	if (i32vec2Direction.x < 0 && CheckPosition(LEFT) == true)
-//	{
-//		// Move left
-//		const int iOldIndex = i32vec2Index.x;
-//		if (i32vec2Index.x >= 0)
-//		{
-//			i32vec2NumMicroSteps.x--;
-//			if (i32vec2NumMicroSteps.x < 0)
-//			{
-//				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-//				i32vec2Index.x--;
-//			}
-//		}
-//
-//		// Constraint the enemy2D's position within the screen boundary
-//		Constraint(LEFT);
-//
-//		//CS: play the "left animation
-//		animatedSprites->PlayAnimation("left", -1, 1.0f);
-//
-//
-//
-//		// Find a feasible position for the enemy2D's current position
-//		if (CheckPosition(LEFT) == false)
-//		{
-//			//FlipHorizontalDirection();
-//			i32vec2Index = i32vec2OldIndex;
-//			i32vec2NumMicroSteps.x = 0;
-//		}
-//
-//		// Check if enemy2D is in mid-air, such as walking off a platform
-//		if (IsMidAir() == true)
-//		{
-//			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-//		}
-//
-//		// Interact with the Player
-//		//InteractWithPlayer();
-//	}
-//	else if (i32vec2Direction.x > 0 && CheckPosition(RIGHT) == true)
-//	{
-//		// Move right
-//		const int iOldIndex = i32vec2Index.x;
-//		if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-//		{
-//			i32vec2NumMicroSteps.x++;
-//
-//			if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
-//			{
-//				i32vec2NumMicroSteps.x = 0;
-//				i32vec2Index.x++;
-//			}
-//		}
-//
-//		// Constraint the enemy2D's position within the screen boundary
-//		Constraint(RIGHT);
-//		
-//		animatedSprites->PlayAnimation("right", -1, 1.0f);
-//
-//		// Find a feasible position for the enemy2D's current position
-//		if (CheckPosition(RIGHT) == false)
-//		{
-//			//FlipHorizontalDirection();
-//			i32vec2Index = i32vec2OldIndex;
-//			i32vec2NumMicroSteps.x = 0;
-//		}
-//
-//		// Check if enemy2D is in mid-air, such as walking off a platform
-//		if (IsMidAir() == true)
-//		{
-//			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-//		}
-//
-//	
-//	}
-//
-//	
-//
-//
-//}
+ 

@@ -24,6 +24,7 @@ CScene2D::CScene2D(void)
 	, cSoundController(NULL)
 	, background(NULL)
 	, cClone(NULL)
+	, cPortal(NULL)
 	
 {
 }
@@ -58,6 +59,12 @@ CScene2D::~CScene2D(void)
 	{
 		cClone->Destroy();
 		cClone = NULL;
+	}
+
+	if (cPortal)
+	{
+		cPortal->Destroy();
+		cPortal = NULL;
 	}
 
 	
@@ -271,6 +278,7 @@ bool CScene2D::Init(void)
 	//Create and initialise the cPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
 	cClone = CClone::GetInstance();
+	cPortal = CPortal::GetInstance();
 
 	//Pass  shader to cPlayer2D
 	cPlayer2D->SetShader("2DColorShader");
@@ -287,6 +295,16 @@ bool CScene2D::Init(void)
 	if (cClone->Init() == false)
 	{
 		cout << "Failed to load cClone" << endl;
+		return false;
+	}
+
+
+
+	cPortal->SetShader("2DColorShader");
+	//Initialise the instance
+	if (cPortal->Init() == false)
+	{
+		cout << "Failed to load cPortal" << endl;
 		return false;
 	}
 
@@ -350,7 +368,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemy1.ogg"), 13, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 16, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 17, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 18, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 18, true);	
 	
 
 	//Create and initialise the CEnemy2D
@@ -373,6 +391,8 @@ void CScene2D::Update(const double dElapsedTime)
 	cPlayer2D->Update(dElapsedTime);
 
 	cClone->Update(dElapsedTime);
+
+	cPortal->Update(dElapsedTime);
 
 
 	// Start the Dear ImGui frame
@@ -460,7 +480,8 @@ void CScene2D::Update(const double dElapsedTime)
 	if (cGameManager->bLevelCompleted == true)
 	{
 		cMap2D->SetLevel(cMap2D->GetLevel() + 1);
-		cClone->canRespawnToClone = false;
+		cPortal->respawnPoint = false;
+		cPortal->renderPortal = false;
 		cPlayer2D->clone = false;
 		cPlayer2D->canUseClone = true;
 		cGameManager->bLevelCompleted = false;
@@ -761,11 +782,22 @@ void CScene2D::Render(void)
 		// Call the cGUI's PostRender()
 		cGUI_Scene2D->PostRender();
 
+		if (cPortal->renderPortal == true)
+		{
+
+			cPortal->PreRender();
+			//Call the cPlayer2D's Render()
+			cPortal->Render();
+			//Call the CPlayer2D's PostRender()
+			cPortal->PostRender();
+		}
+
 		cClone->PreRender();
 		//Call the cPlayer2D's Render()
 		cClone->Render();
 		//Call the CPlayer2D's PostRender()
 		cClone->PostRender();
+
 
 
 		//Call the cPlayer2D's PreRender()
@@ -810,6 +842,12 @@ void CScene2D::Render(void)
 				// Call the CEnemy2D's PostRender()
 				enemyVector[i]->PostRender();
 			}
+
+			cPortal->PreRender();
+			//Call the cPlayer2D's Render()
+			cPortal->Render();
+			//Call the CPlayer2D's PostRender()
+			cPortal->PostRender();
 
 			cClone->PreRender();
 			//Call the cPlayer2D's Render()

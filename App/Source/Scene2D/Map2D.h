@@ -46,6 +46,7 @@ struct MapSize {
 // It includes data to be used for A* Path Finding
 struct Grid {
 	unsigned int value;
+	glm::i32vec2 value2;
 
 	Grid()
 		: value(0), pos(0, 0), parent(-1, -1), f(0), g(0), h(0) {}

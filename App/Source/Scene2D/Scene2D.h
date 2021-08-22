@@ -61,6 +61,8 @@
 
 #include "Clone.h"
 
+#include "Portal.h"
+
 
 struct GUI
 {
@@ -93,11 +95,14 @@ protected:
 
 	CMap2D* cMap2D;
 	CPlayer2D* cPlayer2D;
+	
 
 
 	CMesh* quadMesh;
 
-	CClone* cClone;
+	CClone* cClone; 
+
+	CPortal* cPortal;
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 

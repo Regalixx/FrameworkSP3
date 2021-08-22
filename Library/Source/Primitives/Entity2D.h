@@ -75,6 +75,8 @@ protected:
 	// The texture ID in OpenGL
 	unsigned int iTextureID;
 
+	unsigned int iTextureID2;
+
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
