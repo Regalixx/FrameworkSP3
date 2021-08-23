@@ -144,6 +144,7 @@ protected:
 	vector<CEntity2D*> enemyVector3; //for type3 enemy
 	vector<CEntity2D*> cloneVector; //for type3 enemy
 
+
 	CBackgroundEntity* background;
 	CBackgroundEntity* dimensionstate;
 	

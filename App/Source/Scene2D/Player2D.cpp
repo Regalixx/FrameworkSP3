@@ -236,8 +236,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 	i32vec2OldIndex = i32vec2Index;
 
-
-
 	if (i32vec2Index.y <= 1 && pitfallReset == false) //&& (cInventoryItem->GetCount() > 0))
 	{
 		pitfallReset = true;
@@ -601,7 +599,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_F))
 	{
-		Shoot(i32vec2Index.y, i32vec2Index.x, isRight);
+		Shoot(i32vec2Index.y, i32vec2Index.x, dir);
 	}
 	
 
@@ -611,7 +609,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 		}
 	}
-		
 	
 	// Update Jump or Fall
 	//CS: Will cause error when debugging. Set to default elapsed time
@@ -1566,29 +1563,25 @@ void CPlayer2D::UpdateHealthLives(void)
 		}
 	}
 
-	
 }
 
 bool CPlayer2D::Shoot(float y, float x, bool isRight)
 {
-	if (isRight)
-	{
-		cMap2D->SetMapInfo(i32vec2Index.y + 1, i32vec2Index.x, 19);
-	}
+	
 	CBullet* cBullet2D = new CBullet();
 
 	cBullet2D->SetShader("2DColorShader");
-	//Initialise the instance
-	/*
+
+	
+
 	if (cBullet2D->Init() == true)
 	{
-		enemyVector2.push_back(cBullet2D);
+		cBullet2D->Seti32vec2Index(this->i32vec2Index.x, i32vec2Index.y);
+		bulletVector.push_back(cBullet2D);
+		return true;
 	}
-	*/
-
-	if (cBullet2D->Init() == false)
+	else
 	{
-		cout << "Piece of shit not loading" << endl;
+		return false;
 	}
-	return false;
 }

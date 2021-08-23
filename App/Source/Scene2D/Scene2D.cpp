@@ -410,6 +410,9 @@ void CScene2D::Update(const double dElapsedTime)
 
 	cBlackhole->Update(dElapsedTime);
 
+	
+
+
 
 	// Start the Dear ImGui frame
 
@@ -433,6 +436,11 @@ void CScene2D::Update(const double dElapsedTime)
 	for (int i = 0; i < cloneVector.size(); i++)
 	{
 		cloneVector[i]->Update(dElapsedTime);
+	}
+
+	for (int i = 0; i < cPlayer2D->bulletVector.size(); ++i)
+	{
+		cPlayer2D->bulletVector[i]->Update(dElapsedTime);
 	}
 
 	// Call the Map2D's update method
@@ -742,6 +750,8 @@ void CScene2D::Render(void)
 		cloneVector[i]->PostRender();
 	}
 
+	
+
 
 	if (cPlayer2D->TimeStop == false) {
 	
@@ -751,6 +761,18 @@ void CScene2D::Render(void)
    //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
    //CS: Render the tile
    //quadMesh->Render();
+
+		for (int i = 0; i < cPlayer2D->bulletVector.size(); ++i)
+		{
+			//Call the CEnemy2D's PreRender()
+			cPlayer2D->bulletVector[i]->PreRender();
+			// Call the CEnemy2D's Render()
+			cPlayer2D->bulletVector[i]->Render();
+			// Call the CEnemy2D's PostRender()
+			cPlayer2D->bulletVector[i]->PostRender();
+
+			cout << "Lalala:" << cPlayer2D->bulletVector[i] << endl;
+		}
 
 
 		for (int i = 0; i < enemyVector.size(); i++)
@@ -800,8 +822,7 @@ void CScene2D::Render(void)
 		cGUI_Scene2D->PostRender();
 
 
-		//cBullet->PreRender();
-		//cBullet->Render();
+		
 		//cBullet->PostRender();
 
 		if (cPlayer2D->useUltimate == true) {

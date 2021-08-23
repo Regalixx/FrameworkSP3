@@ -36,6 +36,8 @@ class CMap2D;
 
 #include "InventoryManager.h"
 
+#include "Enemy3.h"
+
 #include "Primitives//SpriteAnimation.h"
 
 
@@ -155,6 +157,7 @@ protected:
 	CPlayer2D* cPlayer2D;
 	CClone* cClone;
 	CBlackhole* cBlackhole;
+	CEnemy2D* cEnemy3;
 
 
 	// Current FSM

@@ -233,7 +233,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			// Patrol around
 			// Update the Enemy2D's position for patrol
 			if (cPlayer2D->TimeStop == false || cPlayer2D->useUltimate == false) {
-				UpdatePosition();
+				//UpdatePosition();
 				cSoundController->PlaySoundByID(13);
 			}
 		}

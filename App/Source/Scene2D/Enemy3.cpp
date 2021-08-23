@@ -947,3 +947,24 @@ void CEnemy3::UpdatePosition(void)
 	}
 
 }
+
+bool CEnemy3::Shoot(float y, float x, bool isRight)
+{
+
+	CBullet* cBullet2D = new CBullet();
+
+	cBullet2D->SetShader("2DColorShader");
+
+
+
+	if (cBullet2D->Init() == true)
+	{
+		cBullet2D->Seti32vec2Index(this->i32vec2Index.x, i32vec2Index.y);
+		bulletVector.push_back(cBullet2D);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

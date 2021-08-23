@@ -95,6 +95,8 @@ public:
 	
 
 	bool canUseUltimate;
+	
+	bool dir = true;
 
 
 	bool resetEnemyPos;
@@ -105,7 +107,10 @@ public:
 
 
 	CSpriteAnimation* animatedSprites;
-	
+
+	vector<CEntity2D*> bulletVector;
+
+
 
 protected:
 	enum DIRECTION
@@ -153,7 +158,6 @@ protected:
 	CGameManager* cGameManager;
 
 	
-	
 
 
 	//Handler to the CSoundController
@@ -178,6 +182,7 @@ protected:
 
 	//Remote Bool
 	bool isRemote = false;
+
 	
 	
 	// Constructor
@@ -221,7 +226,6 @@ protected:
 
 	void UpdateHealthLives(void);
 
-	bool isRight = true;
 	bool Shoot(float y, float x, bool isRight);
 };
 

@@ -34,6 +34,8 @@ class CMap2D;
 
 #include "InventoryManager.h"
 
+#include "Bullet.h"
+
 class CEnemy3 : public CEnemy2D
 {
 public:
@@ -86,6 +88,8 @@ public:
 	bool isBleeding;
 
 	bool canStunPlayer;
+
+	vector<CEntity2D*> bulletVector;
 
 	glm::vec4 rageColour;
 
@@ -202,5 +206,7 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
+
+	bool Shoot(float y, float x, bool isRight);
 };
 
