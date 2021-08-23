@@ -230,9 +230,6 @@ bool CScene2D::Init(void)
 		return false;
 	}
 
-	//Level 2
-
-
 
 	//// Load the map into an array
 	//if (cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false)
@@ -642,6 +639,28 @@ void CScene2D::Update(const double dElapsedTime)
 			enemyVector3[i] = NULL;
 		}
 		enemyVector3.clear();
+
+
+		while (true)
+		{
+			CEnemy3* cEnemy3 = new CEnemy3();
+
+			//Pass shader to cEnemy2D
+			cEnemy3->SetShader("2DColorShader");
+			//Initialise the instance
+			if (cEnemy3->Init() == true)
+			{
+				//cout << "hello" << std::endl;
+				cEnemy3->SetPlayer2D(cPlayer2D);
+				cEnemy3->SetClone2D(cClone);
+				enemyVector3.push_back(cEnemy3);
+			}
+			else
+			{
+				//Break out of this loop if the enemy has all been loaded
+				break;
+			}
+		}
 	}
 
 	//Check if the game has been won by the player
