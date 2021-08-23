@@ -25,6 +25,7 @@ CScene2D::CScene2D(void)
 	, background(NULL)
 	, cClone(NULL)
 	, cPortal(NULL)
+	, cBlackhole(NULL)
 	
 {
 }
@@ -67,6 +68,11 @@ CScene2D::~CScene2D(void)
 		cPortal = NULL;
 	}
 
+	if (cBlackhole)
+	{
+		cBlackhole->Destroy();
+		cBlackhole = NULL;
+	}
 	
 	if (cGameManager)
 	{
@@ -276,6 +282,8 @@ bool CScene2D::Init(void)
 	cPlayer2D = CPlayer2D::GetInstance();
 	cClone = CClone::GetInstance();
 	cPortal = CPortal::GetInstance();
+	cBlackhole = CBlackhole::GetInstance();
+	
 
 	//Pass  shader to cPlayer2D
 	cPlayer2D->SetShader("2DColorShader");
@@ -305,6 +313,14 @@ bool CScene2D::Init(void)
 		return false;
 	}
 
+	cBlackhole->SetShader("2DColorShader");
+	//Initialise the instance
+	if (cBlackhole->Init() == false)
+	{
+		cout << "Failed to load cBlackhole" << endl;
+		return false;
+	}
+
 	enemyVector.clear();
 
 
@@ -320,6 +336,7 @@ bool CScene2D::Init(void)
 			cEnemy2D->SetPlayer2D(cPlayer2D);
 			cEnemy2D->SetClone2D(cClone);
 			enemyVector.push_back(cEnemy2D);
+			
 		}
 		else
 		{
@@ -390,6 +407,8 @@ void CScene2D::Update(const double dElapsedTime)
 	cClone->Update(dElapsedTime);
 
 	cPortal->Update(dElapsedTime);
+
+	cBlackhole->Update(dElapsedTime);
 
 
 	// Start the Dear ImGui frame
@@ -466,12 +485,13 @@ void CScene2D::Update(const double dElapsedTime)
 		{
 			cMap2D->SetLevel(0);
 			cMap2D->LoadMap("Maps/DM2213_Map_Level_Test.csv") == true;
-			//cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false;
 		}
 		cPlayer2D->ResetMap();
 		cSoundController->PlaySoundByID(9);
 		cGameManager->bGameToRestart = false;
 	}
+
+
 
 	//Check if the game should go to the next level
 	if (cGameManager->bLevelCompleted == true)
@@ -491,31 +511,7 @@ void CScene2D::Update(const double dElapsedTime)
 		//std::cout << "game won" << std::endl;
 	}
 
-	/*if (cMap2D->GetLevel() == 0)
-	{
-		if (LaserTimer >= 5.f)
-		{
-			ResetLaser(0, 6, 19);
-			ResetLaser(1, 18, 11);
-			LaserTimer = 0;
-			blocks_0 = 0;
-			blocks_1 = 0;
-		}
-		else if (LaserTimer >= 3.0f)
-		{	
-			if (LaserFireVertical(12, 19, blocks_0) == false)
-			{
-				LaserFireVertical(12, 19, blocks_0);
-				blocks_0--;
-			}
-			
-			if (LaserFireHorizontal(18, 20, blocks_1) == false)
-			{
-				LaserFireHorizontal(18, 20, blocks_1);
-				blocks_1--;
-			}
-		}
-	}*/
+
 
 	if (cMap2D->GetLevel() == 1)
 	{
@@ -745,6 +741,8 @@ void CScene2D::Render(void)
 		// Call the CEnemy2D's PostRender()
 		cloneVector[i]->PostRender();
 	}
+
+
 	if (cPlayer2D->TimeStop == false) {
 	
 
@@ -800,6 +798,20 @@ void CScene2D::Render(void)
 		cGUI_Scene2D->Render();
 		// Call the cGUI's PostRender()
 		cGUI_Scene2D->PostRender();
+
+
+		//cBullet->PreRender();
+		//cBullet->Render();
+		//cBullet->PostRender();
+
+		if (cPlayer2D->useUltimate == true) {
+			cBlackhole->PreRender();
+			//Call the cPlayer2D's Render()
+			cBlackhole->Render();
+			//Call the CPlayer2D's PostRender()
+			cBlackhole->PostRender();
+		}
+
 
 		if (cPortal->renderPortal == true)
 		{
@@ -861,6 +873,13 @@ void CScene2D::Render(void)
 				// Call the CEnemy2D's PostRender()
 				enemyVector[i]->PostRender();
 			}
+
+
+			cBlackhole->PreRender();
+			//Call the cPlayer2D's Render()
+			cBlackhole->Render();
+			//Call the CPlayer2D's PostRender()
+			cBlackhole->PostRender();
 
 			cPortal->PreRender();
 			//Call the cPlayer2D's Render()
