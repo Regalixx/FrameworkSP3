@@ -101,6 +101,12 @@
     <ClCompile Include="Source\Scene2D\Portal.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\Blackhole.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Bullet.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -182,6 +188,12 @@
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Portal.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Blackhole.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Bullet.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
   </ItemGroup>
