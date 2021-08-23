@@ -8,10 +8,8 @@
 #include <GLFW/glfw3.h>
 
 #include "PlayGameState.h"
-
 // Include CGameStateManager
 #include "GameStateManager.h"
-
 // Include CKeyboardController
 #include "Inputs/KeyboardController.h"
 
@@ -76,12 +74,21 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		// Load the menu state
 		//cout << "Loading MenuState" << endl;
 		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
-		
+		CGameStateManager::GetInstance()->OffPauseGameState();
 		//cGameManager->bPlayerLost = true;
 
 	
 		return true;
 	}
+	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_G))
+	{
+		// Reset the CKeyboardController
+		CKeyboardController::GetInstance()->Reset();
+		// Load the menu state
+		cout << "Loading PauseState" << endl;
+		CGameStateManager::GetInstance()->SetPauseGameState("PauseState");
+	}
+
 	// Call the cScene2D's Update method
 
 	if (cGameManager->bPlayerWon == true)

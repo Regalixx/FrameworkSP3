@@ -200,7 +200,6 @@ bool CPlayer2D::Init(void)
 
 	
 
-
 	//CS: Create the animated sprite and setup the animation
 	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
 		//0.1, 0.13);
@@ -312,259 +311,258 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cInventoryItem->Add(0.1);
 	}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_LEFT) && cInventoryItem->GetCount() > 0)
-	{
-		playerSprinting = true;
-		cInventoryItem = cInventoryManager->GetItem("Stamina");
-		cInventoryItem->Remove(1);
-
-		if (i32vec2Index.x >= 0)
+	
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_LEFT) && cInventoryItem->GetCount() > 0)
 		{
-			i32vec2NumMicroSteps.x -= 2.5;
-			if (i32vec2NumMicroSteps.x < 0)
+			playerSprinting = true;
+			cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+
+			if (i32vec2Index.x >= 0)
 			{
-				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				i32vec2Index.x--;
+				i32vec2NumMicroSteps.x -= 2.5;
+				if (i32vec2NumMicroSteps.x < 0)
+				{
+					i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					i32vec2Index.x--;
+				}
 			}
-		}
 
-		Constraint(LEFT);
+			Constraint(LEFT);
 
-		
-		
-		if (CheckPosition(LEFT) == false)
-		{
 
-			i32vec2NumMicroSteps.x = 0;
-			i32vec2Index = i32vec2OldIndex;
-		}
 
-		if (IsMidAir() == true)
-		{
-			if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-			}
-		}
-
-		//CS: Play the "left" animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
-	}
-
-	// Get keyboard updates
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT))
-	{
-		// Calculate the new position to the left
-		if (i32vec2Index.x >= 0)
-		{
-			i32vec2NumMicroSteps.x--;
-			if (i32vec2NumMicroSteps.x < 0)
+			if (CheckPosition(LEFT) == false)
 			{
-				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				i32vec2Index.x--;
+
+				i32vec2NumMicroSteps.x = 0;
+				i32vec2Index = i32vec2OldIndex;
 			}
-		}
 
-		// Constraint the player's position within the screen boundary
-		Constraint(LEFT);
-
-		// If the new position is not feasible, then revert to old position
-
-		if (CheckPosition(LEFT) == false)
-		{
-				
-			i32vec2NumMicroSteps.x = 0;
-			i32vec2Index = i32vec2OldIndex;
-		}
-		
-
-		// Check if player is in mid-air, such as walking off a platform
-		if (IsMidAir() == true)
-		{
-			if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-			}
-		}
-
-		//CS: Play the "left" animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
-		
-
-		//CS: Change Color
-		//playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
-	}
-
-
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT) && cInventoryItem->GetCount() > 0)
-	{
-		playerSprinting = true;
-		cInventoryItem = cInventoryManager->GetItem("Stamina");
-		cInventoryItem->Remove(1);
-
-		if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-		{
-			i32vec2NumMicroSteps.x += 2;
-
-			if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+			if (IsMidAir() == true)
 			{
-				i32vec2NumMicroSteps.x  = 0;
-
-				i32vec2Index.x++;
+				if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
+					cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+				}
 			}
+
+			//CS: Play the "left" animation
+			animatedSprites->PlayAnimation("left", -1, 1.0f);
 		}
 
-		Constraint(RIGHT);
-
-
-		if (CheckPosition(RIGHT) == false)
+		// Get keyboard updates
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT))
 		{
-			i32vec2NumMicroSteps.x = 0;
-		}
-
-		if (IsMidAir() == true)
-		{
-			if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+			// Calculate the new position to the left
+			if (i32vec2Index.x >= 0)
+			{
+				i32vec2NumMicroSteps.x--;
+				if (i32vec2NumMicroSteps.x < 0)
+				{
+					i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					i32vec2Index.x--;
+				}
 			}
+
+			// Constraint the player's position within the screen boundary
+			Constraint(LEFT);
+
+			// If the new position is not feasible, then revert to old position
+
+			if (CheckPosition(LEFT) == false)
+			{
+
+				i32vec2NumMicroSteps.x = 0;
+				i32vec2Index = i32vec2OldIndex;
+			}
+
+
+			// Check if player is in mid-air, such as walking off a platform
+			if (IsMidAir() == true)
+			{
+				if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
+					cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+				}
+			}
+
+			//CS: Play the "left" animation
+			animatedSprites->PlayAnimation("left", -1, 1.0f);
+
+
+			//CS: Change Color
+			//playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
 		}
 
-		//CS: Play the "left" animation
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
-	}
 
-
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT))
-	{
-		// Calculate the new position to the right
-		if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT) && cInventoryItem->GetCount() > 0)
 		{
-			i32vec2NumMicroSteps.x++;
+			playerSprinting = true;
+			cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
 
-			if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+			if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				i32vec2NumMicroSteps.x += 2;
+
+				if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					i32vec2NumMicroSteps.x = 0;
+
+					i32vec2Index.x++;
+				}
+			}
+
+			Constraint(RIGHT);
+
+
+			if (CheckPosition(RIGHT) == false)
 			{
 				i32vec2NumMicroSteps.x = 0;
-				
-				i32vec2Index.x ++;
 			}
-		}
 
-		// Constraint the player's position within the screen boundary
-		Constraint(RIGHT);
-
-		if (speedboost == true) {
-
-			i32vec2NumMicroSteps.x += 1;
-
-
-		}
-
-
-		// If the new position is not feasible, then revert to old position
-
-		if (CheckPosition(RIGHT) == false)
-		{
-			i32vec2NumMicroSteps.x = 0;
-		}
-		
-		
-
-		// Check if player is in mid-air, such as walking off a platform
-		if (IsMidAir() == true)
-		{
-			if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-			}
-		}
-	
-
-		//CS: Play the "right" animation
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
-	
-
-		//CS: Change Color
-		//playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
-	}
-
-	
-	
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
-	{
-		// Calculate the new position down
-		if (i32vec2Index.y >= 0)
-		{
-			i32vec2NumMicroSteps.y--;
-			if (i32vec2NumMicroSteps.y < 0)
+			if (IsMidAir() == true)
 			{
-				i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-				i32vec2Index.y--;
+				if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
+					cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+				}
 			}
+
+			//CS: Play the "left" animation
+			animatedSprites->PlayAnimation("right", -1, 1.0f);
 		}
 
-		// Constraint the player's position within the screen boundary
-		Constraint(DOWN);
 
-
-		// If the new position is not feasible, then revert to old position
-		if (CheckPosition(DOWN) == false)
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT))
 		{
-			i32vec2Index = i32vec2OldIndex;
-			i32vec2NumMicroSteps.y = 0;
-		}
-
-		//CS: Play the "idle" animation
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
-		
-
-		//CS: Change Color
-		//playerColour = glm::vec4(1.0, 0.0, 1.0, 0.5);
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_SPACE))
-	{
-		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
-		{
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
-			//Play a  sound for jump
-			cSoundController->PlaySoundByID(3);
-			animatedSprites->PlayAnimation("jump", -1, 1.0f);
-		
-
-			if (jumppoweractive == true)
+			// Calculate the new position to the right
+			if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 			{
-				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 10.0f));
+				i32vec2NumMicroSteps.x++;
+
+				if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					i32vec2NumMicroSteps.x = 0;
+
+					i32vec2Index.x++;
+				}
+			}
+
+			// Constraint the player's position within the screen boundary
+			Constraint(RIGHT);
+
+			if (speedboost == true) {
+
+				i32vec2NumMicroSteps.x += 1;
+
+
+			}
+
+
+			// If the new position is not feasible, then revert to old position
+
+			if (CheckPosition(RIGHT) == false)
+			{
+				i32vec2NumMicroSteps.x = 0;
+			}
+
+
+
+			// Check if player is in mid-air, such as walking off a platform
+			if (IsMidAir() == true)
+			{
+				if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP) {
+					cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+				}
+			}
+
+
+			//CS: Play the "right" animation
+			animatedSprites->PlayAnimation("right", -1, 1.0f);
+
+
+			//CS: Change Color
+			//playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
+		}
+
+
+
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
+		{
+			// Calculate the new position down
+			if (i32vec2Index.y >= 0)
+			{
+				i32vec2NumMicroSteps.y--;
+				if (i32vec2NumMicroSteps.y < 0)
+				{
+					i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					i32vec2Index.y--;
+				}
+			}
+
+			// Constraint the player's position within the screen boundary
+			Constraint(DOWN);
+
+
+			// If the new position is not feasible, then revert to old position
+			if (CheckPosition(DOWN) == false)
+			{
+				i32vec2Index = i32vec2OldIndex;
+				i32vec2NumMicroSteps.y = 0;
+			}
+
+			//CS: Play the "idle" animation
+			animatedSprites->PlayAnimation("idle", -1, 1.0f);
+
+
+			//CS: Change Color
+			//playerColour = glm::vec4(1.0, 0.0, 1.0, 0.5);
+		}
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_SPACE))
+		{
+			if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
+			{
+				cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.f));
+				//Play a  sound for jump
+				cSoundController->PlaySoundByID(3);
+				animatedSprites->PlayAnimation("jump", -1, 1.0f);
+
+
+				if (jumppoweractive == true)
+				{
+					cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 2.3f));
+				}
 			}
 		}
-	}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
-	{
-		
-		cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
-	
-		if (canUsepower == true && cInventoryItem->GetCount() > 0)
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
 		{
-			cSoundController->PlaySoundByID(11);
-			TimeStop = true;
-			cInventoryItem->Remove(1);
 
+			cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
+
+			if (canUsepower == true && cInventoryItem->GetCount() > 0)
+			{
+				cSoundController->PlaySoundByID(11);
+				TimeStop = true;
+				cInventoryItem->Remove(1);
+
+			}
+			//cooldownTimer += dElapsedTime
 		}
-		//cooldownTimer += dElapsedTime
-	}
 
 
-
-
-	if (cKeyboardController->IsKeyReleased(GLFW_KEY_C))
-	{
-		cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
-
-		if (canUseClone == true && cInventoryItem->GetCount() > 0)
+		if (cKeyboardController->IsKeyReleased(GLFW_KEY_C))
 		{
-			cSoundController->PlaySoundByID(16);
-			clone = true;
-			canUseClone = false;
-			cPortal->respawnPoint = false;
-			cPortal->renderPortal = false;
-			cInventoryItem->Remove(1);
+			cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
+
+			if (canUseClone == true && cInventoryItem->GetCount() > 0)
+			{
+				cSoundController->PlaySoundByID(16);
+				clone = true;
+				canUseClone = false;
+				cPortal->respawnPoint = false;
+				cPortal->renderPortal = false;
+				cInventoryItem->Remove(1);
 
 		}
 	}
@@ -586,16 +584,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	
 
-
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote) //Teleporting
-	{
-		if (cMap2D->GetLevel() == 2)
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote) //Teleporting
 		{
-			i32vec2Index.x = 30;
-			i32vec2Index.y = 21;
-			i32vec2NumMicroSteps.x = 0;
+			if (cMap2D->GetLevel() == 2)
+			{
+				i32vec2Index.x = 30;
+				i32vec2Index.y = 21;
+				i32vec2NumMicroSteps.x = 0;
+			}
 		}
-	}
+	
+
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_F))
 	{
@@ -919,7 +918,8 @@ void CPlayer2D::IsLiftMoving(double dt)
 	if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x) == 140)
 	{
 		liftTimer -= dt; //countdown timer
-		if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) >= 100)
+		//if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) >= 100)
+		if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) != 100)
 		{
 			if (liftTimer <= 1)
 			{
@@ -947,7 +947,7 @@ bool CPlayer2D::IsLiftSwitchStepped(void)
 	for (int i = 1; i < 8; i++)
 	{
 		//if pressure plate activated reset lift
-		if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 13)
+		if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 14)
 		{
 			//if the right side of player has lift or changedblock, rsets lift block and airblocks
 			if ((cMap2D->GetMapInfo(i32vec2Index.y + i, i32vec2Index.x + 1) == 100) || (cMap2D->GetMapInfo(i32vec2Index.y + i, i32vec2Index.x + 1) == 140))

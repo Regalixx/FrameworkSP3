@@ -11,6 +11,7 @@ CGameStateManager::CGameStateManager(void)
 	: activeGameState(nullptr)
 	, nextGameState(nullptr)
 	, prevGameState(nullptr)
+	, pauseGameState(nullptr)
 {
 }
 
@@ -30,6 +31,7 @@ void CGameStateManager::Destroy(void)
 	activeGameState = nullptr;
 	nextGameState = nullptr;
 	prevGameState = nullptr;
+	pauseGameState = nullptr;
 
 	// Delete all scenes stored and empty the entire map
 	std::map<std::string, CGameStateBase*>::iterator it, end;
@@ -69,6 +71,14 @@ bool CGameStateManager::Update(const double dElapsedTime)
 	{
 		if (activeGameState->Update(dElapsedTime) == false)
 			return false;
+		else
+		{
+			if (pauseGameState)
+			{
+				//cout << "pauseGameState->Update" << endl;
+				pauseGameState->Update(dElapsedTime);
+			}
+		}
 	}
 
 	return true;
@@ -81,6 +91,8 @@ void CGameStateManager::Render(void)
 {
 	if (activeGameState)
 		activeGameState->Render();
+	if (pauseGameState)
+		pauseGameState->Render();
 }
 
 /**
@@ -163,4 +175,39 @@ bool CGameStateManager::SetActiveGameState(const std::string& _name)
 bool CGameStateManager::CheckGameStateExist(const std::string& _name)
 {
 	return GameStateMap.count(_name) != 0;
+}
+
+bool CGameStateManager::SetPauseGameState(const std::string& _name)
+{
+	// Toggle to nullptr if pauseGameState already is in use
+	if (pauseGameState != nullptr)
+	{
+		pauseGameState = nullptr;
+		return true;
+	}
+
+	// Check if this _name does not exists in the map
+	if (!CheckGameStateExist(_name))
+	{
+		// If it does not exist, then unable to proceed
+		cout << "CGameStateManager::SetPauseGameState - scene name does not exists" << endl;
+		return false;
+	}
+
+	// if scene exist, set the next scene pointer to that scene
+	pauseGameState = GameStateMap[_name];
+	// Init the new pause CGameState
+	pauseGameState->Init();
+
+	return true;
+}
+
+bool CGameStateManager::GetPauseGameState()
+{
+	return pauseGameState != nullptr;
+}
+
+void CGameStateManager::OffPauseGameState(void)
+{
+	pauseGameState = nullptr;
 }

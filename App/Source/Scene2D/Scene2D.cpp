@@ -395,18 +395,25 @@ bool CScene2D::Init(void)
 */
 void CScene2D::Update(const double dElapsedTime)
 {
-	if (cPlayer2D->TimeStop != true)
+
+	//pausing game
+	if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
 	{
-		LaserTimer += dElapsedTime;
-		//cout << LaserTimer << endl;
-	}
+		//Call the cPlayer2D's update method
+		cPlayer2D->Update(dElapsedTime);
 
-	//Call the cPlayer2D's update method
-	cPlayer2D->Update(dElapsedTime);
+		if (cPlayer2D->TimeStop != true)
+		{
+			LaserTimer += dElapsedTime;
+			//cout << LaserTimer << endl;
+		}
 
-	cClone->Update(dElapsedTime);
+		////Call the cPlayer2D's update method
+		//cPlayer2D->Update(dElapsedTime);
 
-	cPortal->Update(dElapsedTime);
+		cClone->Update(dElapsedTime);
+
+		cPortal->Update(dElapsedTime);
 
 	cBlackhole->Update(dElapsedTime);
 
@@ -415,23 +422,24 @@ void CScene2D::Update(const double dElapsedTime)
 
 
 	// Start the Dear ImGui frame
+		// Start the Dear ImGui frame
 
-	//Call all the cEnemy2D's update method before Map2D
-	// as we want to capture the updates before map2D update
-	for (int i = 0; i < enemyVector.size(); i++)
-	{
-		enemyVector[i]->Update(dElapsedTime);
-	}
+		//Call all the cEnemy2D's update method before Map2D
+		// as we want to capture the updates before map2D update
+		for (int i = 0; i < enemyVector.size(); i++)
+		{
+			enemyVector[i]->Update(dElapsedTime);
+		}
 
-	for (int i = 0; i < enemyVector2.size(); i++)
-	{
-		enemyVector2[i]->Update(dElapsedTime);
-	}
+		for (int i = 0; i < enemyVector2.size(); i++)
+		{
+			enemyVector2[i]->Update(dElapsedTime);
+		}
 
-	for (int i = 0; i < enemyVector3.size(); i++)
-	{
-		enemyVector3[i]->Update(dElapsedTime);
-	}
+		for (int i = 0; i < enemyVector3.size(); i++)
+		{
+			enemyVector3[i]->Update(dElapsedTime);
+		}
 
 	for (int i = 0; i < cloneVector.size(); i++)
 	{
@@ -587,48 +595,51 @@ void CScene2D::Update(const double dElapsedTime)
 				break;
 			}
 		}
-		if (LaserTimer >= 5.f)
+		if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
 		{
-			//ResetLaser(0, 6, 19);
-			//ResetLaser(1, 18, 11);
-			//Vertical
-			ResetLaser(0, 20, 13);
-			ResetLaser(0, 20, 16);
-			ResetLaser(0, 20, 19);
-			ResetLaser(0, 4, 13);
-			ResetLaser(0, 4, 16);
-			ResetLaser(0, 4, 19);
-			//Horizontal
-			ResetLaser(1, 20, 2);
-			ResetLaser(1, 16, 2);
-			ResetLaser(1, 12, 2);
-			ResetLaser(1, 8, 2);
-			LaserTimer = 0;
-			blocks_0 = 0;
-			blocks_1 = 0;
-		}
-		else if (LaserTimer >= 3.0f)
-		{
-			if (LaserFireVertical(21, 13, blocks_0) == false)
+			if (LaserTimer >= 5.f)
 			{
-				cSoundController->PlaySoundByID(18);
-				LaserFireVertical(21, 13, blocks_0);
-				LaserFireVertical(21, 16, blocks_0);
-				LaserFireVertical(21, 19, blocks_0);
-				LaserFireVertical(5, 13, blocks_0);
-				LaserFireVertical(5, 16, blocks_0);
-				LaserFireVertical(5, 19, blocks_0);
-				blocks_0--;
+				//ResetLaser(0, 6, 19);
+				//ResetLaser(1, 18, 11);
+				//Vertical
+				ResetLaser(0, 20, 13);
+				ResetLaser(0, 20, 16);
+				ResetLaser(0, 20, 19);
+				ResetLaser(0, 4, 13);
+				ResetLaser(0, 4, 16);
+				ResetLaser(0, 4, 19);
+				//Horizontal
+				ResetLaser(1, 20, 2);
+				ResetLaser(1, 16, 2);
+				ResetLaser(1, 12, 2);
+				ResetLaser(1, 8, 2);
+				LaserTimer = 0;
+				blocks_0 = 0;
+				blocks_1 = 0;
 			}
-
-			if (LaserFireHorizontal(20, 2, blocks_1) == false)
+			else if (LaserTimer >= 3.0f)
 			{
-				cSoundController->PlaySoundByID(18);
-				LaserFireHorizontal(20, 2, blocks_1);
-				LaserFireHorizontal(16, 2, blocks_1);
-				LaserFireHorizontal(12, 2, blocks_1);
-				LaserFireHorizontal(8, 2, blocks_1);
-				blocks_1++;
+				if (LaserFireVertical(21, 13, blocks_0) == false)
+				{
+					cSoundController->PlaySoundByID(18);
+					LaserFireVertical(21, 13, blocks_0);
+					LaserFireVertical(21, 16, blocks_0);
+					LaserFireVertical(21, 19, blocks_0);
+					LaserFireVertical(5, 13, blocks_0);
+					LaserFireVertical(5, 16, blocks_0);
+					LaserFireVertical(5, 19, blocks_0);
+					blocks_0--;
+				}
+
+				if (LaserFireHorizontal(20, 2, blocks_1) == false)
+				{
+					cSoundController->PlaySoundByID(18);
+					LaserFireHorizontal(20, 2, blocks_1);
+					LaserFireHorizontal(16, 2, blocks_1);
+					LaserFireHorizontal(12, 2, blocks_1);
+					LaserFireHorizontal(8, 2, blocks_1);
+					blocks_1++;
+				}
 			}
 		}
 	}

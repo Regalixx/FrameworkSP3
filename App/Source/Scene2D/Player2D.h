@@ -54,7 +54,6 @@ class CPortal;
 #include "GameManager.h"
 #include "../SoundController/SoundController.h"
 
-
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
