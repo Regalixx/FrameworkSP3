@@ -314,8 +314,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cInventoryItem->Add(0.1);
 	}
 
-	//if (CPauseState->pause == false)
-	{
+	
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && cKeyboardController->IsKeyDown(GLFW_KEY_LEFT) && cInventoryItem->GetCount() > 0)
 		{
 			playerSprinting = true;
@@ -597,17 +596,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 				i32vec2NumMicroSteps.x = 0;
 			}
 		}
-	}
-
 	
-	//if (CPauseState->pause == true)
-	//{
-	//	cout << "paused" << endl;
-	//	/*if (cKeyboardController->IsKeyReleased(GLFW_KEY_F))
-	//	{
-	//		pause = false;
-	//	}*/
-	//}
+
+
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_F))
 	{
 		Shoot(i32vec2Index.y, i32vec2Index.x, isRight);

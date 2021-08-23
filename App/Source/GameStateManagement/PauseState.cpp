@@ -72,7 +72,6 @@ bool CPauseState::Init(void)
 	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton.png";
 	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);
 
-	pause = true;
 	return true;
 }
 

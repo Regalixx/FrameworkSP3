@@ -39,7 +39,6 @@ public:
 	// Destroy this class instance
 	virtual void Destroy(void);
 
-	bool pause;
 protected:
 	struct ButtonData
 	{

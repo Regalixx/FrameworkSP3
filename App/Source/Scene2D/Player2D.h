@@ -53,7 +53,6 @@ class CPortal;
 
 #include "GameManager.h"
 #include "../SoundController/SoundController.h"
-#include "..\GameStateManagement\PauseState.h"
 
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
@@ -151,9 +150,6 @@ protected:
 	CInventoryItem* cInventoryItem;
 
 	CGameManager* cGameManager;
-
-	CPauseState* CPauseState;
-	
 
 
 	//Handler to the CSoundController
