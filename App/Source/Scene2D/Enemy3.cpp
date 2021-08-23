@@ -135,7 +135,7 @@ bool CEnemy3::Init(void)
 
 
 	cInventoryManager = CInventoryManager::GetInstance();
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(22, 4,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 22,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	animatedSprites->AddAnimation("idle", 0, 9);
