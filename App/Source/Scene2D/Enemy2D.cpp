@@ -233,7 +233,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			// Patrol around
 			// Update the Enemy2D's position for patrol
 			if (cPlayer2D->TimeStop == false || cPlayer2D->useUltimate == false) {
-				//UpdatePosition();
+				UpdatePosition();
 				cSoundController->PlaySoundByID(13);
 			}
 		}
@@ -275,6 +275,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 							i32vec2Destination = coord;
 						}
 						else
+							
 							break;
 				}
 			}
@@ -316,6 +317,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 					else
 						break;
 				}
+				
 			}
 		}
 			/*cout << "===Printing out the path ===" << endl;*/
@@ -327,7 +329,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			//system("pause");
 
 			//Calcu
-			//UpdateDirection();
+			
 
 			// Update the Enemy2D's position for attack
 			

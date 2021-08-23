@@ -212,14 +212,10 @@ void CEnemy3::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case PATROL:
-		if (iFSMCounter > iMaxFSMCounter)
+		
+		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f)
 		{
-			sCurrentFSM = RAGE;
-			iFSMCounter = 0;
-		}
-		else if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
-		{
-			sCurrentFSM = ATTACK;
+			sCurrentFSM = SHOOT;
 			iFSMCounter = 0;
 		}
 		else
@@ -229,96 +225,14 @@ void CEnemy3::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
-	case RAGE:
-		
-		rageColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
-		iMaxFSMCounter = 150;
 
-		
-		
-		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f && sCurrentFSM == RAGE)
+
+	case SHOOT:
+		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && cPlayer2D->i32vec2Index.y == this->i32vec2Index.y)
 		{
-			auto path = cMap2D->PathFind(i32vec2Index,
-				cPlayer2D->i32vec2Index,
-				heuristic::euclidean,
-				10);
+			Shoot(this->i32vec2Index.x, i32vec2Index.y, dir);
 
-			/*cout << "===Printing out the path ===" << endl;*/
-
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				if (bFirstPosition == true)
-				{
-					//Set a destination
-					i32vec2Destination = coord;
-					//Calculate the direction between enemy2D and this destiination
-					i32vec2Direction = i32vec2Destination - i32vec2Index;
-					bFirstPosition = false;
-				}
-				else
-				{
-					if ((coord - i32vec2Destination) == i32vec2Direction)
-					{
-						//Set a destination
-						i32vec2Destination = coord;
-					}
-					else
-						break;
-				}
-			}
-		}
-		else 
-		{
-			if (iFSMCounter > iMaxFSMCounter)
-			{
-				std::cout << "quitting" << std::endl;
-				playerStunned = false;
-				sCurrentFSM = PATROL;
-				rageColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-				iFSMCounter = 0;
-				iMaxFSMCounter = 90;
-
-			}
-			iFSMCounter++;
-		
-		}
-		UpdatePosition();
-		break;
-
-	case ATTACK:
-		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f) && sCurrentFSM != RAGE)
-		{
-			auto path = cMap2D->PathFind(i32vec2Index,
-				cPlayer2D->i32vec2Index,
-				heuristic::euclidean,
-				10);
-
-			/*cout << "===Printing out the path ===" << endl;*/
-
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				//std::cout << coord.x << "," << coord.y << "\n";
-				if (bFirstPosition == true)
-				{
-					//Set a destination
-					i32vec2Destination = coord;
-					//Calculate the direction between enemy2D and this destiination
-					i32vec2Direction = i32vec2Destination - i32vec2Index;
-					bFirstPosition = false;
-				}
-				else
-				{
-					if ((coord - i32vec2Destination) == i32vec2Direction)
-					{
-						//Set a destination
-						i32vec2Destination = coord;
-					}
-					else
-						break;
-				}
-			}
+			cout << "Pew Pew " << endl;
 		}
 		else
 		{
@@ -793,16 +707,6 @@ bool CEnemy3::InteractWithPlayer(void)
 		//cout << "Gotcha!" << endl;
 
 		cInventoryItem = cInventoryManager->GetItem("Health");
-		if (sCurrentFSM == RAGE)
-		{
-			cInventoryItem->Remove(40);
-			playerStunned = true;
-		}
-
-		else {
-			cInventoryItem->Remove(25);
-		}
-		
 
 		// Since the player has been caught, then reset the FSM
 		sCurrentFSM = IDLE;
@@ -846,6 +750,7 @@ void CEnemy3::UpdateDirection(void)
 void CEnemy3::FlipHorizontalDirection(void)
 {
 	i32vec2Direction.x *= -1;
+	dir = !dir;
 }
 
 /**

@@ -1572,8 +1572,6 @@ bool CPlayer2D::Shoot(float y, float x, bool isRight)
 
 	cBullet2D->SetShader("2DColorShader");
 
-	
-
 	if (cBullet2D->Init() == true)
 	{
 		cBullet2D->Seti32vec2Index(this->i32vec2Index.x, i32vec2Index.y);

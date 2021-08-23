@@ -344,9 +344,6 @@ void CBullet::Update(const double dElapsedTime)
 
 	UpdatePosition();
 
-	cout << vec2UVCoordinate.x << endl;
-//	cout << vec2UVCoordinate.y << endl;
-
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, i32vec2Index.x, false, i32vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, i32vec2Index.y, false, i32vec2NumMicroSteps.y*cSettings->MICRO_STEP_YAXIS);
 
@@ -872,6 +869,12 @@ void CBullet::UpdatePosition(void)
 
 	// Store the old position
 	i32vec2OldIndex = i32vec2Index;
+
+	if ((cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100) ||
+		(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) >= 100))
+	{
+		bIsActive = false;
+	}
 
 	// if the player is to the left or right of the enemy2D, then jump to attack
 	if (i32vec2Direction.x < 0 && CheckPosition(LEFT) == true)

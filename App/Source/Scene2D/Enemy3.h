@@ -85,6 +85,9 @@ public:
 	bool bIsActive;
 
 	bool StunPlayer;
+
+	bool dir; 
+
 	bool isBleeding;
 
 	bool canStunPlayer;
@@ -109,8 +112,7 @@ protected:
 	{
 		IDLE = 0,
 		PATROL = 1,
-		RAGE = 2,
-		ATTACK = 3,
+		SHOOT = 2,
 		NUM_FSM
 	};
 
