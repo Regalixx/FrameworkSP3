@@ -524,7 +524,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 			//Play a  sound for jump
 			cSoundController->PlaySoundByID(3);
 			animatedSprites->PlayAnimation("jump", -1, 1.0f);
@@ -532,7 +532,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			if (jumppoweractive == true)
 			{
-				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 2.3f));
+				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 10.0f));
 			}
 		}
 	}

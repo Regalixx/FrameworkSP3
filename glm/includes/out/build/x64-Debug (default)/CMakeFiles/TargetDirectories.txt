@@ -1,0 +1,4 @@
+C:/Users/Bennett/Desktop/StudioProject3/glm/includes/out/build/x64-Debug (default)/CMakeFiles/edit_cache.dir
+C:/Users/Bennett/Desktop/StudioProject3/glm/includes/out/build/x64-Debug (default)/CMakeFiles/glm_static.dir
+C:/Users/Bennett/Desktop/StudioProject3/glm/includes/out/build/x64-Debug (default)/CMakeFiles/glm_shared.dir
+C:/Users/Bennett/Desktop/StudioProject3/glm/includes/out/build/x64-Debug (default)/CMakeFiles/rebuild_cache.dir
