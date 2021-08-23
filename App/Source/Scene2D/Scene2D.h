@@ -38,13 +38,15 @@
 
 #include "Primitives/Entity2D.h"
 
-
+#include "Bullet.h"
 
 //Include SoundController
 #include "..\SoundController\SoundController.h"
 
 //Include CEnemey2D
 #include "Enemy2D.h"
+
+#include "Bullet.h"
 
 
 #include "../GameStateManagement/GameStateManager.h"
@@ -62,6 +64,8 @@
 #include "Clone.h"
 
 #include "Portal.h"
+
+#include "Blackhole.h"
 
 
 struct GUI
@@ -103,6 +107,9 @@ protected:
 	CClone* cClone; 
 
 	CPortal* cPortal;
+	CBullet* cBullet;
+
+	CBlackhole* cBlackhole;
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 

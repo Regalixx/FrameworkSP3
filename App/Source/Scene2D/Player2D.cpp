@@ -147,6 +147,7 @@ bool CPlayer2D::Init(void)
 	switchesActivated = 0;
 	fallTimer = 3;
 	liftTimer = 2;
+	ultimateDuration = 0;
 	
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
@@ -191,8 +192,12 @@ bool CPlayer2D::Init(void)
 	TimeStop = false;
 	canUsepower = true;
 	canUseClone = true;
+	canUseUltimate = true;
 	clone = false;
 	respawn = true;
+	resetEnemyPos = false;
+	useUltimate = false;
+
 	
 
 
@@ -239,6 +244,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		CGameManager::GetInstance()->bGameToRestart = true;
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
+		std::cout << "hello" << std::endl;
 		//cSoundController->PlaySoundByID(9);
 	}
 
@@ -285,6 +291,19 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	}
 
+
+	if (useUltimate == true)
+	{
+ 		ultimateDuration += dElapsedTime;
+	}
+
+	if (ultimateDuration >= 4)
+	{
+		useUltimate = false;
+		canUseUltimate = true;
+		resetEnemyPos = true;
+		ultimateDuration = 0;
+	}
 	
 	playerSprinting = false;
 
@@ -534,6 +553,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 
+
+
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_C))
 	{
 		cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
@@ -549,6 +570,22 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		}
 	}
+
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_U))
+	{
+
+		cInventoryItem = cInventoryManager->GetItem("Ultimate");
+
+		if (canUseUltimate == true && cInventoryItem->GetCount() >= 100)
+		{
+			cSoundController->PlaySoundByID(11);
+			useUltimate = true;
+			canUseUltimate = false;
+			cInventoryItem->Remove(100);
+
+		}
+		//cooldownTimer += dElapsedTime
+	}
 	
 
 
@@ -562,7 +599,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_F))
+	{
+		Shoot(i32vec2Index.y, i32vec2Index.x, isRight);
+	}
 	
 
 	if (IsMidAir() == true)
@@ -1109,35 +1149,43 @@ void CPlayer2D::dimensionchange()
 bool CPlayer2D::ResetMap()
 {
 
-	pitfallReset = false;
-	clone == false;
 
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
 
+
+	//cMap2D->SetMapInfo(uiRow, uiCol, 0);
+	// Erase the value of the player in the arrMapInfo
+
+	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
+		return false;
+
+	pitfallReset = false;
+	clone == false;
+
+
+
 	if (cPortal->respawnPoint == true) {
-		std::cout << "hello" << std::endl;
+			std::cout << "hello" << std::endl;
+	
 		i32vec2Index = cPortal->i32vec2RespawnIndex;
 	}
 
 	else if (clone == false) {
+		std::cout << "hello2" << std::endl;
 		i32vec2Index = glm::i32vec2(uiCol, uiRow);
+		//std::cout << i32vec2Index.x << std::endl;
 		std::cout << i32vec2Index.y << std::endl;
 	}
+
+	    // Unable to find the start position of the player, so quit this game
+
+
 	
-	
-	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
-		return false;    // Unable to find the start position of the player, so quit this game
-
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
-	//i32vec2Index = glm::i32vec2(uiCol, uiRow);
-
 	// Set the start position of the Player to iRow and iCol
 //	i32vec2Index = glm::i32vec2(uiCol, uiRow);
 
-	
+
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
@@ -1153,6 +1201,9 @@ bool CPlayer2D::ResetMap()
 
 	//CS: Init the color to white
 	playerColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+
+
 
 
 }
@@ -1516,4 +1567,28 @@ void CPlayer2D::UpdateHealthLives(void)
 	}
 
 	
+}
+
+bool CPlayer2D::Shoot(float y, float x, bool isRight)
+{
+	if (isRight)
+	{
+		cMap2D->SetMapInfo(i32vec2Index.y + 1, i32vec2Index.x, 19);
+	}
+	CBullet* cBullet2D = new CBullet();
+
+	cBullet2D->SetShader("2DColorShader");
+	//Initialise the instance
+	/*
+	if (cBullet2D->Init() == true)
+	{
+		enemyVector2.push_back(cBullet2D);
+	}
+	*/
+
+	if (cBullet2D->Init() == false)
+	{
+		cout << "Piece of shit not loading" << endl;
+	}
+	return false;
 }

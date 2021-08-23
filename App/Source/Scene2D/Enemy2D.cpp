@@ -37,9 +37,11 @@ CEnemy2D::CEnemy2D(void)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
 	, cClone(NULL)
+	, cBlackhole(NULL)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 	, animatedSprites(NULL)
+	
 {
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
 
@@ -75,6 +77,8 @@ CEnemy2D::~CEnemy2D(void)
 
 	cClone = NULL;
 
+	cBlackhole = NULL;
+
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -88,7 +92,7 @@ bool CEnemy2D::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
-
+	
 
 	//create monster 2D CLASS
 	//derive from Enemy 2D
@@ -114,6 +118,8 @@ bool CEnemy2D::Init(void)
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
+	originalVector = i32vec2Index;
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -136,6 +142,7 @@ bool CEnemy2D::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 	
+	cBlackhole = CBlackhole::GetInstance();
 
 	cInventoryManager = CInventoryManager::GetInstance();
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 6,
@@ -161,6 +168,21 @@ bool CEnemy2D::Init(void)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
+
+	if (cPlayer2D->useUltimate == true) 
+	{
+		std::cout << "activated" << std::endl;
+		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x+=1, cBlackhole->i32vec2RespawnIndex.y);
+	}
+
+	
+	if (cPlayer2D->resetEnemyPos == true)
+	{
+	
+		ResetEnemyPos();
+
+	}
+
 	if (!bIsActive)
 		return;
 
@@ -179,7 +201,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case IDLE:
-		if (iFSMCounter > iMaxFSMCounter)
+		
+
+		if (iFSMCounter > iMaxFSMCounter && cPlayer2D->useUltimate == false)
 		{
 			sCurrentFSM = PATROL;
 			iFSMCounter = 0;
@@ -194,12 +218,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			//cout << "Switching to Idle State" << endl;
 		}
-		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
+		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f && cPlayer2D->useUltimate == false)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
 		}
-		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
+		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f && cPlayer2D->useUltimate == false)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
@@ -208,7 +232,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			// Patrol around
 			// Update the Enemy2D's position for patrol
-			if (cPlayer2D->TimeStop == false) {
+			if (cPlayer2D->TimeStop == false || cPlayer2D->useUltimate == false) {
 				UpdatePosition();
 				cSoundController->PlaySoundByID(13);
 			}
@@ -216,7 +240,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case ATTACK:
-		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f))
+		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f) && cPlayer2D->useUltimate == false)
 		{
 		
 			//std::cout << "test" << std::endl;
@@ -255,7 +279,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f))
+		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f) && cPlayer2D->useUltimate == false)
 		{
 
 			//std::cout << "test" << std::endl;
@@ -318,7 +342,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		if (cPlayer2D->TimeStop == false) {
+		if (cPlayer2D->TimeStop == false || cPlayer2D->useUltimate == false) {
 			UpdatePosition();
 		}
 		break;
@@ -393,7 +417,7 @@ void CEnemy2D::Render(void)
 }
 
 /**
- @brief PostRender Set up the OpenGL display environment after rendering.
+ @brief PostRender Set up the OpenGL display environment after rendering. 
  */
 void CEnemy2D::PostRender(void)
 {
@@ -402,6 +426,14 @@ void CEnemy2D::PostRender(void)
 
 	// Disable blending
 	glDisable(GL_BLEND);
+}
+
+bool CEnemy2D::ResetEnemyPos()
+{
+	i32vec2Index = originalVector;
+	i32vec2NumMicroSteps.x = 0;
+	
+	return true;
 }
 
 /**
