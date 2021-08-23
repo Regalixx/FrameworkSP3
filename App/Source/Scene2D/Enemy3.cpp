@@ -120,7 +120,7 @@ bool CEnemy3::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	if (LoadTexture("Image/enemy2.tga", iTextureID) == false)
+	if (LoadTexture("Image/Enemy3.png", iTextureID) == false)
 	{
 		std::cout << "Failed to load enemy2D tile texture" << std::endl;
 		return false;
@@ -135,12 +135,13 @@ bool CEnemy3::Init(void)
 
 
 	cInventoryManager = CInventoryManager::GetInstance();
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 3,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(22, 4,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	animatedSprites->AddAnimation("idle", 0, 2);
-	animatedSprites->AddAnimation("left", 3, 5);
-	animatedSprites->AddAnimation("right", 6, 8);
+	animatedSprites->AddAnimation("idle", 0, 9);
+	animatedSprites->AddAnimation("left", 22, 32);
+	animatedSprites->AddAnimation("right", 44, 54);
+	animatedSprites->AddAnimation("attack", 66, 87);
 	//CS: Play the "idle animation as default
 	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
