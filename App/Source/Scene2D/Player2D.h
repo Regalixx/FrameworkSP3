@@ -53,7 +53,7 @@ class CPortal;
 
 #include "GameManager.h"
 #include "../SoundController/SoundController.h"
-
+#include "..\GameStateManagement\PauseState.h"
 
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
@@ -152,7 +152,7 @@ protected:
 
 	CGameManager* cGameManager;
 
-	
+	CPauseState* CPauseState;
 	
 
 
