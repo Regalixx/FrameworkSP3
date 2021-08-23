@@ -40,14 +40,14 @@ class CMap2D;
 
 
 
-class CEnemy2D : public CEntity2D
+class CBullet : public CEntity2D
 {
 public:
 	// Constructor
-	CEnemy2D(void);
+	CBullet(void);
 
 	// Destructor
-	virtual ~CEnemy2D(void);
+	virtual ~CBullet(void);
 
 	// Init
 	bool Init(void);

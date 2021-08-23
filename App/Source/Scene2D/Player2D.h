@@ -47,16 +47,12 @@ class CPortal;
 #include "InventoryManager.h"
 
 
-
+//#include "Bullet.h"
 
 #include "InventoryItem.h"
 
 #include "GameManager.h"
 #include "../SoundController/SoundController.h"
-
-
-
-
 
 
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
@@ -224,5 +220,8 @@ protected:
 	void InteractWithMap(void);
 
 	void UpdateHealthLives(void);
+
+	bool isRight = true;
+	bool Shoot(float y, float x, bool isRight);
 };
 

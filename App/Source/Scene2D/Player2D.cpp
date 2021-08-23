@@ -294,15 +294,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (useUltimate == true)
 	{
-		ultimateDuration += dElapsedTime;
+ 		ultimateDuration += dElapsedTime;
 	}
 
 	if (ultimateDuration >= 4)
 	{
-		ultimateDuration = 0;
 		useUltimate = false;
 		canUseUltimate = true;
 		resetEnemyPos = true;
+		ultimateDuration = 0;
 	}
 	
 	playerSprinting = false;
@@ -599,7 +599,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_F))
+	{
+		Shoot(i32vec2Index.y, i32vec2Index.x, isRight);
+	}
 	
 
 	if (IsMidAir() == true)
@@ -1564,4 +1567,28 @@ void CPlayer2D::UpdateHealthLives(void)
 	}
 
 	
+}
+
+bool CPlayer2D::Shoot(float y, float x, bool isRight)
+{
+	if (isRight)
+	{
+		cMap2D->SetMapInfo(i32vec2Index.y + 1, i32vec2Index.x, 19);
+	}
+	CBullet* cBullet2D = new CBullet();
+
+	cBullet2D->SetShader("2DColorShader");
+	//Initialise the instance
+	/*
+	if (cBullet2D->Init() == true)
+	{
+		enemyVector2.push_back(cBullet2D);
+	}
+	*/
+
+	if (cBullet2D->Init() == false)
+	{
+		cout << "Piece of shit not loading" << endl;
+	}
+	return false;
 }

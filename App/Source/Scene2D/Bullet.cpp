@@ -1,9 +1,9 @@
 /**
- CEnemy2D
+ CBullet
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "Enemy2D.h"
+#include "Bullet.h"
 
 #include <iostream>
 using namespace std;
@@ -31,7 +31,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CEnemy2D::CEnemy2D(void)
+CBullet::CBullet(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
@@ -61,7 +61,7 @@ CEnemy2D::CEnemy2D(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CEnemy2D::~CEnemy2D(void)
+CBullet::~CBullet(void)
 {
 
 	if (animatedSprites)
@@ -88,7 +88,7 @@ CEnemy2D::~CEnemy2D(void)
 /**
   @brief Initialise this instance
   */
-bool CEnemy2D::Init(void)
+bool CBullet::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -100,23 +100,23 @@ bool CEnemy2D::Init(void)
 	//override update function
 
 	// Get the handler to the CMap2D instance
-	cMap2D = CMap2D::GetInstance();
-	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(300, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
-	
-	//if (cMap2D->FindValue(301, uiRow, uiCol) == false)
+	//cMap2D = CMap2D::GetInstance();
+	//// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
+	//unsigned int uiRow = -1;
+	//unsigned int uiCol = -1;
+	//if (cMap2D->FindValue(19, uiRow, uiCol) == false)
 	//	return false;	// Unable to find the start position of the player, so quit this game
+	//
+	////if (cMap2D->FindValue(301, uiRow, uiCol) == false)
+	////	return false;	// Unable to find the start position of the player, so quit this game
 
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
+	//// Erase the value of the player in the arrMapInfo
+	//cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
-	// Set the start position of the Player to iRow and iCol
-	i32vec2Index = glm::i32vec2(uiCol, uiRow);
-	// By default, microsteps should be zero
-	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+	//// Set the start position of the Player to iRow and iCol
+	//i32vec2Index = glm::i32vec2(uiCol, uiRow);
+	//// By default, microsteps should be zero
+	//i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
 	originalVector = i32vec2Index;
 
@@ -127,7 +127,7 @@ bool CEnemy2D::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	if (LoadTexture("Image/_simenemy.png", iTextureID) == false)
+	if (LoadTexture("Image/BulletTest.png", iTextureID) == false)
 	{
 		std::cout << "Failed to load enemy2D tile texture" << std::endl;
 		return false;
@@ -166,7 +166,7 @@ bool CEnemy2D::Init(void)
 /**
  @brief Update this instance
  */
-void CEnemy2D::Update(const double dElapsedTime)
+void CBullet::Update(const double dElapsedTime)
 {
 
 	if (cPlayer2D->useUltimate == true) 
@@ -365,7 +365,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CEnemy2D::PreRender(void)
+void CBullet::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -384,7 +384,7 @@ void CEnemy2D::PreRender(void)
 /**
  @brief Render this instance
  */
-void CEnemy2D::Render(void)
+void CBullet::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -417,9 +417,9 @@ void CEnemy2D::Render(void)
 }
 
 /**
- @brief PostRender Set up the OpenGL display environment after rendering. 
+ @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CEnemy2D::PostRender(void)
+void CBullet::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -428,7 +428,7 @@ void CEnemy2D::PostRender(void)
 	glDisable(GL_BLEND);
 }
 
-bool CEnemy2D::ResetEnemyPos()
+bool CBullet::ResetEnemyPos()
 {
 	i32vec2Index = originalVector;
 	i32vec2NumMicroSteps.x = 0;
@@ -441,7 +441,7 @@ bool CEnemy2D::ResetEnemyPos()
 @param iIndex_XAxis A const int variable which stores the index in the x-axis
 @param iIndex_YAxis A const int variable which stores the index in the y-axis
 */
-void CEnemy2D::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
+void CBullet::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
 {
 	this->i32vec2Index.x = iIndex_XAxis;
 	this->i32vec2Index.y = iIndex_YAxis;
@@ -452,7 +452,7 @@ void CEnemy2D::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
 @param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
 @param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
 */
-void CEnemy2D::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
+void CBullet::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
 {
 	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
 	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
@@ -462,7 +462,7 @@ void CEnemy2D::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int
  @brief Set the handle to cPlayer to this class instancef
  @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
  */
-void CEnemy2D::SetPlayer2D(CPlayer2D* cPlayer2D)
+void CBullet::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
 
@@ -470,7 +470,7 @@ void CEnemy2D::SetPlayer2D(CPlayer2D* cPlayer2D)
 	UpdateDirection();
 }
 
-void CEnemy2D::SetClone2D(CClone* cClone)
+void CBullet::SetClone2D(CClone* cClone)
 {
 	this->cClone = cClone;
 
@@ -483,7 +483,7 @@ void CEnemy2D::SetClone2D(CClone* cClone)
 @brief Load a texture, assign it a code and store it in MapOfTextureIDs.
 @param filename A const char* variable which contains the file name of the texture
 */
-bool CEnemy2D::LoadTexture(const char* filename, GLuint& iTextureID)
+bool CBullet::LoadTexture(const char* filename, GLuint& iTextureID)
 {
 	// Variables used in loading the texture
 	int width, height, nrChannels;
@@ -525,7 +525,7 @@ bool CEnemy2D::LoadTexture(const char* filename, GLuint& iTextureID)
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-void CEnemy2D::Constraint(DIRECTION eDirection)
+void CBullet::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -561,7 +561,7 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
 	}
 	else
 	{
-		cout << "CEnemy2D::Constraint: Unknown direction." << endl;
+		cout << "CBullet::Constraint: Unknown direction." << endl;
 	}
 }
 
@@ -569,7 +569,7 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
  @brief Check if a position is possible to move into
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool CEnemy2D::CheckPosition(DIRECTION eDirection)
+bool CBullet::CheckPosition(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -683,7 +683,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 }
 
 // Check if the enemy2D is in mid-air
-bool CEnemy2D::IsMidAir(void)
+bool CBullet::IsMidAir(void)
 {
 	// if the player is at the bottom row, then he is not in mid-air for sure
 	if (i32vec2Index.y == 0)
@@ -700,7 +700,7 @@ bool CEnemy2D::IsMidAir(void)
 }
 
 // Update Jump or Fall
-void CEnemy2D::UpdateJumpFall(const double dElapsedTime)
+void CBullet::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
 	{
@@ -809,7 +809,7 @@ void CEnemy2D::UpdateJumpFall(const double dElapsedTime)
 /**
  @brief Let enemy2D interact with the player.
  */
-bool CEnemy2D::InteractWithPlayer(void)
+bool CBullet::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->i32vec2Index;
 	
@@ -839,7 +839,7 @@ bool CEnemy2D::InteractWithPlayer(void)
 /**
  @brief Update the enemy's direction.
  */
-void CEnemy2D::UpdateDirection(void)
+void CBullet::UpdateDirection(void)
 {
 	// Set the destination to the player
 	i32vec2Destination = cPlayer2D->i32vec2Index;
@@ -866,7 +866,7 @@ void CEnemy2D::UpdateDirection(void)
 /**
  @brief Flip horizontal direction. For patrol use only
  */
-void CEnemy2D::FlipHorizontalDirection(void)
+void CBullet::FlipHorizontalDirection(void)
 {
 	i32vec2Direction.x *= -1;
 }
@@ -874,7 +874,7 @@ void CEnemy2D::FlipHorizontalDirection(void)
 /**
 @brief Update position.
 */
-void CEnemy2D::UpdatePosition(void)
+void CBullet::UpdatePosition(void)
 {
 
 	// Store the old position

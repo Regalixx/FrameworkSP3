@@ -286,6 +286,7 @@ bool CScene2D::Init(void)
 	cClone = CClone::GetInstance();
 	cPortal = CPortal::GetInstance();
 	cBlackhole = CBlackhole::GetInstance();
+	
 
 	//Pass  shader to cPlayer2D
 	cPlayer2D->SetShader("2DColorShader");
@@ -492,6 +493,8 @@ void CScene2D::Update(const double dElapsedTime)
 		cSoundController->PlaySoundByID(9);
 		cGameManager->bGameToRestart = false;
 	}
+
+
 
 	//Check if the game should go to the next level
 	if (cGameManager->bLevelCompleted == true)
@@ -777,6 +780,10 @@ void CScene2D::Render(void)
 		// Call the cGUI's PostRender()
 		cGUI_Scene2D->PostRender();
 
+
+		//cBullet->PreRender();
+		//cBullet->Render();
+		//cBullet->PostRender();
 
 		if (cPlayer2D->useUltimate == true) {
 			cBlackhole->PreRender();

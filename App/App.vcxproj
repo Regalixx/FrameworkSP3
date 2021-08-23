@@ -24,6 +24,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Scene2D\BackgroundEntity.cpp" />
     <ClCompile Include="Source\Scene2D\Blackhole.cpp" />
+    <ClCompile Include="Source\Scene2D\Bullet.cpp" />
     <ClCompile Include="Source\Scene2D\Clone.cpp" />
     <ClCompile Include="Source\Scene2D\Enemy2D.cpp" />
     <ClCompile Include="Source\Scene2D\Enemy3.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Source\GameStateManagement\VictoryState.h" />
     <ClInclude Include="Source\Scene2D\BackgroundEntity.h" />
     <ClInclude Include="Source\Scene2D\Blackhole.h" />
+    <ClInclude Include="Source\Scene2D\Bullet.h" />
     <ClInclude Include="Source\Scene2D\Clone.h" />
     <ClInclude Include="Source\Scene2D\Enemy2D.h" />
     <ClInclude Include="Source\Scene2D\Enemy3.h" />
