@@ -95,6 +95,9 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 	
+	bool isRight = false;
+	
+	bool directionSet = false;
 
 protected:
 	enum DIRECTION

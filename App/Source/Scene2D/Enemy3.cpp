@@ -228,11 +228,17 @@ void CEnemy3::Update(const double dElapsedTime)
 
 
 	case SHOOT:
-		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && cPlayer2D->i32vec2Index.y == this->i32vec2Index.y)
+		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && this->i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
-			Shoot(this->i32vec2Index.x, i32vec2Index.y, dir);
-
-			cout << "Pew Pew " << endl;
+			animatedSprites->PlayAnimation("attack", -1, 1.0f);
+			Shoot(i32vec2Index.y, i32vec2Index.x, dir);
+			if (Shoot(i32vec2Index.y, i32vec2Index.x, dir) == true)
+			{
+				sCurrentFSM = IDLE;
+				iFSMCounter = 0;
+				cout << "ATTACK : Reset counter: " << iFSMCounter << endl;
+			}
+			//cout << "Pew Pew " << endl;
 		}
 		else
 		{
@@ -244,7 +250,7 @@ void CEnemy3::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		UpdatePosition();
+		//UpdatePosition();
 		break;
 	default:
 		break;
@@ -855,17 +861,15 @@ void CEnemy3::UpdatePosition(void)
 
 bool CEnemy3::Shoot(float y, float x, bool isRight)
 {
-
 	CBullet* cBullet2D = new CBullet();
 
 	cBullet2D->SetShader("2DColorShader");
 
-
-
 	if (cBullet2D->Init() == true)
 	{
-		cBullet2D->Seti32vec2Index(this->i32vec2Index.x, i32vec2Index.y);
+		cBullet2D->Seti32vec2Index(i32vec2Index.x, i32vec2Index.y);
 		bulletVector.push_back(cBullet2D);
+		cout << "Shooting Pew Pew" << endl;
 		return true;
 	}
 	else
