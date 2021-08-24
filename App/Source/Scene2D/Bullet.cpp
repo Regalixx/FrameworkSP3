@@ -127,7 +127,7 @@ bool CBullet::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	if (LoadTexture("Image/Door.png", iTextureID) == false)
+	if (LoadTexture("Image/laser.png", iTextureID) == false)
 	{
 		std::cout << "Failed to load enemy2D tile texture" << std::endl;
 		return false;
@@ -824,6 +824,9 @@ bool CBullet::InteractWithPlayer(void)
 		(i32vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
 		//cout << "Gotcha!" << endl;
+		bIsActive = false;
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		cInventoryItem->Remove(10);
 
 		// Since the player has been caught, then reset the FSM
 		sCurrentFSM = IDLE;

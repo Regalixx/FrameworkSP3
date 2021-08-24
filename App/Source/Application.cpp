@@ -43,6 +43,8 @@
 #include "GameStateManagement//CreditsState.h"
 //Include CPauseState
 #include "GameStateManagement//PauseState.h"
+//Include VolumeState
+#include "GameStateManagement//VolumeState.h"
 
 
 #include <iostream>
@@ -266,6 +268,7 @@ bool Application::Init(void)
 	CGameStateManager::GetInstance()->AddGameState("GameOverState", new CGameOverState());
 	CGameStateManager::GetInstance()->AddGameState("CreditsState", new CCreditsState());
 	CGameStateManager::GetInstance()->AddGameState("PauseState", new CPauseState());
+	CGameStateManager::GetInstance()->AddGameState("VolumeState", new CVolumeState());
 
 	// Set the active scene
 	CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
