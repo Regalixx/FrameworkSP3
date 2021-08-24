@@ -450,7 +450,7 @@ void CScene2D::Update(const double dElapsedTime)
 		{
 			cPlayer2D->bulletVector[i]->Update(dElapsedTime);
 		}
-
+	}
 		// Call the Map2D's update method
 		cMap2D->Update(dElapsedTime);
 
@@ -719,7 +719,7 @@ void CScene2D::Update(const double dElapsedTime)
 			cMap2D->SetLevel(0);
 
 		}
-	}
+	
 }
 
 /**
