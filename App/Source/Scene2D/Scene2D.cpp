@@ -596,8 +596,8 @@ void CScene2D::Update(const double dElapsedTime)
 
 	}
 
-	if (cMap2D->GetLevel() == 2)
-	{
+		if (cMap2D->GetLevel() == 2) //Level 3
+		{
 
 		for (int i = 0; i < enemyVector2.size(); i++)
 		{
@@ -637,12 +637,11 @@ void CScene2D::Update(const double dElapsedTime)
 					break;
 				}
 			}
+
 			if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
 			{
 				if (LaserTimer >= 5.f)
 				{
-					//ResetLaser(0, 6, 19);
-					//ResetLaser(1, 18, 11);
 					//Vertical
 					ResetLaser(0, 20, 13);
 					ResetLaser(0, 20, 16);
@@ -687,8 +686,8 @@ void CScene2D::Update(const double dElapsedTime)
 	}
 
 
-	if (cMap2D->GetLevel() == 3)
-	{
+		if (cMap2D->GetLevel() == 3) //Level 4
+		{
 
 		for (int i = 0; i < enemyVector3.size(); i++)
 		{
@@ -702,23 +701,66 @@ void CScene2D::Update(const double dElapsedTime)
 		{
 			CEnemy3* cEnemy3 = new CEnemy3();
 
-			//Pass shader to cEnemy2D
-			cEnemy3->SetShader("2DColorShader");
-			//Initialise the instance
-			if (cEnemy3->Init() == true)
-			{
-				//cout << "hello" << std::endl;
-				cEnemy3->SetPlayer2D(cPlayer2D);
-				cEnemy3->SetClone2D(cClone);
-				enemyVector3.push_back(cEnemy3);
+				//Pass shader to cEnemy2D
+				cEnemy3->SetShader("2DColorShader");
+				//Initialise the instance
+				if (cEnemy3->Init() == true)
+				{
+					//cout << "hello" << std::endl;
+					cEnemy3->SetPlayer2D(cPlayer2D);
+					cEnemy3->SetClone2D(cClone);
+					enemyVector3.push_back(cEnemy3);
+				}
+				else
+				{
+					//Break out of this loop if the enemy has all been loaded
+					break;
+				}
 			}
-			else
+
+			if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
 			{
-				//Break out of this loop if the enemy has all been loaded
-				break;
+				if (LaserTimer >= 5.f)
+				{
+					//Vertical
+					ResetLaser(0, 18, 5);
+					ResetLaser(0, 18, 7);
+					ResetLaser(0, 18, 9);
+					ResetLaser(0, 18, 11);
+					//Horizontal
+					for (int i = 0; i < 13; ++i)
+					{
+						ResetLaser(1, 5 + i, 28);
+					}
+
+					LaserTimer = 0;
+					blocks_0 = 0;
+					blocks_1 = 0;
+				}
+				else if (LaserTimer >= 3.0f)
+				{
+					if (!LaserFireVertical(21, 5, blocks_0))
+					{
+						cSoundController->PlaySoundByID(18);
+						LaserFireVertical(21, 5, blocks_0);
+						LaserFireVertical(21, 7, blocks_0);
+						LaserFireVertical(21, 9, blocks_0);
+						LaserFireVertical(21, 11, blocks_0);
+						blocks_0--;
+					}
+
+					if (LaserFireHorizontal(5, 29, blocks_1) == false)
+					{
+						cSoundController->PlaySoundByID(18);
+						for (int i = 0; i < 13; ++i)
+						{
+							LaserFireHorizontal(5 + i, 29, blocks_1);
+						}
+						blocks_1--;
+					}
+				}
 			}
 		}
-	}
 
 	//Check if the game has been won by the player
 	if (cGameManager->bPlayerWon == true)

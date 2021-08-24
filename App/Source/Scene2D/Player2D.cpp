@@ -145,7 +145,8 @@ bool CPlayer2D::Init(void)
 	freezeDuration = 0;
 	cloneDuration = 0;
 	switchesActivated = 0;
-	fallTimer = 3;
+	teleportActivated = 0;
+	fallTimer = 2;
 	liftTimer = 2;
 	ultimateDuration = 0;
 	
@@ -522,7 +523,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 			{
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.f));
+				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 				//Play a  sound for jump
 				cSoundController->PlaySoundByID(3);
 				animatedSprites->PlayAnimation("jump", -1, 1.0f);
@@ -583,24 +584,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//cooldownTimer += dElapsedTime
 	}
 	
-
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote) //Teleporting
-		{
-			if (cMap2D->GetLevel() == 2)
-			{
-				i32vec2Index.x = 30;
-				i32vec2Index.y = 21;
-				i32vec2NumMicroSteps.x = 0;
-			}
-		}
-	
-
-
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_F))
 	{
 		Shoot(i32vec2Index.y, i32vec2Index.x, dir);
 	}
-	
+
+	if (canTeleport)
+	{
+		Teleport();
+	}
 
 	if (IsMidAir() == true)
 	{
@@ -917,9 +909,11 @@ void CPlayer2D::IsLiftMoving(double dt)
 {
 	if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x) == 140)
 	{
+
 		liftTimer -= dt; //countdown timer
-		//if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) >= 100)
-		if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) != 100)
+
+		if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) != 148 ||
+			cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x - 1) != 148)
 		{
 			if (liftTimer <= 1)
 			{
@@ -934,6 +928,7 @@ void CPlayer2D::IsLiftMoving(double dt)
 		}
 		else
 		{
+			liftTimer = 2;
 			cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 100);
 		}
@@ -1215,13 +1210,11 @@ void CPlayer2D::IsPlaformStepped(double dt)
 		{
 			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 0);
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-
 		}
-
 	}
 	else
 	{
-		fallTimer = 3; //platform will not fall if player keeps moving as timer remains at start
+		fallTimer = 2; //platform will not fall if player keeps moving as timer remains at start
 	}
 }
 
@@ -1393,11 +1386,14 @@ void CPlayer2D::InteractWithMap(void)
 	case 7:
 		// teleport next level
 		if (activateDoor == true) {
+			switchesActivated = 0;
+			teleportActivated = 0;
+			isRemote = false;
 			cGameManager->bLevelCompleted = true;
 			cSoundController->PlaySoundByID(10);
-			cInventoryItem = cInventoryManager->GetItem("Health");
+			//cInventoryItem = cInventoryManager->GetItem("Health");
 			cInventoryItem->Add(100);
-			cInventoryItem = cInventoryManager->GetItem("Tree");
+			//cInventoryItem = cInventoryManager->GetItem("Tree");
 			cInventoryItem->Remove(5);
 			powerupActive = false;
 			jumppoweractive = false;
@@ -1411,41 +1407,63 @@ void CPlayer2D::InteractWithMap(void)
 			if (switchesActivated == 1)
 			{
 				//First Gate blocking the player from dropping down
-				cMap2D->SetMapInfo(16, 15, 0);
-				cMap2D->SetMapInfo(16, 16, 0);
-				cMap2D->SetMapInfo(17, 15, 0);
-				cMap2D->SetMapInfo(17, 16, 0);
-				cMap2D->SetMapInfo(18, 15, 0);
-				cMap2D->SetMapInfo(18, 16, 0);
+				SwitchFlipped("vertical", 3, 16, 15);
+				SwitchFlipped("vertical", 3, 16, 16);
 				//Second Gate to the left
-				cMap2D->SetMapInfo(15, 3, 0);
-				cMap2D->SetMapInfo(14, 3, 0);
-				cMap2D->SetMapInfo(13, 3, 0);
-				cMap2D->SetMapInfo(12, 3, 0);
+				SwitchFlipped("vertical", 4, 12, 3);
 				//Third Gate to the right
-				cMap2D->SetMapInfo(15, 22, 0);
-				cMap2D->SetMapInfo(14, 22, 0);
-				cMap2D->SetMapInfo(13, 22, 0);
-				cMap2D->SetMapInfo(12, 22, 0);
+				SwitchFlipped("vertical", 4, 12, 22);
 			}
 			if (switchesActivated == 2)
 			{
-				cMap2D->SetMapInfo(11, 15, 0);
-				cMap2D->SetMapInfo(11, 16, 0);
+				SwitchFlipped("horizontal", 2, 11, 15);
 			}
 			if (switchesActivated == 3)
 			{
-				cMap2D->SetMapInfo(10, 15, 0);
-				cMap2D->SetMapInfo(10, 16, 0);
+				SwitchFlipped("horizontal", 2, 10, 15);
 			}
 		}
+
+		if (cMap2D->GetLevel() == 3)
+		{
+			if (switchesActivated == 1) //4
+			{
+				//First switch in level 4
+				SwitchFlipped("vertical", 3, 2, 22);
+			}
+
+			if (switchesActivated == 2) //5
+			{
+				//First switch in level 4
+				SwitchFlipped("horizontal", 2, 5, 18);
+			}
+		}
+
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 9);
 		break;
 	case 12: //Remote
 		cSoundController->PlaySoundByID(12);
+		teleportActivated += 1;
+
+		if (cMap2D->GetLevel() == 2)
+		{
+			cMap2D->SetMapInfo(21, 30, 11);
+		}
+		else if (cMap2D->GetLevel() == 3)
+		{
+			if (teleportActivated == 1)
+			{
+				cMap2D->SetMapInfo(18, 4, 11);
+			}
+			else if (teleportActivated == 2)
+			{
+				cMap2D->SetMapInfo(18, 14, 11);
+			}
+		}
+		
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-		cMap2D->SetMapInfo(21, 30, 11);
 		isRemote = true;
+		canTeleport = true;
 		break;
 	case 13:
 		cGameManager->bLevelCompleted = true;
@@ -1472,29 +1490,6 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
 		cInventoryItem->Add(1);
 		break;
-
-		/*
-	case 20:
-		// Decrease the health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
-		speedboost = false;
-		playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
-		break;
-	case 21:
-		// Increase the health by 1
-		isHealing = true;
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Add(1);
-		//cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-		playerColour = glm::vec4(0.0, 1.0, 0.0, 1.0);
-		break;
-	case 22:
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
-		playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
-		break;
-		*/
 	
 
 	default:
@@ -1580,5 +1575,60 @@ bool CPlayer2D::Shoot(float y, float x, bool isRight)
 	else
 	{
 		return false;
+	}
+}
+
+void CPlayer2D::SwitchFlipped(string type, int amount, float row, float col)
+{
+	if (type == "horizontal")
+	{
+		for (int i = 0; i < amount; ++i)
+		{
+			cMap2D->SetMapInfo(row, col + i, 0);
+		}
+	}
+	else if (type == "vertical")
+	{
+		for (int i = 0; i < amount; ++i)
+		{
+			cMap2D->SetMapInfo(row + i, col, 0);
+		}
+	}
+	else if (type == "area")
+	{
+		for (int i = 0; i < amount; ++i)
+		{
+			cMap2D->SetMapInfo(row + i, col + i, 0);
+		}
+	}
+}
+
+void CPlayer2D::Teleport(void)
+{
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote) //Teleporting
+	{
+		if (cMap2D->GetLevel() == 2)
+		{
+			i32vec2Index.x = 30;
+			i32vec2Index.y = 21;
+			i32vec2NumMicroSteps.x = 0;
+		}
+		else if (cMap2D->GetLevel() == 3)
+		{
+			if (teleportActivated == 1)
+			{
+				i32vec2Index.x = 4;
+				i32vec2Index.y = 18;
+				i32vec2NumMicroSteps.x = 0;
+			}
+			else if (teleportActivated == 2)
+			{
+				i32vec2Index.x = 14;
+				i32vec2Index.y = 18;
+				i32vec2NumMicroSteps.x = 0;
+			}
+		}
+
+		canTeleport = false;
 	}
 }

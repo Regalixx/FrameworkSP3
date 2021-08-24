@@ -181,9 +181,9 @@ protected:
 
 	//Remote Bool
 	bool isRemote = false;
+	bool canTeleport = false;
+	int teleportActivated;
 
-	
-	
 	// Constructor
 	CPlayer2D(void);
 
@@ -227,6 +227,9 @@ protected:
 
 	bool Shoot(float y, float x, bool isRight);
 
-	bool activeBullet();
+	void SwitchFlipped(string type, int amount, float row, float col);
+
+	void Teleport(void);
+
 };
 

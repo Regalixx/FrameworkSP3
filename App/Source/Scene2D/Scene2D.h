@@ -159,5 +159,6 @@ protected:
 
 	//Reset
 	void ResetLaser(int dir, float row, float col);
+
 };
 
