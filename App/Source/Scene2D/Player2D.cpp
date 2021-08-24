@@ -1567,7 +1567,6 @@ void CPlayer2D::UpdateHealthLives(void)
 
 bool CPlayer2D::Shoot(float y, float x, bool isRight)
 {
-	
 	CBullet* cBullet2D = new CBullet();
 
 	cBullet2D->SetShader("2DColorShader");

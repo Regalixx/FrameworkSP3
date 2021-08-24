@@ -26,7 +26,8 @@ CScene2D::CScene2D(void)
 	, cClone(NULL)
 	, cPortal(NULL)
 	, cBlackhole(NULL)
-	
+	, cEnemy3P(NULL)
+	, cEnemy3D(NULL)
 {
 }
 
@@ -72,6 +73,18 @@ CScene2D::~CScene2D(void)
 	{
 		cBlackhole->Destroy();
 		cBlackhole = NULL;
+	}
+
+	if (cEnemy3P)
+	{
+		//cEnemy3P->Destroy();
+		cEnemy3P = NULL;
+	}
+
+	if (cEnemy3D)
+	{
+		//cEnemy3P->Destroy();
+		cEnemy3D = NULL;
 	}
 	
 	if (cGameManager)
@@ -458,11 +471,20 @@ void CScene2D::Update(const double dElapsedTime)
 		{
 			cPlayer2D->bulletVector[i]->Update(dElapsedTime);
 		}
+		if (cMap2D->GetLevel() == 2)
+		{
+			for (int i = 0; i < cEnemy3P->bulletVector.size(); ++i)
+			{
+				cEnemy3P->bulletVector[i]->Update(dElapsedTime);
+			}
+			for (int i = 0; i < cEnemy3D->bulletVector.size(); ++i)
+			{
+				cEnemy3D->bulletVector[i]->Update(dElapsedTime);
+			}
+		}
 	}
-
-
-	// Call the Map2D's update method
-	cMap2D->Update(dElapsedTime);
+		// Call the Map2D's update method
+		cMap2D->Update(dElapsedTime);
 
 
 
@@ -590,56 +612,66 @@ void CScene2D::Update(const double dElapsedTime)
 
 			CEnemy3* cEnemy3 = new CEnemy3();
 
-			//Pass shader to cEnemy2D
-			cEnemy3->SetShader("2DColorShader");
-			//Initialise the instance
-			if (cEnemy3->Init() == true)
-			{
-				cout << "hello" << std::endl;
-				cEnemy3->SetPlayer2D(cPlayer2D);
-				enemyVector3.push_back(cEnemy3);
-			}
-			else
-			{
-				//Break out of this loop if the enemy has all been loaded
-				break;
-			}
-		}
-		if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
-		{
-			if (LaserTimer >= 5.f)
-			{
-				//ResetLaser(0, 6, 19);
-				//ResetLaser(1, 18, 11);
-				//Vertical
-				ResetLaser(0, 20, 13);
-				ResetLaser(0, 20, 16);
-				ResetLaser(0, 20, 19);
-				ResetLaser(0, 4, 13);
-				ResetLaser(0, 4, 16);
-				ResetLaser(0, 4, 19);
-				//Horizontal
-				ResetLaser(1, 20, 2);
-				ResetLaser(1, 16, 2);
-				ResetLaser(1, 12, 2);
-				ResetLaser(1, 8, 2);
-				LaserTimer = 0;
-				blocks_0 = 0;
-				blocks_1 = 0;
-			}
-			else if (LaserTimer >= 3.0f)
-			{
-				if (LaserFireVertical(21, 13, blocks_0) == false)
+				//Pass shader to cEnemy2D
+				cEnemy3->SetShader("2DColorShader");
+				//Initialise the instance
+				if (cEnemy3->Init() == true)
 				{
-					cSoundController->PlaySoundByID(18);
-					LaserFireVertical(21, 13, blocks_0);
-					LaserFireVertical(21, 16, blocks_0);
-					LaserFireVertical(21, 19, blocks_0);
-					LaserFireVertical(5, 13, blocks_0);
-					LaserFireVertical(5, 16, blocks_0);
-					LaserFireVertical(5, 19, blocks_0);
-					blocks_0--;
+					cout << "hello" << std::endl;
+					if (cEnemy3P == NULL)
+					{
+						cEnemy3P = cEnemy3;
+						cout << "Enemy3P Pointer going" << endl;
+					}
+					else if (cEnemy3D == NULL)
+					{
+						cEnemy3D = cEnemy3;
+						cout << "Enemy3D Pointer going" << endl;
+					}
+					cEnemy3->SetPlayer2D(cPlayer2D);
+					enemyVector3.push_back(cEnemy3);
 				}
+				else
+				{
+					//Break out of this loop if the enemy has all been loaded
+					break;
+				}
+			}
+			if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
+			{
+				if (LaserTimer >= 5.f)
+				{
+					//ResetLaser(0, 6, 19);
+					//ResetLaser(1, 18, 11);
+					//Vertical
+					ResetLaser(0, 20, 13);
+					ResetLaser(0, 20, 16);
+					ResetLaser(0, 20, 19);
+					ResetLaser(0, 4, 13);
+					ResetLaser(0, 4, 16);
+					ResetLaser(0, 4, 19);
+					//Horizontal
+					ResetLaser(1, 20, 2);
+					ResetLaser(1, 16, 2);
+					ResetLaser(1, 12, 2);
+					ResetLaser(1, 8, 2);
+					LaserTimer = 0;
+					blocks_0 = 0;
+					blocks_1 = 0;
+				}
+				else if (LaserTimer >= 3.0f)
+				{
+					if (LaserFireVertical(21, 13, blocks_0) == false)
+					{
+						cSoundController->PlaySoundByID(18);
+						LaserFireVertical(21, 13, blocks_0);
+						LaserFireVertical(21, 16, blocks_0);
+						LaserFireVertical(21, 19, blocks_0);
+						LaserFireVertical(5, 13, blocks_0);
+						LaserFireVertical(5, 16, blocks_0);
+						LaserFireVertical(5, 19, blocks_0);
+						blocks_0--;
+					}
 
 				if (LaserFireHorizontal(20, 2, blocks_1) == false)
 				{
@@ -806,6 +838,58 @@ void CScene2D::Render(void)
 				bulletTime = 0;
 				isFired = false;
 				cPlayer2D->bulletVector.clear();
+			}
+		}
+
+		if (cMap2D->GetLevel() == 2)
+		{
+			for (int i = 0; i < cEnemy3P->bulletVector.size(); ++i)
+			{
+				isFired = true;
+
+				//Call the CEnemy2D's PreRender()
+				cEnemy3P->bulletVector[i]->PreRender();
+				// Call the CEnemy2D's Render()
+				cEnemy3P->bulletVector[i]->Render();
+				// Call the CEnemy2D's PostRender()
+				cEnemy3P->bulletVector[i]->PostRender();
+
+				if (bulletTime > 0.75f)
+				{
+					for (int i = 0; i < cEnemy3P->bulletVector.size(); i++)
+					{
+						delete cEnemy3P->bulletVector[i];
+						cEnemy3P->bulletVector[i] = NULL;
+					}
+
+					bulletTime = 0;
+					isFired = false;
+					cEnemy3P->bulletVector.clear();
+				}
+			}
+			for (int i = 0; i < cEnemy3D->bulletVector.size(); ++i)
+			{
+				isFired = true;
+
+				//Call the CEnemy2D's PreRender()
+				cEnemy3D->bulletVector[i]->PreRender();
+				// Call the CEnemy2D's Render()
+				cEnemy3D->bulletVector[i]->Render();
+				// Call the CEnemy2D's PostRender()
+				cEnemy3D->bulletVector[i]->PostRender();
+
+				if (bulletTime > 0.75f)
+				{
+					for (int i = 0; i < cEnemy3D->bulletVector.size(); i++)
+					{
+						delete cEnemy3D->bulletVector[i];
+						cEnemy3D->bulletVector[i] = NULL;
+					}
+
+					bulletTime = 0;
+					isFired = false;
+					cEnemy3D->bulletVector.clear();
+				}
 			}
 		}
 

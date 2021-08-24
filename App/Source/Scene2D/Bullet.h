@@ -97,6 +97,9 @@ public:
 
 	bool activeBullet();
 	
+	bool isRight = false;
+	
+	bool directionSet = false;
 
 protected:
 	enum DIRECTION

@@ -100,7 +100,8 @@ protected:
 	CMap2D* cMap2D;
 	CPlayer2D* cPlayer2D;
 	
-
+	CEnemy3* cEnemy3P;
+	CEnemy3* cEnemy3D;
 
 	CMesh* quadMesh;
 
