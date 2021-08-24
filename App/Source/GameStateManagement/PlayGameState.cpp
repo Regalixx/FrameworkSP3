@@ -69,16 +69,13 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		
 		CKeyboardController::GetInstance()->Reset();
 
-		
-	
 		// Load the menu state
 		//cout << "Loading MenuState" << endl;
 		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
-		CGameStateManager::GetInstance()->OffPauseGameState();
-		//cGameManager->bPlayerLost = true;
 
-	
+
 		return true;
+		
 	}
 	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_G))
 	{

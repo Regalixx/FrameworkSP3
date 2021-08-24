@@ -42,7 +42,7 @@ using namespace std;
  @brief Constructor
  */
 CPauseState::CPauseState(void)
-//: background(NULL)
+	// : background(NULL)
 {
 
 }
@@ -67,10 +67,12 @@ bool CPauseState::Init(void)
 
 	// Load the images for buttons
 	CImageLoader* il = CImageLoader::GetInstance();
-	VolumeIncreaseButtonData.fileName = "Image\\GUI\\VolumeIncreaseButton.png";
-	VolumeIncreaseButtonData.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);
-	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton.png";
-	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);
+	resumeButtonData.fileName = "Image\\GUI\\ResumeButton.png";
+	resumeButtonData.textureID = il->LoadTextureGetID(resumeButtonData.fileName.c_str(), false);
+	MenuButtonData.fileName = "Image\\GUI\\Menu.png";
+	MenuButtonData.textureID = il->LoadTextureGetID(MenuButtonData.fileName.c_str(), false);
+	exitButtonData.fileName = "Image\\GUI\\ExitButton2.png";
+	exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
 
 	return true;
 }
@@ -110,38 +112,48 @@ bool CPauseState::Update(const double dElapsedTime)
 		// Display the FPS
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "In-Game Menu");
 
+		if (ImGui::ImageButton((ImTextureID)resumeButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			CKeyboardController::GetInstance()->Reset();
+			// Load the menu state
+			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			CGameStateManager::GetInstance()->OffPauseGameState();
+
+			
+		}
+
+
 		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)VolumeIncreaseButtonData.textureID,
+		if (ImGui::ImageButton((ImTextureID)MenuButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
+			// Load the menu state
+			CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
+			CGameStateManager::GetInstance()->OffPauseGameState();
 
-			CSoundController::GetInstance()->MasterVolumeIncrease();
+
 		}
+
 		// Add codes for Exit button here
-		if (ImGui::ImageButton((ImTextureID)VolumeDecreaseButtonData.textureID,
+		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 
-			CSoundController::GetInstance()->MasterVolumeDecrease();
+			// Load the menu state
+		//	cout << "Quitting the game from MenuState" << endl;
+
+			return false;
 		}
+
 		ImGui::End();
 	}
 
-	//For keyboard controls
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
-	{
-		// Reset the CKeyboardController
-		CKeyboardController::GetInstance()->Reset();
-
-		// Load the menu state
-		cout << "UnLoading PauseState" << endl;
-		CGameStateManager::GetInstance()->SetPauseGameState(nullptr);
-		return true;
-	}
+	
 
 	return true;
 }

@@ -71,14 +71,7 @@ bool CGameStateManager::Update(const double dElapsedTime)
 	{
 		if (activeGameState->Update(dElapsedTime) == false)
 			return false;
-		else
-		{
-			if (pauseGameState)
-			{
-				//cout << "pauseGameState->Update" << endl;
-				pauseGameState->Update(dElapsedTime);
-			}
-		}
+	
 	}
 
 	return true;

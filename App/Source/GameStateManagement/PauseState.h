@@ -22,6 +22,12 @@
 #define IMGUI_ACTIVE
 #endif
 
+struct ButtonData4
+{
+	std::string fileName;
+	unsigned textureID;
+};
+
 class CPauseState : public CGameStateBase
 {
 public:
@@ -40,12 +46,9 @@ public:
 	virtual void Destroy(void);
 
 protected:
-	struct ButtonData
-	{
-		std::string fileName;
-		unsigned textureID;
-	};
+	
 
-	ButtonData VolumeIncreaseButtonData;
-	ButtonData VolumeDecreaseButtonData;
+	ButtonData4 resumeButtonData;
+	ButtonData4 MenuButtonData;
+	ButtonData4  exitButtonData;
 };

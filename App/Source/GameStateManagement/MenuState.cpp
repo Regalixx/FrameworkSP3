@@ -84,6 +84,7 @@ bool CMenuState::Init(void)
 	const char* glsl_version = "#version 330";
 	ImGui_ImplOpenGL3_Init(glsl_version);
 	// Load the images for buttons
+
 	CImageLoader* il = CImageLoader::GetInstance();
 	startButtonData.fileName = "Image\\GUI\\PlayButton.png";
 	startButtonData.textureID = il->LoadTextureGetID(startButtonData.fileName.c_str(), false);
@@ -208,17 +209,6 @@ bool CMenuState::Update(const double dElapsedTime)
 
 
 		
-	}
-
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
-	{
-		cSoundController->PlaySoundByID(15);
-		// Reset the CKeyboardController
-		CKeyboardController::GetInstance()->Reset();
-
-		// Load the menu state
-		//cout << "Quitting the game from MenuState" << endl;
-		return false;
 	}
 
 	return true;
