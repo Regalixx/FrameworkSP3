@@ -403,7 +403,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load drightFull texture" << std::endl;
 		return false;
 	}
-	if (LoadTexture("Image/platform.png", 140) == false)
+	if (LoadTexture("Image/Platform.png", 140) == false)
 	{
 		std::cout << "Failed to load up lift texture" << std::endl;
 		return false;
@@ -443,6 +443,12 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	if (LoadTexture("Image/respawnPortal.png", 147) == false)
 	{
 		std::cout << "Failed to load laserbaseright texture" << std::endl;
+		return false;
+	}
+
+	if (LoadTexture("Image/LiftBlock.png", 148) == false)
+	{
+		std::cout << "Failed to load LiftBlock texture" << std::endl;
 		return false;
 	}
 

@@ -94,8 +94,6 @@ public:
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
-
-	bool activeBullet();
 	
 
 protected:

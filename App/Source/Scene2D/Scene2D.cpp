@@ -568,7 +568,7 @@ void CScene2D::Update(const double dElapsedTime)
 
 		}
 
-		if (cMap2D->GetLevel() == 2)
+		if (cMap2D->GetLevel() == 2) //Level 3
 		{
 
 			for (int i = 0; i < enemyVector2.size(); i++)
@@ -599,12 +599,11 @@ void CScene2D::Update(const double dElapsedTime)
 					break;
 				}
 			}
+
 			if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
 			{
 				if (LaserTimer >= 5.f)
 				{
-					//ResetLaser(0, 6, 19);
-					//ResetLaser(1, 18, 11);
 					//Vertical
 					ResetLaser(0, 20, 13);
 					ResetLaser(0, 20, 16);
@@ -649,7 +648,7 @@ void CScene2D::Update(const double dElapsedTime)
 		}
 
 
-		if (cMap2D->GetLevel() == 3)
+		if (cMap2D->GetLevel() == 3) //Level 4
 		{
 
 			for (int i = 0; i < enemyVector3.size(); i++)
@@ -678,6 +677,49 @@ void CScene2D::Update(const double dElapsedTime)
 				{
 					//Break out of this loop if the enemy has all been loaded
 					break;
+				}
+			}
+
+			if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
+			{
+				if (LaserTimer >= 5.f)
+				{
+					//Vertical
+					ResetLaser(0, 18, 5);
+					ResetLaser(0, 18, 7);
+					ResetLaser(0, 18, 9);
+					ResetLaser(0, 18, 11);
+					//Horizontal
+					for (int i = 0; i < 13; ++i)
+					{
+						ResetLaser(1, 5 + i, 28);
+					}
+
+					LaserTimer = 0;
+					blocks_0 = 0;
+					blocks_1 = 0;
+				}
+				else if (LaserTimer >= 3.0f)
+				{
+					if (!LaserFireVertical(21, 5, blocks_0))
+					{
+						cSoundController->PlaySoundByID(18);
+						LaserFireVertical(21, 5, blocks_0);
+						LaserFireVertical(21, 7, blocks_0);
+						LaserFireVertical(21, 9, blocks_0);
+						LaserFireVertical(21, 11, blocks_0);
+						blocks_0--;
+					}
+
+					if (LaserFireHorizontal(5, 29, blocks_1) == false)
+					{
+						cSoundController->PlaySoundByID(18);
+						for (int i = 0; i < 13; ++i)
+						{
+							LaserFireHorizontal(5 + i, 29, blocks_1);
+						}
+						blocks_1--;
+					}
 				}
 			}
 		}
