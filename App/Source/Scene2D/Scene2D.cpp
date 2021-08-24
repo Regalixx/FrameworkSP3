@@ -94,8 +94,6 @@ CScene2D::~CScene2D(void)
 	
 
 
-	
-
 	//Destroy the enemies
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
@@ -231,6 +229,12 @@ bool CScene2D::Init(void)
 		return false;
 	}
 	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test4.csv", 3) == false)
+	{
+		// The loading of a map has failed. Return false
+		return false;
+	}
+
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test5.csv", 4) == false)
 	{
 		// The loading of a map has failed. Return false
 		return false;

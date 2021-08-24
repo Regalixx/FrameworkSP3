@@ -7,7 +7,7 @@ using namespace std;
 /**
  @brief Constructor
  */
-CGameStateManager::CGameStateManager(void) 
+CGameStateManager::CGameStateManager(void)
 	: activeGameState(nullptr)
 	, nextGameState(nullptr)
 	, prevGameState(nullptr)
@@ -69,10 +69,19 @@ bool CGameStateManager::Update(const double dElapsedTime)
 	// Update the active CGameState
 	if (activeGameState)
 	{
+		//cout << "activeGameState->Update" << endl;
 		if (activeGameState->Update(dElapsedTime) == false)
 			return false;
-	
+		else
+		{
+			if (pauseGameState)
+			{
+				if (pauseGameState->Update(dElapsedTime) == false)
+					return false;
+			}
+		}
 	}
+
 
 	return true;
 }
@@ -86,11 +95,12 @@ void CGameStateManager::Render(void)
 		activeGameState->Render();
 	if (pauseGameState)
 		pauseGameState->Render();
+
 }
 
 /**
  @brief Add a new CGameState to this
- @param _name A const std::string& variable which is the name of the CGameState 
+ @param _name A const std::string& variable which is the name of the CGameState
  @param _scene A CGameState* variable which is the CGameState
  */
 bool CGameStateManager::AddGameState(const std::string& _name, CGameStateBase* _scene)
@@ -179,7 +189,7 @@ bool CGameStateManager::SetPauseGameState(const std::string& _name)
 		return true;
 	}
 
-	// Check if this _name does not exists in the map
+	// Check if this _name does not exists in the map...
 	if (!CheckGameStateExist(_name))
 	{
 		// If it does not exist, then unable to proceed
@@ -187,7 +197,7 @@ bool CGameStateManager::SetPauseGameState(const std::string& _name)
 		return false;
 	}
 
-	// if scene exist, set the next scene pointer to that scene
+	// Scene exist, set the next scene pointer to that scene
 	pauseGameState = GameStateMap[_name];
 	// Init the new pause CGameState
 	pauseGameState->Init();

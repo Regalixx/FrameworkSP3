@@ -95,10 +95,10 @@ bool CPauseState::Update(const double dElapsedTime)
 	float buttonHeight = 128;
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-	{
-		static float f = 0.0f;
-		static int counter = 0;
 
+	static float f = 0.0f;
+	static int counter = 0;
+	{
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
 		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
@@ -110,7 +110,7 @@ bool CPauseState::Update(const double dElapsedTime)
 		style.FrameRounding = 200.0f;
 
 		// Display the FPS
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "In-Game Menu");
+		//ImGui::TextColored(ImVec4(1, 1, 1, 1), "In-Game Menu");
 
 		if (ImGui::ImageButton((ImTextureID)resumeButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
@@ -120,7 +120,7 @@ bool CPauseState::Update(const double dElapsedTime)
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 			CGameStateManager::GetInstance()->OffPauseGameState();
 
-			
+
 		}
 
 
@@ -130,19 +130,23 @@ bool CPauseState::Update(const double dElapsedTime)
 		{
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
-			// Load the menu state
-			CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
-			CGameStateManager::GetInstance()->OffPauseGameState();
 
+			// Load the menu state
+			cout << "Loading MenuState" << endl;
+			CGameStateManager::GetInstance()->OffPauseGameState();
+			CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
+			
+			return true;
 
 		}
 
-		// Add codes for Exit button here
 		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
 			// Reset the CKeyboardController
+			CGameStateManager::GetInstance()->OffPauseGameState();
 			CKeyboardController::GetInstance()->Reset();
+			
 
 			// Load the menu state
 		//	cout << "Quitting the game from MenuState" << endl;
@@ -151,9 +155,9 @@ bool CPauseState::Update(const double dElapsedTime)
 		}
 
 		ImGui::End();
-	}
 
-	
+
+	}
 
 	return true;
 }
