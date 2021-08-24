@@ -409,7 +409,11 @@ void CScene2D::Update(const double dElapsedTime)
 		if (cPlayer2D->TimeStop != true)
 		{
 			LaserTimer += dElapsedTime;
-			//cout << LaserTimer << endl;
+
+			if (isFired == true)
+			{
+				bulletTime += dElapsedTime;
+			}
 		}
 
 		////Call the cPlayer2D's update method
@@ -782,6 +786,8 @@ void CScene2D::Render(void)
 
 		for (int i = 0; i < cPlayer2D->bulletVector.size(); ++i)
 		{
+			isFired = true;
+
 			//Call the CEnemy2D's PreRender()
 			cPlayer2D->bulletVector[i]->PreRender();
 			// Call the CEnemy2D's Render()
@@ -789,10 +795,17 @@ void CScene2D::Render(void)
 			// Call the CEnemy2D's PostRender()
 			cPlayer2D->bulletVector[i]->PostRender();
 
-			if (cPlayer2D->bulletVector[i]->i32vec2Index.x + 1 >= 100)
+			if (bulletTime > 0.75f)
 			{
-				delete this;
-				cPlayer2D->bulletVector[i] = NULL;
+				for (int i = 0; i < cPlayer2D->bulletVector.size(); i++)
+				{
+					delete cPlayer2D->bulletVector[i];
+					cPlayer2D->bulletVector[i] = NULL;
+				}
+
+				bulletTime = 0;
+				isFired = false;
+				cPlayer2D->bulletVector.clear();
 			}
 		}
 

@@ -468,7 +468,6 @@ void CBullet::SetClone2D(CClone* cClone)
 	UpdateDirection();
 }
 
-
 /**
 @brief Load a texture, assign it a code and store it in MapOfTextureIDs.
 @param filename A const char* variable which contains the file name of the texture
@@ -864,14 +863,11 @@ void CBullet::FlipHorizontalDirection(void)
 */
 void CBullet::UpdatePosition(void)
 {
-	//cout << i32vec2Index.x << endl;
-	//cout << i32vec2Index.y << endl;
 
 	// Store the old position
 	i32vec2OldIndex = i32vec2Index;
 
-	if ((cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100) ||
-		(cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x + 1) >= 100))
+	if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x + 1) >= 100)
 	{
 		bIsActive = false;
 	}
