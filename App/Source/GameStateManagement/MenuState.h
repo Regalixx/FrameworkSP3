@@ -51,6 +51,7 @@ protected:
 	ButtonData startButtonData;
 	ButtonData exitButtonData;
 	ButtonData ControlButtonData;
+	ButtonData VolumeButtonData;
 	ButtonData AboutButtonData;
 	ButtonData CreditsButtonData;
 	ButtonData Arrow;

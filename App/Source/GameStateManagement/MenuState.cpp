@@ -92,6 +92,8 @@ bool CMenuState::Init(void)
 	exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
 	ControlButtonData.fileName = "Image\\GUI\\ControlButton.png";
 	ControlButtonData.textureID = il->LoadTextureGetID(ControlButtonData.fileName.c_str(), false);
+	VolumeButtonData.fileName = "Image\\GUI\\VolumeButton.png";
+	VolumeButtonData.textureID = il->LoadTextureGetID(ControlButtonData.fileName.c_str(), false);
 	AboutButtonData.fileName = "Image\\GUI\\AboutButton.png";
 	AboutButtonData.textureID = il->LoadTextureGetID(AboutButtonData.fileName.c_str(), false);
 	CreditsButtonData.fileName = "Image\\GUI\\CreditsButton.png";
@@ -101,8 +103,6 @@ bool CMenuState::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_menu.ogg"), 14, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\buttonSound.ogg"), 15, true);
 	
-	
-
 	return true;
 }
 
@@ -124,8 +124,8 @@ bool CMenuState::Update(const double dElapsedTime)
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoNav;
 
-	float buttonWidth = 270;
-	float buttonHeight = 150;
+	float buttonWidth = 230;
+	float buttonHeight = 110;
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
@@ -168,6 +168,18 @@ bool CMenuState::Update(const double dElapsedTime)
 			// Load the menu state
 		//	cout << "Loading MenuState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("ControlState");
+		}
+
+		if (ImGui::ImageButton((ImTextureID)VolumeButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			cSoundController->PlaySoundByID(15);
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the menu state
+		//	cout << "Loading MenuState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("VolumeButtonData");
 		}
 
 		if (ImGui::ImageButton((ImTextureID)AboutButtonData.textureID,
