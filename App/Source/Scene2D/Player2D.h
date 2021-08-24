@@ -226,5 +226,7 @@ protected:
 	void UpdateHealthLives(void);
 
 	bool Shoot(float y, float x, bool isRight);
+
+	bool activeBullet();
 };
 

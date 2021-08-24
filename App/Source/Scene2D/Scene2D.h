@@ -132,6 +132,9 @@ protected:
 
 	bool enemyCleared = false;
 
+	bool isFired = false;
+	float bulletTime = 0;
+
 	CGameManager* cGameManager;
 
 	//Handler to the CSoundController
