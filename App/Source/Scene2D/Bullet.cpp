@@ -152,7 +152,6 @@ bool CBullet::Init(void)
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
-
 	return true;
 }
 
@@ -164,6 +163,21 @@ void CBullet::Update(const double dElapsedTime)
 
 	//std::cout << vec2UVCoordinate.x << std::endl;
 	//std::cout << vec2UVCoordinate.y << std::endl;
+	if (directionSet == false)
+	{
+		if (cPlayer2D->i32vec2Index.x > this->i32vec2Index.x)
+		{
+			isRight = true;
+			cout << "Right" << endl;
+			directionSet = true;
+		}
+		else
+		{
+			isRight = false;
+			cout << "Left" << endl;
+			directionSet = true;
+		}
+	}
 
 	if (cPlayer2D->useUltimate == true) 
 	{
@@ -346,8 +360,6 @@ void CBullet::Update(const double dElapsedTime)
 
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, i32vec2Index.x, false, i32vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, i32vec2Index.y, false, i32vec2NumMicroSteps.y*cSettings->MICRO_STEP_YAXIS);
-
-	
 }
 
 /**
@@ -873,7 +885,7 @@ void CBullet::UpdatePosition(void)
 	}
 
 	// if the player is to the left or right of the enemy2D, then jump to attack
-	if (i32vec2Direction.x < 0 && CheckPosition(LEFT) == true)
+	if (isRight == false)
 	{
 		// Move left
 		const int iOldIndex = i32vec2Index.x;
@@ -908,7 +920,7 @@ void CBullet::UpdatePosition(void)
 		// Interact with the Player
 		InteractWithPlayer();
 	}
-	else if (cPlayer2D->dir == true)
+	else if (isRight == true)
 	{
 		// Move right
 		const int iOldIndex = i32vec2Index.x;
