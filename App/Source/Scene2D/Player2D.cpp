@@ -260,10 +260,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	}
 
-
-
-
-	
 	if (TimeStop == true)
 	{
 		freezeDuration += dElapsedTime;

@@ -114,17 +114,16 @@ bool CPauseState::Update(const double dElapsedTime)
 		// Display the FPS
 		//ImGui::TextColored(ImVec4(1, 1, 1, 1), "In-Game Menu");
 
-		
+		//to continue
 		if (ImGui::ImageButton((ImTextureID)resumeButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
 			CKeyboardController::GetInstance()->Reset();
-			// Load the menu state
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 			CGameStateManager::GetInstance()->OffPauseGameState();
 		}
 
-		// Add codes for Start button here
+		// to menu
 		if (ImGui::ImageButton((ImTextureID)MenuButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
@@ -137,7 +136,7 @@ bool CPauseState::Update(const double dElapsedTime)
 			CGameStateManager::GetInstance()->OffPauseGameState();
 			bResult = true;
 		}
-
+		//to quit gane
 		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{

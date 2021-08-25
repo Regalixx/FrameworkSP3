@@ -165,14 +165,15 @@ bool CSoundController::MasterVolumeIncrease(void)
 bool CSoundController::MasterVolumeDecrease(void)
 {
 	// Get the current volume
-	float fCurrentVolume = cSoundEngine->getSoundVolume();
-
+	// Get the current volume
+	float fCurrentVolume = cSoundEngine->getSoundVolume() - 0.1f;
+	cout << "MasterVolumeDecrease: fCurrentVolume = " << fCurrentVolume << endl;
 	// Check if the minimum volume has been reached
-	if (fCurrentVolume == 0.0f)
-		return false;
+	if (fCurrentVolume < 0.0f)
+		fCurrentVolume = 0.0f;
 
 	// Decrease the volume by 10%
-	cSoundEngine->setSoundVolume(fCurrentVolume - 0.1f);
+	cSoundEngine->setSoundVolume(fCurrentVolume);
 
 	return true;
 }
