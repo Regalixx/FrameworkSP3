@@ -181,16 +181,8 @@ void CBullet::Update(const double dElapsedTime)
 
 	if (cPlayer2D->useUltimate == true) 
 	{
-		std::cout << "activated" << std::endl;
+		//std::cout << "activated" << std::endl;
 		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x+=1, cBlackhole->i32vec2RespawnIndex.y);
-	}
-
-	
-	if (cPlayer2D->resetEnemyPos == true)
-	{
-	
-		ResetEnemyPos();
-
 	}
 
 	if (!bIsActive)
