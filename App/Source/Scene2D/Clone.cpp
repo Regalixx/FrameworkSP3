@@ -193,7 +193,7 @@ void CClone::Update(const double dElapsedTime)
 	
 
 		
-	animatedSprites = cPlayer2D->animatedSprites;
+	//animatedSprites = cPlayer2D->animatedSprites;
 
 
 	//UpdatePosition();

@@ -530,6 +530,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 				//Play a  sound for jump
 				cSoundController->PlaySoundByID(3);
+			
 				animatedSprites->PlayAnimation("jump", -1, 1.0f);
 
 
@@ -574,12 +575,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_U))
 	{
-
 		cInventoryItem = cInventoryManager->GetItem("Ultimate");
 
 		if (canUseUltimate == true && cInventoryItem->GetCount() >= 100)
 		{
-			cSoundController->PlaySoundByID(11);
+			cSoundController->PlaySoundByID(19);
+			//cSoundController->PlaySoundByID(11);
 			useUltimate = true;
 			canUseUltimate = false;
 			cInventoryItem->Remove(100);

@@ -82,6 +82,8 @@ bool CPauseState::Init(void)
  */
 bool CPauseState::Update(const double dElapsedTime)
 {
+	bool bResult = true;
+
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -112,6 +114,7 @@ bool CPauseState::Update(const double dElapsedTime)
 		// Display the FPS
 		//ImGui::TextColored(ImVec4(1, 1, 1, 1), "In-Game Menu");
 
+		
 		if (ImGui::ImageButton((ImTextureID)resumeButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
@@ -119,10 +122,7 @@ bool CPauseState::Update(const double dElapsedTime)
 			// Load the menu state
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 			CGameStateManager::GetInstance()->OffPauseGameState();
-
-
 		}
-
 
 		// Add codes for Start button here
 		if (ImGui::ImageButton((ImTextureID)MenuButtonData.textureID,
@@ -133,11 +133,9 @@ bool CPauseState::Update(const double dElapsedTime)
 
 			// Load the menu state
 			cout << "Loading MenuState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
 			CGameStateManager::GetInstance()->OffPauseGameState();
-			CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
-			
-			return true;
-
+			bResult = true;
 		}
 
 		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
@@ -151,15 +149,13 @@ bool CPauseState::Update(const double dElapsedTime)
 			// Load the menu state
 		//	cout << "Quitting the game from MenuState" << endl;
 
-			return false;
+			bResult = false;
 		}
 
 		ImGui::End();
-
-
 	}
 
-	return true;
+	return bResult;
 }
 
 /**
