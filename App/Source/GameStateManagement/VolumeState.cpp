@@ -99,7 +99,6 @@ bool CVolumeState::Init(void)
  */
 bool CVolumeState::Update(const double dElapsedTime)
 {
-
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -133,43 +132,37 @@ bool CVolumeState::Update(const double dElapsedTime)
 		style.FrameRounding = 50.0f;
 
 		// Add codes for Start button here
+
 		if (ImGui::ImageButton((ImTextureID)increaseVolume.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
-
 			CKeyboardController::GetInstance()->Reset();
 
 			CSoundController::GetInstance()->MasterVolumeIncrease();
-	
 		}
-
 		if (ImGui::ImageButton((ImTextureID)decreaseVolume.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
+
 			CKeyboardController::GetInstance()->Reset();
 
-			CSoundController::GetInstance()->MasterVolumeIncrease();
+			CSoundController::GetInstance()->MasterVolumeDecrease();
+	
 		}
-		// Add codes for Exit button here
-		
-
-
-
+		//cout << "CVolumeState::Update()\n" << endl;
 		ImGui::End();
-
 	}
+		// Add codes for Exit button here
+		if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_B))
+		{
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
 
-	//cout << "CVolumeState::Update()\n" << endl;
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_B))
-	{
-		// Reset the CKeyboardController
-		CKeyboardController::GetInstance()->Reset();
-
-		// Load the menu state
-	//	cout << "Loading MenuState" << endl;
-		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
-		return true;
-	}
+			// Load the menu state
+		//	cout << "Loading MenuState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
+			return true;
+		}
 
 	return true;
 }
@@ -184,6 +177,10 @@ void CVolumeState::Render()
 
 	//Draw the background
  	background->Render();
+
+	// Rendering
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 /**
@@ -197,6 +194,9 @@ void CVolumeState::Destroy(void)
 		delete background;
 		background = NULL;
 	}
-
+	// Cleanup
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	cout << "CVolumeState::Destroy()\n" << endl;
 }

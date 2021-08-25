@@ -397,6 +397,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_time.ogg"), 11, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.ogg"), 12, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemy1.ogg"), 13, true);
+	//sounds 15,16 in the menustate
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 16, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 17, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 18, true);	
