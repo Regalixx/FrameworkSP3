@@ -171,16 +171,15 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 	if (cPlayer2D->useUltimate == true) 
 	{
-		std::cout << "activated" << std::endl;
-		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x+=1, cBlackhole->i32vec2RespawnIndex.y);
+		//std::cout << "activated" << std::endl;
+		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x, cBlackhole->i32vec2RespawnIndex.y);
 	}
 
 	
 	if (cPlayer2D->resetEnemyPos == true)
 	{
-	
+		cout << "Once" << endl;
 		ResetEnemyPos();
-
 	}
 
 	if (!bIsActive)
@@ -203,7 +202,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	case IDLE:
 		
 
-		if (iFSMCounter > iMaxFSMCounter && cPlayer2D->useUltimate == false)
+		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = PATROL;
 			iFSMCounter = 0;
@@ -218,12 +217,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			//cout << "Switching to Idle State" << endl;
 		}
-		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f && cPlayer2D->useUltimate == false)
+		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
 		}
-		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f && cPlayer2D->useUltimate == false)
+		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
@@ -232,7 +231,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			// Patrol around
 			// Update the Enemy2D's position for patrol
-			if (cPlayer2D->TimeStop == false || cPlayer2D->useUltimate == false) {
+			if (cPlayer2D->TimeStop == false) {
 				UpdatePosition();
 				cSoundController->PlaySoundByID(13);
 			}
@@ -240,7 +239,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case ATTACK:
-		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f) && cPlayer2D->useUltimate == false)
+		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f))
 		{
 		
 			//std::cout << "test" << std::endl;
@@ -280,7 +279,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f) && cPlayer2D->useUltimate == false)
+		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f))
 		{
 
 			//std::cout << "test" << std::endl;
@@ -320,18 +319,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 				
 			}
 		}
-			/*cout << "===Printing out the path ===" << endl;*/
-
-			
-			
-			/*cout << "i32vec2Destination :" << i32vec2Destination.x << "," << i32vec2Destination.y << endl;
-			cout << "i32vec2Direction :" << i32vec2Direction.x << ", " << i32vec2Direction.y << endl;*/
-			//system("pause");
-
-			//Calcu
-			
-
-			// Update the Enemy2D's position for attack
 			
 		
 		else
@@ -344,7 +331,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		if (cPlayer2D->TimeStop == false || cPlayer2D->useUltimate == false) {
+		if (cPlayer2D->TimeStop == false) {
 			UpdatePosition();
 		}
 		break;

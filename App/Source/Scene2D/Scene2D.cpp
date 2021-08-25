@@ -400,6 +400,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 16, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 17, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 18, true);	
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\blackhole.wav"), 19, true);
 	
 
 	//Create and initialise the CEnemy2D
