@@ -302,6 +302,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		resetEnemyPos = true;
 		ultimateDuration = 0;
 	}
+	else if (useUltimate == false)
+	{
+		resetEnemyPos = false;
+	}
 	
 	playerSprinting = false;
 

@@ -185,14 +185,6 @@ void CBullet::Update(const double dElapsedTime)
 		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x+=1, cBlackhole->i32vec2RespawnIndex.y);
 	}
 
-	
-	if (cPlayer2D->resetEnemyPos == true)
-	{
-	
-		ResetEnemyPos();
-
-	}
-
 	if (!bIsActive)
 		return;
 
