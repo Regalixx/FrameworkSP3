@@ -231,5 +231,6 @@ protected:
 
 	void Teleport(void);
 
+	void respawnRemote(void);
 };
 
