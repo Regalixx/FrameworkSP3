@@ -714,15 +714,22 @@ void CScene2D::Update(const double dElapsedTime)
 		{
 			Monster2D* cEnemy4 = new Monster2D();
 
+			CEnemy2D* cEnemy5 = new CEnemy2D();
+
 			//Pass shader to cEnemy2D
 			cEnemy4->SetShader("2DColorShader");
+			//Pass shader to cEnemy2D
+			cEnemy5->SetShader("2DColorShader");
 			//Initialise the instance
-			if (cEnemy4->Init() == true)
+			if (cEnemy4->Init() == true || cEnemy5->Init() == true)
 			{
 				//cout << "hello" << std::endl;
 				cEnemy4->SetPlayer2D(cPlayer2D);
 				cEnemy4->SetClone2D(cClone);
+				cEnemy5->SetPlayer2D(cPlayer2D);
+				cEnemy5->SetClone2D(cClone);
 				enemyVector4.push_back(cEnemy4);
+				enemyVector.push_back(cEnemy5);
 			}
 			else
 			{
