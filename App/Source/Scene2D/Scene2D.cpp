@@ -131,7 +131,14 @@ CScene2D::~CScene2D(void)
 		delete enemyVector4[i];
 		enemyVector4[i] = NULL;
 	}
-	enemyVector3.clear();
+	enemyVector4.clear();
+
+	for (int i = 0; i < enemyVector5.size(); i++)
+	{
+		delete enemyVector5[i];
+		enemyVector5[i] = NULL;
+	}
+	enemyVector5.clear();
 
 	for (int i = 0; i < cloneVector.size(); i++)
 	{
@@ -423,6 +430,11 @@ void CScene2D::Update(const double dElapsedTime)
 			enemyVector4[i]->Update(dElapsedTime);
 		}
 
+		for (int i = 0; i < enemyVector5.size(); i++)
+		{
+			enemyVector5[i]->Update(dElapsedTime);
+		}
+
 		for (int i = 0; i < cloneVector.size(); i++)
 		{
 			cloneVector[i]->Update(dElapsedTime);
@@ -432,7 +444,7 @@ void CScene2D::Update(const double dElapsedTime)
 		{
 			cPlayer2D->bulletVector[i]->Update(dElapsedTime);
 		}
-		if (cMap2D->GetLevel() == 2)
+		if (cMap2D->GetLevel() == 2 || cMap2D->GetLevel() == 4)
 		{
 			for (int i = 0; i < cEnemy3P->bulletVector.size(); ++i)
 			{
@@ -549,7 +561,7 @@ void CScene2D::Update(const double dElapsedTime)
 		}
 		enemyVector2.clear();
 
-		while (cMap2D->GetLevel() == 2)
+		while (cMap2D->GetLevel() == 2) // Level 3
 		{
 			CEnemy3* cEnemy3 = new CEnemy3();
 
@@ -558,7 +570,6 @@ void CScene2D::Update(const double dElapsedTime)
 			//Initialise the instance
 			if (cEnemy3->Init() == true)
 			{
-				cout << "hello" << std::endl;
 				if (cEnemy3P == NULL)
 				{
 					cEnemy3P = cEnemy3;
@@ -626,6 +637,36 @@ void CScene2D::Update(const double dElapsedTime)
 
 	if (cMap2D->GetLevel() == 3) //Level 4
 	{
+		/*
+		CEnemy3* cEnemy3 = new CEnemy3();
+
+		//Pass shader to cEnemy2D
+		cEnemy3->SetShader("2DColorShader");
+
+		if (cEnemy3P == NULL)
+		{
+			cEnemy3P = cEnemy3;
+			cout << "Enemy3P Pointer going" << endl;
+		}
+		else if (cEnemy3D == NULL)
+		{
+			cEnemy3D = cEnemy3;
+			cout << "Enemy3D Pointer going" << endl;
+		}
+		*/
+
+		if (cEnemy3P != NULL)
+		{
+			cout << "Something is here" << endl;
+			cEnemy3P = NULL;
+
+		}
+		else if (cEnemy3D != NULL)
+		{
+			cout << "Something is here too" << endl;
+			cEnemy3D = NULL;
+
+		}
 
 		for (int i = 0; i < enemyVector3.size(); i++)
 		{
@@ -652,7 +693,7 @@ void CScene2D::Update(const double dElapsedTime)
 				cEnemy4->SetClone2D(cClone);
 				cEnemy5->SetPlayer2D(cPlayer2D);
 				cEnemy5->SetClone2D(cClone);
-				enemyVector4.push_back(cEnemy4);
+				enemyVector2.push_back(cEnemy4);
 				enemyVector.push_back(cEnemy5);
 			}
 			else
@@ -709,34 +750,69 @@ void CScene2D::Update(const double dElapsedTime)
 	if (cMap2D->GetLevel() == 4) //Level 5
 	{
 
-		//for (int i = 0; i < enemyVector3.size(); i++)
-		//{
-		//	delete enemyVector3[i];
-		//	enemyVector3[i] = NULL;
-		//}
-		//enemyVector3.clear();
+		for (int i = 0; i < enemyVector.size(); i++)
+		{
+			delete enemyVector[i];
+			enemyVector[i] = NULL;
+		}
+		enemyVector.clear();
 
+		for (int i = 0; i < enemyVector2.size(); i++)
+		{
+			delete enemyVector2[i];
+			enemyVector2[i] = NULL;
+		}
+		enemyVector2.clear();
 
-		//while (true)
-		//{
-		//	CEnemy3* cEnemy3 = new CEnemy3();
+		while (true)
+		{
+			Monster2D* cEnemy4 = new Monster2D();
 
-		//	//Pass shader to cEnemy2D
-		//	cEnemy3->SetShader("2DColorShader");
-		//	//Initialise the instance
-		//	if (cEnemy3->Init() == true)
-		//	{
-		//		//cout << "hello" << std::endl;
-		//		cEnemy3->SetPlayer2D(cPlayer2D);
-		//		cEnemy3->SetClone2D(cClone);
-		//		enemyVector3.push_back(cEnemy3);
-		//	}
-		//	else
-		//	{
-		//		//Break out of this loop if the enemy has all been loaded
-		//		break;
-		//	}
-		//}
+			CEnemy2D* cEnemy5 = new CEnemy2D();
+
+			CEnemy3* cEnemy6 = new CEnemy3();
+
+			//Pass shader to cEnemy2D
+			cEnemy4->SetShader("2DColorShader");
+			//Pass shader to cEnemy2D
+			cEnemy5->SetShader("2DColorShader");
+			//Pass shader to cEnemy2D
+			cEnemy6->SetShader("2DColorShader");
+			//Initialise the instance
+			if (cEnemy4->Init() == true)
+			{
+				cEnemy4->SetPlayer2D(cPlayer2D);
+				cEnemy4->SetClone2D(cClone);
+
+				enemyVector3.push_back(cEnemy4);
+			}
+			if (cEnemy5->Init() == true)
+			{
+				cEnemy5->SetPlayer2D(cPlayer2D);
+				cEnemy5->SetClone2D(cClone);
+				enemyVector4.push_back(cEnemy5);
+			}
+			if (cEnemy6->Init() == true)
+			{
+				if (cEnemy3P == NULL)
+				{
+					cEnemy3P = cEnemy6;
+					cout << "Enemy3P Pointer going" << endl;
+				}
+				else if (cEnemy3D == NULL)
+				{
+					cEnemy3D = cEnemy6;
+					cout << "Enemy3D Pointer going" << endl;
+				}
+				cEnemy6->SetPlayer2D(cPlayer2D);
+				enemyVector5.push_back(cEnemy6);
+			}
+			else
+			{
+				//Break out of this loop if the enemy has all been loaded
+				break;
+			}
+		}
 
 		if (CGameStateManager::GetInstance()->GetPauseGameState() == false)
 		{
@@ -814,6 +890,20 @@ void CScene2D::Update(const double dElapsedTime)
 			enemyVector3[i] = NULL;
 		}
 		enemyVector3.clear();
+
+		for (int i = 0; i < enemyVector4.size(); i++)
+		{
+			delete enemyVector4[i];
+			enemyVector4[i] = NULL;
+		}
+		enemyVector4.clear();
+
+		for (int i = 0; i < enemyVector5.size(); i++)
+		{
+			delete enemyVector5[i];
+			enemyVector5[i] = NULL;
+		}
+		enemyVector5.clear();
 
 		for (int i = 0; i < cloneVector.size(); i++)
 		{
@@ -895,7 +985,7 @@ void CScene2D::Render(void)
 			}
 		}
 
-		if (cMap2D->GetLevel() == 2)
+		if (cMap2D->GetLevel() == 2 || cMap2D->GetLevel() == 4)
 		{
 			for (int i = 0; i < cEnemy3P->bulletVector.size(); ++i)
 			{
@@ -986,6 +1076,16 @@ void CScene2D::Render(void)
 			enemyVector4[i]->Render();
 			// Call the CEnemy2D's PostRender()
 			enemyVector4[i]->PostRender();
+		}
+
+		for (int i = 0; i < enemyVector5.size(); i++)
+		{
+			//Call the CEnemy2D's PreRender()
+			enemyVector5[i]->PreRender();
+			// Call the CEnemy2D's Render()
+			enemyVector5[i]->Render();
+			// Call the CEnemy2D's PostRender()
+			enemyVector5[i]->PostRender();
 		}
 
 		// Call the Map2D's PreRender()
@@ -1105,6 +1205,26 @@ void CScene2D::Render(void)
 			enemyVector3[i]->Render();
 			// Call the CEnemy2D's PostRender()
 			enemyVector3[i]->PostRender();
+		}
+
+		for (int i = 0; i < enemyVector4.size(); i++)
+		{
+			//Call the CEnemy2D's PreRender()
+			enemyVector4[i]->PreRender();
+			// Call the CEnemy2D's Render()
+			enemyVector4[i]->Render();
+			// Call the CEnemy2D's PostRender()
+			enemyVector4[i]->PostRender();
+		}
+
+		for (int i = 0; i < enemyVector5.size(); i++)
+		{
+			//Call the CEnemy2D's PreRender()
+			enemyVector5[i]->PreRender();
+			// Call the CEnemy2D's Render()
+			enemyVector5[i]->Render();
+			// Call the CEnemy2D's PostRender()
+			enemyVector5[i]->PostRender();
 		}
 	}
 }
