@@ -869,7 +869,6 @@ bool CEnemy3::Shoot(float y, float x, bool isRight)
 	{
 		cBullet2D->Seti32vec2Index(i32vec2Index.x, i32vec2Index.y);
 		bulletVector.push_back(cBullet2D);
-		cout << "Shooting Pew Pew" << endl;
 		return true;
 	}
 	else
