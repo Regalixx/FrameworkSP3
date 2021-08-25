@@ -293,13 +293,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
  		ultimateDuration += dElapsedTime;
 	}
+	else if (!useUltimate)
+	{
+		resetEnemyPos = false;
+		ultimateDuration = 0;
+	}
 
 	if (ultimateDuration >= 4)
 	{
 		useUltimate = false;
 		canUseUltimate = true;
 		resetEnemyPos = true;
-		ultimateDuration = 0;
 	}
 	else if (useUltimate == false)
 	{
@@ -1433,6 +1437,19 @@ void CPlayer2D::InteractWithMap(void)
 			{
 				//First switch in level 4
 				SwitchFlipped("horizontal", 2, 5, 18);
+			}
+		}
+
+		if (cMap2D->GetLevel() == 4)
+		{
+			if (switchesActivated == 1)
+			{
+				SwitchFlipped("horizontal", 6, 18, 12);
+				SwitchFlipped("horizontal", 6, 17, 12);
+			}
+			if (switchesActivated == 2)
+			{
+				SwitchFlipped("horizontal", 2, 14, 14);
 			}
 		}
 
