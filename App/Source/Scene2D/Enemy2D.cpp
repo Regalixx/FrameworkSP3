@@ -171,16 +171,15 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 	if (cPlayer2D->useUltimate == true) 
 	{
-		std::cout << "activated" << std::endl;
-		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x+=1, cBlackhole->i32vec2RespawnIndex.y);
+		//std::cout << "activated" << std::endl;
+		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x, cBlackhole->i32vec2RespawnIndex.y);
 	}
 
 	
 	if (cPlayer2D->resetEnemyPos == true)
 	{
-	
+		cout << "Once" << endl;
 		ResetEnemyPos();
-
 	}
 
 	if (!bIsActive)
@@ -203,7 +202,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	case IDLE:
 		
 
-		if (iFSMCounter > iMaxFSMCounter && cPlayer2D->useUltimate == false)
+		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = PATROL;
 			iFSMCounter = 0;
@@ -218,12 +217,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			//cout << "Switching to Idle State" << endl;
 		}
-		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f && cPlayer2D->useUltimate == false)
+		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
 		}
-		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f && cPlayer2D->useUltimate == false)
+		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
@@ -232,7 +231,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			// Patrol around
 			// Update the Enemy2D's position for patrol
-			if (cPlayer2D->TimeStop == false || cPlayer2D->useUltimate == false) {
+			if (cPlayer2D->TimeStop == false) {
 				UpdatePosition();
 				cSoundController->PlaySoundByID(13);
 			}
@@ -240,7 +239,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case ATTACK:
-		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f) && cPlayer2D->useUltimate == false)
+		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f))
 		{
 		
 			//std::cout << "test" << std::endl;
@@ -280,7 +279,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f) && cPlayer2D->useUltimate == false)
+		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f))
 		{
 
 			//std::cout << "test" << std::endl;
@@ -320,18 +319,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 				
 			}
 		}
-			/*cout << "===Printing out the path ===" << endl;*/
-
-			
-			
-			/*cout << "i32vec2Destination :" << i32vec2Destination.x << "," << i32vec2Destination.y << endl;
-			cout << "i32vec2Direction :" << i32vec2Direction.x << ", " << i32vec2Direction.y << endl;*/
-			//system("pause");
-
-			//Calcu
-			
-
-			// Update the Enemy2D's position for attack
 			
 		
 		else
@@ -344,7 +331,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		if (cPlayer2D->TimeStop == false || cPlayer2D->useUltimate == false) {
+		if (cPlayer2D->TimeStop == false) {
 			UpdatePosition();
 		}
 		break;
@@ -353,7 +340,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 
 	//Update Jump or Fall
-	//UpdateJumpFall(dElapsedTime);
+	UpdateJumpFall(dElapsedTime);
 
 	animatedSprites->Update(dElapsedTime);
 
@@ -704,61 +691,61 @@ bool CEnemy2D::IsMidAir(void)
 // Update Jump or Fall
 void CEnemy2D::UpdateJumpFall(const double dElapsedTime)
 {
-	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
-	{
-		// Update the elapsed time to the physics engine
-		cPhysics2D.AddElapsedTime((float)dElapsedTime);
-		// Call the physics engine update method to calculate the final velocity and displacement
-		cPhysics2D.Update();
-		// Get the displacement from the physics engine
-		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+	//if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
+	//{
+	//	// Update the elapsed time to the physics engine
+	//	cPhysics2D.AddElapsedTime((float)dElapsedTime);
+	//	// Call the physics engine update method to calculate the final velocity and displacement
+	//	cPhysics2D.Update();
+	//	// Get the displacement from the physics engine
+	//	glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
 
-		// Store the current i32vec2Index.y
-		int iIndex_YAxis_OLD = i32vec2Index.y;
+	//	// Store the current i32vec2Index.y
+	//	int iIndex_YAxis_OLD = i32vec2Index.y;
 
-		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS); //DIsplacement divide by distance for 1 microstep
-		if (i32vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
-		{
-			i32vec2NumMicroSteps.y += iDisplacement_MicroSteps;
-			if (i32vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
-			{
-				i32vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
-				if (i32vec2NumMicroSteps.y < 0)
-					i32vec2NumMicroSteps.y = 0;
-				i32vec2Index.y++;
-			}
-		}
+	//	int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS); //DIsplacement divide by distance for 1 microstep
+	//	if (i32vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+	//	{
+	//		i32vec2NumMicroSteps.y += iDisplacement_MicroSteps;
+	//		if (i32vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
+	//		{
+	//			i32vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
+	//			if (i32vec2NumMicroSteps.y < 0)
+	//				i32vec2NumMicroSteps.y = 0;
+	//			i32vec2Index.y++;
+	//		}
+	//	}
 
-		// Constraint the player's position within the screen boundary
-		Constraint(UP);
+	//	// Constraint the player's position within the screen boundary
+	//	Constraint(UP);
 
-		// Iterate through all rows until the proposed row
-		// Check if the player will hit a tile; stop jump if so.
-		int iIndex_YAxis_Proposed = i32vec2Index.y;
-		for (int i = iIndex_YAxis_OLD; i <= iIndex_YAxis_Proposed; i++)
-		{
-			// Change the player's index to the current i value
-			i32vec2Index.y = i;
-			// If the new position is not feasible, then revert to old position
-			if (CheckPosition(UP) == false)
-			{
-				// Align with the row
-				i32vec2NumMicroSteps.y = 0;
-				// Set the Physics to fall status
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-				break;
-			}
-		}
+	//	// Iterate through all rows until the proposed row
+	//	// Check if the player will hit a tile; stop jump if so.
+	//	int iIndex_YAxis_Proposed = i32vec2Index.y;
+	//	for (int i = iIndex_YAxis_OLD; i <= iIndex_YAxis_Proposed; i++)
+	//	{
+	//		// Change the player's index to the current i value
+	//		i32vec2Index.y = i;
+	//		// If the new position is not feasible, then revert to old position
+	//		if (CheckPosition(UP) == false)
+	//		{
+	//			// Align with the row
+	//			i32vec2NumMicroSteps.y = 0;
+	//			// Set the Physics to fall status
+	//			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+	//			break;
+	//		}
+	//	}
 
-		// If the player is still jumping and the initial velocity has reached zero or below zero, 
-		// then it has reach the peak of its jump
-		if ((cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) && (cPhysics2D.GetInitialVelocity().y <= 0.0f))
-		{
-			// Set status to fall
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-		}
-	}
-	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
+	//	// If the player is still jumping and the initial velocity has reached zero or below zero, 
+	//	// then it has reach the peak of its jump
+	//	if ((cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) && (cPhysics2D.GetInitialVelocity().y <= 0.0f))
+	//	{
+	//		// Set status to fall
+	//		cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+	//	}
+	//}
+	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
 	{
 		// Update the elapsed time to the physics engine
 		cPhysics2D.AddElapsedTime((float)dElapsedTime);
