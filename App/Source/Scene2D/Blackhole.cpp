@@ -190,7 +190,7 @@ void CBlackhole::Update(const double dElapsedTime)
 
 	
 	//Update Jump or Fall
-	UpdateJumpFall(dElapsedTime);
+	//UpdateJumpFall(dElapsedTime);
 
 
 	// Update the UV Coordinates
