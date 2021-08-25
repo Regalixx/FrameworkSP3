@@ -391,7 +391,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.wav"), 5, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_background.ogg"), 6, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_victory.ogg"), 7, true);
-	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_die.wav"), 9, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_nextlevel.wav"), 10, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_time.ogg"), 11, true);
@@ -400,8 +400,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 16, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 17, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 18, true);	
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\blackhole.wav"), 19, true);
-	
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_blackhole.ogg"), 19, true);
 
 	//Create and initialise the CEnemy2D
 	
