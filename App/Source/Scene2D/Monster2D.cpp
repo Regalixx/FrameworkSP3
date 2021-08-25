@@ -84,6 +84,8 @@ bool Monster2D::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	cBlackhole = CBlackhole::GetInstance();
+
 	//create monster 2D CLASS
 	//derive from Enemy 2D
 	//override the Init()
@@ -109,6 +111,8 @@ bool Monster2D::Init(void)
 	i32vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+
+	originalVector = i32vec2Index;
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -161,11 +165,45 @@ bool Monster2D::Init(void)
 	return true;
 }
 
+
+bool Monster2D::ResetEnemyPos()
+{
+	i32vec2Index = originalVector;
+	i32vec2NumMicroSteps.x = 0;
+
+	return true;
+}
 /**
  @brief Update this instance
  */
 void Monster2D::Update(const double dElapsedTime)
 {
+
+	if (cPlayer2D->useUltimate == true)
+	{
+		//std::cout << "activated" << std::endl;
+		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x, cBlackhole->i32vec2RespawnIndex.y);
+	}
+
+
+	if (cPlayer2D->resetEnemyPos == true)
+	{
+		cout << "Once" << endl;
+		ResetEnemyPos();
+	}
+
+	if (!bIsActive)
+		return;
+
+	if (cPlayer2D->TimeStop == true)
+	{
+		currentColor = glm::vec4(0, 1.0, 1.0, 1.0);
+	}
+
+	if (cPlayer2D->TimeStop == false)
+	{
+		currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
+	}
 	if (!bIsActive)
 		return;
 
@@ -567,6 +605,8 @@ void Monster2D::SetPlayer2D(CPlayer2D* cPlayer2D)
 	// Update the enemy's direction
 	UpdateDirection();
 }
+
+
 
 void Monster2D::SetClone2D(CClone* cClone)
 {

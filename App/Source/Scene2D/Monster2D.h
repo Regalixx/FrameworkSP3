@@ -81,6 +81,8 @@ public:
 	// Set the handle to cPlayer to this class instance
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
 
+	bool ResetEnemyPos();
+
 	void SetClone2D(CClone* cClone);
 
 	// boolean flag to indicate if this enemy is active
@@ -143,6 +145,8 @@ protected:
 	glm::i32vec2 i32vec2Destination;
 	// The i32vec2 which stores the direction for enemy2D movement in the Map2D
 	glm::i32vec2 i32vec2Direction;
+
+	glm::i32vec2 originalVector;
 
 	// Settings
 	CSettings* cSettings;
