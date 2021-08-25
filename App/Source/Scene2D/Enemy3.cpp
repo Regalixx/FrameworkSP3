@@ -221,7 +221,9 @@ void CEnemy3::Update(const double dElapsedTime)
 		else
 		{
 			// Update the Enemy2D's position for patrol
-			UpdatePosition(); // make enemy move
+			if (cPlayer2D->TimeStop == false) {
+				UpdatePosition();
+			} // make enemy move
 		}
 		iFSMCounter++;
 		break;
@@ -238,7 +240,6 @@ void CEnemy3::Update(const double dElapsedTime)
 				iFSMCounter = 0;
 				cout << "ATTACK : Reset counter: " << iFSMCounter << endl;
 			}
-			//cout << "Pew Pew " << endl;
 		}
 		else
 		{

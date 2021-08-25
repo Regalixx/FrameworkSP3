@@ -322,9 +322,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		//if (cPlayer2D->TimeStop == false) {
+		if (cPlayer2D->TimeStop == false) {
 		UpdatePosition();
-		//}
+		}
 		break;
 	
 	case LOST:
@@ -365,7 +365,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 		}
 	}
-	UpdatePosition();
+	if (cPlayer2D->TimeStop == false) {
+		UpdatePosition();
+	}
 		break;
 	default:
 		break;
@@ -390,10 +392,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 void CEnemy2D::PreRender(void)
 {
 	if (!bIsActive)
-		return;
-
-	// bind textures on corresponding texture units
-	glActiveTexture(GL_TEXTURE0);
+		return; 
 
 	// Activate blending mode
 	glEnable(GL_BLEND);
