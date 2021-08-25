@@ -99,6 +99,10 @@ public:
 	
 	bool directionSet = false;
 
+	glm::vec4 currentColor;
+
+	bool changeColor;
+
 protected:
 	enum DIRECTION
 	{
@@ -153,7 +157,7 @@ protected:
 	CPhysics2D cPhysics2D;
 
 	// Current color
-	glm::vec4 currentColor;
+	
 
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;

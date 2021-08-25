@@ -178,6 +178,16 @@ void CClone::Update(const double dElapsedTime)
 		//std::cout << "hello" << std::endl;
 	}
 
+	if (cPlayer2D->CloneisRight == false)
+	{
+		animatedSprites->PlayAnimation("left", -1, 1.0f);
+	}
+
+	else if (cPlayer2D->CloneisRight == true)
+	{
+		animatedSprites->PlayAnimation("right", -1, 1.0f);
+	}
+
 	if (canRespawnToClone == true)
 	{
 		i32vec2RespawnIndex = i32vec2OldIndex;

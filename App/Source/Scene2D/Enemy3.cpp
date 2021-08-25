@@ -228,7 +228,7 @@ void CEnemy3::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 
-
+		 
 	case SHOOT:
 		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && this->i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
@@ -866,8 +866,15 @@ bool CEnemy3::Shoot(float y, float x, bool isRight)
 
 	cBullet2D->SetShader("2DColorShader");
 
+	cBullet2D->changeColor = true;
+
 	if (cBullet2D->Init() == true)
 	{
+		/*if (sCurrentFSM == SHOOT)
+		{
+			
+			cBullet2D->currentColor = glm::vec4(1.0, 1.0, 0.0, 0.0);
+		}*/
 		cBullet2D->Seti32vec2Index(i32vec2Index.x, i32vec2Index.y);
 		bulletVector.push_back(cBullet2D);
 		cout << "Shooting Pew Pew" << endl;

@@ -149,6 +149,7 @@ bool CPlayer2D::Init(void)
 	fallTimer = 2;
 	liftTimer = 2;
 	ultimateDuration = 0;
+	CloneisRight = false;
 	
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
@@ -360,6 +361,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			// Calculate the new position to the left
 			if (i32vec2Index.x >= 0)
 			{
+				CloneisRight = false;
 				i32vec2NumMicroSteps.x--;
 				if (i32vec2NumMicroSteps.x < 0)
 				{
@@ -441,6 +443,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			// Calculate the new position to the right
 			if (i32vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 			{
+				CloneisRight = true;
 				i32vec2NumMicroSteps.x++;
 
 				if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
