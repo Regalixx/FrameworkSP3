@@ -242,7 +242,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		CGameManager::GetInstance()->bGameToRestart = true;
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
-		std::cout << "hello" << std::endl;
 		//cSoundController->PlaySoundByID(9);
 	}
 
@@ -1145,8 +1144,6 @@ void CPlayer2D::dimensionchange()
 
 bool CPlayer2D::ResetMap()
 {
-
-
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
 
@@ -1160,10 +1157,11 @@ bool CPlayer2D::ResetMap()
 	pitfallReset = false;
 	clone == false;
 
+	//Respawn Remotes when lost
+	respawnRemote();
 
 
 	if (cPortal->respawnPoint == true) {
-			std::cout << "hello" << std::endl;
 	
 		i32vec2Index = cPortal->i32vec2RespawnIndex;
 	}
@@ -1171,7 +1169,6 @@ bool CPlayer2D::ResetMap()
 	else if (clone == false) {
 		std::cout << "hello2" << std::endl;
 		i32vec2Index = glm::i32vec2(uiCol, uiRow);
-		//std::cout << i32vec2Index.x << std::endl;
 		std::cout << i32vec2Index.y << std::endl;
 	}
 
@@ -1198,11 +1195,6 @@ bool CPlayer2D::ResetMap()
 
 	//CS: Init the color to white
 	playerColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
-
-
-
-
 }
 
 void CPlayer2D::IsPlaformStepped(double dt)
@@ -1635,5 +1627,20 @@ void CPlayer2D::Teleport(void)
 		}
 
 		canTeleport = false;
+	}
+}
+
+void CPlayer2D::respawnRemote(void)
+{
+	if (cMap2D->GetLevel() == 2)
+	{
+		cMap2D->SetMapInfo(13, 16, 12);
+	}
+	else if (cMap2D->GetLevel() == 3)
+	{
+		//First Remote
+		cMap2D->SetMapInfo(21, 1, 12);
+		//Second Remote
+		cMap2D->SetMapInfo(18, 13, 12);
 	}
 }
