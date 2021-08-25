@@ -206,7 +206,8 @@ protected:
 	//bool IsLiftMoving(void);
 	double liftTimer; //delay timer before lift moves
 	void IsLiftMoving(double dt);
-	bool IsLiftSwitchStepped(void);
+	bool IsLiftSwitchStepped(string position);
+	bool hasLift = false;
 
 	//for timestop dimension
 	bool dimension(void);
