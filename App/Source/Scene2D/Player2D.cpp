@@ -242,7 +242,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		CGameManager::GetInstance()->bGameToRestart = true;
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
-		std::cout << "hello" << std::endl;
 		//cSoundController->PlaySoundByID(9);
 	}
 
@@ -294,13 +293,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
  		ultimateDuration += dElapsedTime;
 	}
+	else if (!useUltimate)
+	{
+		resetEnemyPos = false;
+		ultimateDuration = 0;
+	}
 
 	if (ultimateDuration >= 4)
 	{
 		useUltimate = false;
 		canUseUltimate = true;
 		resetEnemyPos = true;
-		ultimateDuration = 0;
 	}
 	else if (useUltimate == false)
 	{
