@@ -1444,6 +1444,19 @@ void CPlayer2D::InteractWithMap(void)
 			}
 		}
 
+		if (cMap2D->GetLevel() == 4)
+		{
+			if (switchesActivated == 1)
+			{
+				SwitchFlipped("horizontal", 6, 18, 12);
+				SwitchFlipped("horizontal", 6, 17, 12);
+			}
+			if (switchesActivated == 2)
+			{
+				SwitchFlipped("horizontal", 2, 14, 14);
+			}
+		}
+
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 9);
 		break;
 	case 12: //Remote
