@@ -200,7 +200,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case IDLE:
-		
+
 
 		if (iFSMCounter > iMaxFSMCounter)
 		{
@@ -215,7 +215,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = IDLE;
 			iFSMCounter = 0;
-			//cout << "Switching to Idle State" << endl;
+
 		}
 		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
@@ -231,64 +231,49 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			// Patrol around
 			// Update the Enemy2D's position for patrol
-			if (cPlayer2D->TimeStop == false) {
-				UpdatePosition();
-				cSoundController->PlaySoundByID(13);
-			}
+			//if (cPlayer2D->TimeStop == false) {
+			UpdatePosition();
+			cSoundController->PlaySoundByID(13);
+			//}
 		}
 		iFSMCounter++;
 		break;
 	case ATTACK:
-		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f))
+		if (cPlayer2D->clone == false && (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f))
 		{
-		
-			//std::cout << "test" << std::endl;
-				// Attack
-				// Calculate a path to the player
-				//cMap2D->PrintSelf();
-				/*cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
-				cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "*/
-				/*<< cPlayer2D->i32vec2Index.y << endl;*/
-				bool bFirstPosition = true;
-				auto path = cMap2D->PathFind(i32vec2Index,
-					cPlayer2D->i32vec2Index,
-					heuristic::euclidean,
-					10);
+			bool bFirstPosition = true;
+			auto path = cMap2D->PathFind(i32vec2Index,
+				cPlayer2D->i32vec2Index,
+				heuristic::euclidean,
+				10);
 
-				for (const auto& coord : path)
+			for (const auto& coord : path)
+			{
+				if (bFirstPosition == true)
 				{
-					//std::cout << coord.x << "," << coord.y << "\n";
-					if (bFirstPosition == true)
+					//Set a destination
+					i32vec2Destination = coord;
+					//Calculate the direction between enemy2D and this destiination
+					i32vec2Direction = i32vec2Destination - i32vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - i32vec2Destination) == i32vec2Direction)
 					{
 						//Set a destination
 						i32vec2Destination = coord;
-						//Calculate the direction between enemy2D and this destiination
-						i32vec2Direction = i32vec2Destination - i32vec2Index;
-						bFirstPosition = false;
+
 					}
 					else
-					{
-						if ((coord - i32vec2Destination) == i32vec2Direction)
-						{
-							//Set a destination
-							i32vec2Destination = coord;
-						}
-						else
-							
-							break;
+						break;
 				}
 			}
 		}
-		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) > 1.5f) && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f))
+
+		if (cPlayer2D->clone == true && (cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f))
 		{
 
-			//std::cout << "test" << std::endl;
-			// Attack
-			// Calculate a path to the player
-			//cMap2D->PrintSelf();
-			/*cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
-			cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "*/
-			/*<< cPlayer2D->i32vec2Index.y << endl;*/
 			bool bFirstPosition = true;
 			auto path = cMap2D->PathFind(i32vec2Index,
 				cClone->i32vec2Index,
@@ -306,38 +291,88 @@ void CEnemy2D::Update(const double dElapsedTime)
 					i32vec2Direction = i32vec2Destination - i32vec2Index;
 					bFirstPosition = false;
 				}
+
 				else
 				{
 					if ((coord - i32vec2Destination) == i32vec2Direction)
 					{
 						//Set a destination
 						i32vec2Destination = coord;
+
 					}
 					else
 						break;
 				}
-				
+
 			}
 		}
-			
-		
+		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 5.0f)
+		{
+			sCurrentFSM = LOST;
+			iFSMCounter = 0;
+		}
+
 		else
 		{
 			if (iFSMCounter > iMaxFSMCounter)
 			{
 				sCurrentFSM = PATROL;
 				iFSMCounter = 0;
-				cout << "ATTACK : Reset counter: " << iFSMCounter << endl;
+				cout << "switching from idle to attack: " << endl;
 			}
 			iFSMCounter++;
 		}
 		if (cPlayer2D->TimeStop == false) {
-			UpdatePosition();
+		UpdatePosition();
 		}
+		break;
+	
+	case LOST:
+	{
+		bool bFirstPosition = true;
+		auto path = cMap2D->PathFind(i32vec2Index,
+			originalVector,
+			heuristic::euclidean,
+			10);
+
+		for (const auto& coord : path)
+		{
+			if (bFirstPosition == true)
+			{
+				//Set a destination
+				i32vec2Destination = coord;
+				//Calculate the direction between enemy2D and this destiination
+				i32vec2Direction = i32vec2Destination - i32vec2Index;
+				bFirstPosition = false;
+			}
+			else
+			{
+				if ((coord - i32vec2Destination) == i32vec2Direction)
+				{
+					//Set a destination
+					i32vec2Destination = coord;
+
+				}
+			}
+
+			if (cPhysics2D.CalculateDistance(i32vec2Index, originalVector) > 1.0f)
+			{ 
+				sCurrentFSM = IDLE;
+				iFSMCounter = 0;
+				cout << "switching from idle to attack: " << endl;
+			}
+			iFSMCounter++;
+
+		}
+	}
+	if (cPlayer2D->TimeStop == false) {
+		UpdatePosition();
+	}
 		break;
 	default:
 		break;
 	}
+
 
 	//Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
@@ -357,10 +392,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 void CEnemy2D::PreRender(void)
 {
 	if (!bIsActive)
-		return;
-
-	// bind textures on corresponding texture units
-	glActiveTexture(GL_TEXTURE0);
+		return; 
 
 	// Activate blending mode
 	glEnable(GL_BLEND);

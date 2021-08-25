@@ -110,6 +110,7 @@ protected:
 		IDLE = 0,
 		PATROL = 1,
 		ATTACK = 2,
+		LOST = 3, // change playerposition to vector position
 		NUM_FSM
 	};
 
