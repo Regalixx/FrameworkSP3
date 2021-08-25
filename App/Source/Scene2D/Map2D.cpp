@@ -201,6 +201,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		std::cout << "Failed to load bullet texture" << std::endl;
 		return false;
 	}
+	//load down lift switch texture
+	if (LoadTexture("Image/Scene2D_liftSwitch.png", 20) == false)
+	{
+		std::cout << "Failed to load liftSpawner texture" << std::endl;
+		return false;
+	}
+
+	if (LoadTexture("Image/Acid.png", 21) == false)
+	{
+		std::cout << "Failed to load Acid texture" << std::endl;
+		return false;
+	}
 
 	// 100 - 199 : Collidable Objects
 	if (LoadTexture("Image/tile.tga", 100) == false) //Original: 1

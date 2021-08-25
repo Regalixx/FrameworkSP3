@@ -182,7 +182,7 @@ void CScene2D::ResetLaser(int dir, float row, float col)
 	{
 		if (dir == 0)
 		{
-			if (cMap2D->GetMapInfo(row + i, col) == 16)
+			if (cMap2D->GetMapInfo(row + i, col) == 16 || cMap2D->GetMapInfo(row + i, col) == 0)
 			{
 				cMap2D->SetMapInfo(row + i, col, 0);
 			}
@@ -193,7 +193,7 @@ void CScene2D::ResetLaser(int dir, float row, float col)
 		}
 		else if (dir == 1)
 		{
-			if (cMap2D->GetMapInfo(row, col + i) == 17)
+			if (cMap2D->GetMapInfo(row, col + i) == 17 || cMap2D->GetMapInfo(row, col + i) == 0)
 			{
 				cMap2D->SetMapInfo(row, col + i, 0);
 			}
@@ -620,7 +620,8 @@ void CScene2D::Update(const double dElapsedTime)
 				LaserFireVertical(5, 13, blocks_0);
 				LaserFireVertical(5, 16, blocks_0);
 				LaserFireVertical(5, 19, blocks_0);
-				blocks_0--;
+				if (cPlayer2D->TimeStop != true)
+					blocks_0--;
 			}
 
 			if (LaserFireHorizontal(20, 2, blocks_1) == false)
@@ -630,7 +631,8 @@ void CScene2D::Update(const double dElapsedTime)
 				LaserFireHorizontal(16, 2, blocks_1);
 				LaserFireHorizontal(12, 2, blocks_1);
 				LaserFireHorizontal(8, 2, blocks_1);
-				blocks_1++;
+				if (cPlayer2D->TimeStop != true)
+					blocks_1++;
 			}
 		}
 	}
@@ -732,7 +734,8 @@ void CScene2D::Update(const double dElapsedTime)
 					LaserFireVertical(21, 7, blocks_0);
 					LaserFireVertical(21, 9, blocks_0);
 					LaserFireVertical(21, 11, blocks_0);
-					blocks_0--;
+					if (cPlayer2D->TimeStop != true)
+						blocks_0--;
 				}
 
 				if (LaserFireHorizontal(5, 29, blocks_1) == false)
@@ -742,7 +745,8 @@ void CScene2D::Update(const double dElapsedTime)
 					{
 						LaserFireHorizontal(5 + i, 29, blocks_1);
 					}
-					blocks_1--;
+					if (cPlayer2D->TimeStop != true)
+						blocks_1--;
 				}
 			}
 		}
@@ -846,7 +850,8 @@ void CScene2D::Update(const double dElapsedTime)
 					LaserFireVertical(21, 27, blocks_0);
 					LaserFireVertical(21, 28, blocks_0);
 					LaserFireVertical(14, 20, blocks_0);
-					blocks_0--;
+					if (cPlayer2D->TimeStop != true)
+						blocks_0--;
 				}
 
 				if (LaserFireHorizontal(19, 12, blocks_1) == false)
@@ -855,7 +860,8 @@ void CScene2D::Update(const double dElapsedTime)
 					LaserFireHorizontal(19, 12, blocks_1);
 					LaserFireHorizontal(20, 12, blocks_1);
 					LaserFireHorizontal(10, 2, blocks_1);
-					blocks_1++;
+					if (cPlayer2D->TimeStop != true)
+						blocks_1++;
 				}
 			}
 		}

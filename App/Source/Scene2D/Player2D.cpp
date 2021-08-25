@@ -126,7 +126,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Ultimate", "Image/powerup.tga", 100, 0);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
-	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 0);
+	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 6);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 	cInventoryItem = cInventoryManager->Add("ClonePowerup", "Image/clone_powerup.png", 6, 0);
@@ -625,7 +625,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//lift controls
 	IsLiftMoving(dElapsedTime);
-	IsLiftSwitchStepped();
 
 	//CS: Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
@@ -937,28 +936,41 @@ void CPlayer2D::IsLiftMoving(double dt)
 		{
 			liftTimer = 2;
 			cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 100);
+			cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x, 140);
 		}
 	}
 	//return false;
 }
 
-bool CPlayer2D::IsLiftSwitchStepped(void)
+bool CPlayer2D::IsLiftSwitchStepped(string position)
 {
-	//for how high the lift goes
-	for (int i = 1; i < 8; i++)
+	while (true)
 	{
-		//if pressure plate activated reset lift
-		if (cMap2D->GetMapInfo(i32vec2Index.y, i32vec2Index.x) == 14)
+		if (position == "up")
 		{
-			//if the right side of player has lift or changedblock, rsets lift block and airblocks
-			if ((cMap2D->GetMapInfo(i32vec2Index.y + i, i32vec2Index.x + 1) == 100) || (cMap2D->GetMapInfo(i32vec2Index.y + i, i32vec2Index.x + 1) == 140))
+			if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) == 140) //Right side
 			{
-				cMap2D->SetMapInfo(i32vec2Index.y + i, i32vec2Index.x + 1, 0);
-				cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x + 1, 140);
+				hasLift = true;
+
+				cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1, 0);
+			}
+			else if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x - 1) == 140) //Left side
+			{
+				hasLift = true;
+
+				cMap2D->SetMapInfo(i32vec2Index.y - 1, i32vec2Index.x - 1, 0);
+
+				cout << "Printing Left." << endl;
+			}
+			else if (cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x - 1) != 140 || cMap2D->GetMapInfo(i32vec2Index.y - 1, i32vec2Index.x + 1) != 140 && hasLift == false)
+			{
+				cout << "There is no lift included." << endl;
+				break;
 			}
 		}
 	}
+
+	hasLift = false;
 	return false;
 }
 
@@ -1481,6 +1493,9 @@ void CPlayer2D::InteractWithMap(void)
 	case 13:
 		cGameManager->bLevelCompleted = true;
 		break;
+	case 14:
+		IsLiftSwitchStepped("up");
+		break;
 	case 15:
 		cSoundController->PlaySoundByID(12);
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
@@ -1503,7 +1518,15 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
 		cInventoryItem->Add(1);
 		break;
-	
+	case 20:
+		cMap2D->SetMapInfo(i32vec2Index.y + 1, i32vec2Index.x, 140);
+		break;
+	case 21:
+		pitfallReset = true;
+		CGameManager::GetInstance()->bGameToRestart = true;
+		cInventoryItem = cInventoryManager->GetItem("Lives");
+		cInventoryItem->Remove(1);
+		break;
 
 	default:
 		if (speedboost == true)
