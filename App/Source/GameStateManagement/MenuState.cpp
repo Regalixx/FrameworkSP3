@@ -92,8 +92,8 @@ bool CMenuState::Init(void)
 	exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
 	ControlButtonData.fileName = "Image\\GUI\\ControlButton.png";
 	ControlButtonData.textureID = il->LoadTextureGetID(ControlButtonData.fileName.c_str(), false);
-	VolumeButtonData.fileName = "Image\\GUI\\VolumeButton.png";
-	VolumeButtonData.textureID = il->LoadTextureGetID(ControlButtonData.fileName.c_str(), false);
+	VolumeButtonData.fileName = "Image\\GUI\\volume.png";
+	VolumeButtonData.textureID = il->LoadTextureGetID(VolumeButtonData.fileName.c_str(), false);
 	AboutButtonData.fileName = "Image\\GUI\\AboutButton.png";
 	AboutButtonData.textureID = il->LoadTextureGetID(AboutButtonData.fileName.c_str(), false);
 	CreditsButtonData.fileName = "Image\\GUI\\CreditsButton.png";
@@ -179,7 +179,7 @@ bool CMenuState::Update(const double dElapsedTime)
 
 			// Load the menu state
 		//	cout << "Loading MenuState" << endl;
-			CGameStateManager::GetInstance()->SetActiveGameState("VolumeButtonData");
+			CGameStateManager::GetInstance()->SetActiveGameState("VolumeState");
 		}
 
 		if (ImGui::ImageButton((ImTextureID)AboutButtonData.textureID,

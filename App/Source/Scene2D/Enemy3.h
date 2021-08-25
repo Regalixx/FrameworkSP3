@@ -113,6 +113,7 @@ protected:
 		IDLE = 0,
 		PATROL = 1,
 		SHOOT = 2,
+		FREEZE = 3,
 		NUM_FSM
 	};
 

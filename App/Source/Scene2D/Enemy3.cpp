@@ -713,7 +713,7 @@ bool CEnemy3::InteractWithPlayer(void)
 		//cout << "Gotcha!" << endl;
 
 		cInventoryItem = cInventoryManager->GetItem("Health");
-
+	
 		// Since the player has been caught, then reset the FSM
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;
