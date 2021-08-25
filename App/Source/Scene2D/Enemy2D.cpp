@@ -340,7 +340,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 
 	//Update Jump or Fall
-	//UpdateJumpFall(dElapsedTime);
+	UpdateJumpFall(dElapsedTime);
 
 	animatedSprites->Update(dElapsedTime);
 
@@ -691,61 +691,61 @@ bool CEnemy2D::IsMidAir(void)
 // Update Jump or Fall
 void CEnemy2D::UpdateJumpFall(const double dElapsedTime)
 {
-	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
-	{
-		// Update the elapsed time to the physics engine
-		cPhysics2D.AddElapsedTime((float)dElapsedTime);
-		// Call the physics engine update method to calculate the final velocity and displacement
-		cPhysics2D.Update();
-		// Get the displacement from the physics engine
-		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+	//if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
+	//{
+	//	// Update the elapsed time to the physics engine
+	//	cPhysics2D.AddElapsedTime((float)dElapsedTime);
+	//	// Call the physics engine update method to calculate the final velocity and displacement
+	//	cPhysics2D.Update();
+	//	// Get the displacement from the physics engine
+	//	glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
 
-		// Store the current i32vec2Index.y
-		int iIndex_YAxis_OLD = i32vec2Index.y;
+	//	// Store the current i32vec2Index.y
+	//	int iIndex_YAxis_OLD = i32vec2Index.y;
 
-		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS); //DIsplacement divide by distance for 1 microstep
-		if (i32vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
-		{
-			i32vec2NumMicroSteps.y += iDisplacement_MicroSteps;
-			if (i32vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
-			{
-				i32vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
-				if (i32vec2NumMicroSteps.y < 0)
-					i32vec2NumMicroSteps.y = 0;
-				i32vec2Index.y++;
-			}
-		}
+	//	int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS); //DIsplacement divide by distance for 1 microstep
+	//	if (i32vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+	//	{
+	//		i32vec2NumMicroSteps.y += iDisplacement_MicroSteps;
+	//		if (i32vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
+	//		{
+	//			i32vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
+	//			if (i32vec2NumMicroSteps.y < 0)
+	//				i32vec2NumMicroSteps.y = 0;
+	//			i32vec2Index.y++;
+	//		}
+	//	}
 
-		// Constraint the player's position within the screen boundary
-		Constraint(UP);
+	//	// Constraint the player's position within the screen boundary
+	//	Constraint(UP);
 
-		// Iterate through all rows until the proposed row
-		// Check if the player will hit a tile; stop jump if so.
-		int iIndex_YAxis_Proposed = i32vec2Index.y;
-		for (int i = iIndex_YAxis_OLD; i <= iIndex_YAxis_Proposed; i++)
-		{
-			// Change the player's index to the current i value
-			i32vec2Index.y = i;
-			// If the new position is not feasible, then revert to old position
-			if (CheckPosition(UP) == false)
-			{
-				// Align with the row
-				i32vec2NumMicroSteps.y = 0;
-				// Set the Physics to fall status
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-				break;
-			}
-		}
+	//	// Iterate through all rows until the proposed row
+	//	// Check if the player will hit a tile; stop jump if so.
+	//	int iIndex_YAxis_Proposed = i32vec2Index.y;
+	//	for (int i = iIndex_YAxis_OLD; i <= iIndex_YAxis_Proposed; i++)
+	//	{
+	//		// Change the player's index to the current i value
+	//		i32vec2Index.y = i;
+	//		// If the new position is not feasible, then revert to old position
+	//		if (CheckPosition(UP) == false)
+	//		{
+	//			// Align with the row
+	//			i32vec2NumMicroSteps.y = 0;
+	//			// Set the Physics to fall status
+	//			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+	//			break;
+	//		}
+	//	}
 
-		// If the player is still jumping and the initial velocity has reached zero or below zero, 
-		// then it has reach the peak of its jump
-		if ((cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) && (cPhysics2D.GetInitialVelocity().y <= 0.0f))
-		{
-			// Set status to fall
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-		}
-	}
-	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
+	//	// If the player is still jumping and the initial velocity has reached zero or below zero, 
+	//	// then it has reach the peak of its jump
+	//	if ((cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) && (cPhysics2D.GetInitialVelocity().y <= 0.0f))
+	//	{
+	//		// Set status to fall
+	//		cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+	//	}
+	//}
+	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
 	{
 		// Update the elapsed time to the physics engine
 		cPhysics2D.AddElapsedTime((float)dElapsedTime);
