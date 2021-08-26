@@ -141,8 +141,6 @@ bool CEnemy3::Init(void)
 	// Set the Physics to fall status by default
 	cPhysics2D.Init();
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-
-
 	cInventoryManager = CInventoryManager::GetInstance();
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(5, 17,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
@@ -213,7 +211,7 @@ void CEnemy3::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
-	animatedSprites->PlayAnimation("idle", -1, 1.5f);
+
 
 	if (playerStunned == true)
 	{
@@ -260,7 +258,6 @@ void CEnemy3::Update(const double dElapsedTime)
 		}
 		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f && i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
-			cout << "player spotted" << endl;
 			sCurrentFSM = SHOOT;
 			iFSMCounter = 0;
 		}
@@ -270,7 +267,6 @@ void CEnemy3::Update(const double dElapsedTime)
 			if (cPlayer2D->TimeStop == false) {
 				cSoundController->PlaySoundByID(20);
 				UpdatePosition();
-				cout << "Update position" << endl;
 			} 
 		}
 		iFSMCounter++;
@@ -282,12 +278,14 @@ void CEnemy3::Update(const double dElapsedTime)
 		cout << "shooting" << endl;
 		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && this->i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
-			if (cPlayer2D->i32vec2Index.x > this->i32vec2Index.x) {
+			if (cPlayer2D->i32vec2Index.x > i32vec2Index.x) {
 				animatedSprites->PlayAnimation("attackRight", -1, 1.0f);
+				cout << "attacking right" << endl;
 			}
-			else if (cPlayer2D->i32vec2Index.x < this->i32vec2Index.x)
+			else if (cPlayer2D->i32vec2Index.x < i32vec2Index.x)
 			{
 				animatedSprites->PlayAnimation("attack", -1, 1.0f);
+				cout << "attacking left" << endl;
 			}
 			Shoot(i32vec2Index.y, i32vec2Index.x, dir);
 			if (Shoot(i32vec2Index.y, i32vec2Index.x, dir) == true)
@@ -845,7 +843,6 @@ void CEnemy3::UpdatePosition(void)
 		Constraint(LEFT);
 
 		//CS: play the "left animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
 
 
 
@@ -864,6 +861,9 @@ void CEnemy3::UpdatePosition(void)
 		}
 
 		// Interact with the Player
+		animatedSprites->PlayAnimation("left", -1, 1.0f);
+
+
 		InteractWithPlayer();
 	}
 	else if (i32vec2Direction.x > 0 && CheckPosition(RIGHT) == true)
@@ -912,7 +912,7 @@ void CEnemy3::UpdatePosition(void)
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 	}
 
 }

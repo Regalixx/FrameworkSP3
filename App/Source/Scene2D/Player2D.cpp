@@ -606,10 +606,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//cooldownTimer += dElapsedTime
 	}
 	
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_F))
-	{
-		Shoot(i32vec2Index.y, i32vec2Index.x, dir);
-	}
+	
 
 	if (canTeleport)
 	{
@@ -1649,7 +1646,7 @@ void CPlayer2D::SwitchFlipped(string type, int amount, float row, float col)
 
 void CPlayer2D::Teleport(void)
 {
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_G) && isRemote) //Teleporting
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_F) && isRemote) //Teleporting
 	{
 		if (cMap2D->GetLevel() == 2)
 		{
