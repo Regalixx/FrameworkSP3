@@ -81,29 +81,18 @@ public:
 	glm::vec4 playerColour;
 
 	float freezeDuration;
-
 	bool TimeStop;
-
 	bool clone;
-
 	bool canUseClone;
-
 	bool targetClone;
-
 	bool pitfallReset;
-	
-
 	bool canUseUltimate;
-	
+	float followDuration;
+	bool renderClone;
 	bool dir = true;
-
-
 	bool resetEnemyPos;
-
 	bool useUltimate;
-
 	float ultimateDuration;
-
 	bool CloneisRight;
 
 	CSpriteAnimation* animatedSprites;
@@ -177,6 +166,7 @@ protected:
 
 	float cooldownTimer;
 	float cloneDuration;
+	
 	
 	
 	bool canUsepower;

@@ -82,6 +82,7 @@ bool CPlayer2D::Init(void)
 {
 
 	cooldownTimer = 0;
+	followDuration = 0;
 	freezeDuration = 0;
 	switchesActivated = 0;
 	
@@ -250,6 +251,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (clone == true)
 	{
 		cloneDuration += dElapsedTime;
+		
 	}
 
 	if (cloneDuration >= 5)
@@ -258,7 +260,20 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cloneDuration = 0;
 		canUseClone = true;
 		cPortal->renderPortal = true;
+		renderClone = true;
+		
 
+	}
+
+	if (renderClone == true)
+	{
+		followDuration += dElapsedTime;
+	}
+	if (followDuration >= 8)
+	{
+	
+ 		followDuration = 0;
+		renderClone = false;
 	}
 
 	if (TimeStop == true)

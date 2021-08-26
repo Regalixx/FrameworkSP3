@@ -271,6 +271,8 @@ void CClone::Render(void)
 	////glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	//quadMesh->Render();
 
+	if (cPlayer2D->clone == true || cPlayer2D->followDuration != 0)
+
 	animatedSprites->Render();
 
 	glBindVertexArray(0);
