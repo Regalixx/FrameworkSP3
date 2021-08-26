@@ -88,6 +88,8 @@ bool CEnemy3::Init(void)
 
 	cBlackhole = CBlackhole::GetInstance();
 
+	cSoundController = CSoundController::GetInstance();
+
 
 	//create monster 2D CLASS
 	//derive from Enemy 2D
@@ -211,6 +213,8 @@ void CEnemy3::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
+	animatedSprites->PlayAnimation("idle", -1, 1.5f);
+
 	if (playerStunned == true)
 	{
 		stunTimer += dElapsedTime;
@@ -238,11 +242,6 @@ void CEnemy3::Update(const double dElapsedTime)
 		cInventoryItem->Remove(0.1);
 	}
 
-	
-
-
-	
-
 	switch (sCurrentFSM)
 	{
 	case IDLE:
@@ -254,9 +253,14 @@ void CEnemy3::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case PATROL:
-		
-		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f)
+		if (iFSMCounter > iMaxFSMCounter)
 		{
+			sCurrentFSM = IDLE;
+			iFSMCounter = 0;
+		}
+		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f && i32vec2Index.y == cPlayer2D->i32vec2Index.y)
+		{
+			cout << "player spotted" << endl;
 			sCurrentFSM = SHOOT;
 			iFSMCounter = 0;
 		}
@@ -264,20 +268,27 @@ void CEnemy3::Update(const double dElapsedTime)
 		{
 			// Update the Enemy2D's position for patrol
 			if (cPlayer2D->TimeStop == false) {
+				cSoundController->PlaySoundByID(20);
 				UpdatePosition();
-			} // make enemy move
+				cout << "Update position" << endl;
+			} 
 		}
 		iFSMCounter++;
 		break;
 
 		 
 	case SHOOT:
+
+		cout << "shooting" << endl;
 		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && this->i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
-			if(cPlayer2D->i32vec2Index.x > this->i32vec2Index.x)
+			if (cPlayer2D->i32vec2Index.x > this->i32vec2Index.x) {
 				animatedSprites->PlayAnimation("attackRight", -1, 1.0f);
-			else
+			}
+			else if (cPlayer2D->i32vec2Index.x < this->i32vec2Index.x)
+			{
 				animatedSprites->PlayAnimation("attack", -1, 1.0f);
+			}
 			Shoot(i32vec2Index.y, i32vec2Index.x, dir);
 			if (Shoot(i32vec2Index.y, i32vec2Index.x, dir) == true)
 			{
@@ -296,7 +307,6 @@ void CEnemy3::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		//UpdatePosition();
 		break;
 	default:
 		break;

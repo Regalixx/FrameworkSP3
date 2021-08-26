@@ -165,7 +165,7 @@ bool CVictoryState::Update(const double dElapsedTime)
 			//cout << "Loading MenuState" << endl;
 			cSoundController->SetVolumeTo0();
 			CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
-			cSoundController->PlaySoundByID(8);
+			cSoundController->PlaySoundByID(14);
 			//cGameManager->bPlayerLost = true;
 		}
 		// Add codes for Exit button here

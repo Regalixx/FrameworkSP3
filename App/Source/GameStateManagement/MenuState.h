@@ -58,4 +58,5 @@ protected:
 	CGameManager* cGameManager;
 	CSoundInfo* soundController;
 	CSoundController* cSoundController;
+	//ISound* cSoundController;
 };

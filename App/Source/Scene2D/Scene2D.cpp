@@ -362,7 +362,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_jump.wav"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\coin_sound.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.wav"), 5, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_background.ogg"), 6, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_background.ogg"), 6, true, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_victory.ogg"), 7, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_die.wav"), 9, true);
@@ -375,6 +375,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 17, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 18, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_blackhole.ogg"), 19, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\robot3.ogg"), 20, true);
 #pragma endregion
 
 	return true;
@@ -532,6 +533,12 @@ void CScene2D::Update(const double dElapsedTime)
 
 		CGameStateManager::GetInstance()->SetActiveGameState("VictoryState");
 		cSoundController->PlaySoundByID(7);
+	}
+
+	if (cGameManager->bPlayerWon == false)
+	{
+
+		cSoundController->PlaySoundByID(6);
 	}
 
 	if (cMap2D->GetLevel() == 1) //Level 2

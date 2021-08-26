@@ -553,7 +553,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 				if (jumppoweractive == true)
 				{
-					cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 2.3f));
+					cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 26.0f));
 				}
 			}
 		}
@@ -1649,7 +1649,7 @@ void CPlayer2D::SwitchFlipped(string type, int amount, float row, float col)
 
 void CPlayer2D::Teleport(void)
 {
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote) //Teleporting
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_G) && isRemote) //Teleporting
 	{
 		if (cMap2D->GetLevel() == 2)
 		{

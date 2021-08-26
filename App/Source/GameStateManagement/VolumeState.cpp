@@ -136,7 +136,9 @@ bool CVolumeState::Update(const double dElapsedTime)
 		if (ImGui::ImageButton((ImTextureID)increaseVolume.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
+			
 			CKeyboardController::GetInstance()->Reset();
+
 
 			CSoundController::GetInstance()->MasterVolumeIncrease();
 		}
