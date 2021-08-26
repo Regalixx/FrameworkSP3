@@ -116,6 +116,7 @@ protected:
 		PATROL = 1,
 		POISON = 2,
 		FREEZE = 3,
+		FLEE = 4,
 		NUM_FSM
 	};
 

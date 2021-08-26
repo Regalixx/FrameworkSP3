@@ -271,12 +271,12 @@ void Monster2D::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			cout << "Switching to Idle State" << endl;
 		}
-		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
+		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
 			sCurrentFSM = FREEZE;
 			iFSMCounter = 0;
 		}
-		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 3.0f)
+		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
 		{
 			sCurrentFSM = FREEZE;
 			iFSMCounter = 0;
@@ -295,18 +295,14 @@ void Monster2D::Update(const double dElapsedTime)
 	case POISON:
 
 		stateColour = glm::vec4(0.0, 1.0, 1.0, 1.0);
-		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
+		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
-			
+
 			bool bFirstPosition = true;
 			auto path = cMap2D->PathFind(i32vec2Index,
 				cPlayer2D->i32vec2Index,
 				heuristic::euclidean,
 				10);
-
-			//cout << "===Printing out the path ===" << endl;
-
-		
 			for (const auto& coord : path)
 			{
 				//std::cout << coord.x << "," << coord.y << "\n";
@@ -330,7 +326,7 @@ void Monster2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 3.0f)
+		if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
 		{
 
 
@@ -365,6 +361,11 @@ void Monster2D::Update(const double dElapsedTime)
 				}
 			}
 		}
+		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 5.0f)
+		{
+			sCurrentFSM = FLEE;
+			iFSMCounter = 0;
+		}
 		else
 		{
 			if (iFSMCounter > iMaxFSMCounter)
@@ -382,18 +383,13 @@ void Monster2D::Update(const double dElapsedTime)
 		}
 		cSoundController->PlaySoundByID(1);
 		break;
-		
+
 
 	case FREEZE:
+	{
 		stateColour = glm::vec4(1.0, 0.5, 0.0, 1.0);
 		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
-			// Attack
-			// Calculate a path to the player
-			//cMap2D->PrintSelf();
-			//cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
-			//cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "
-				//<< cPlayer2D->i32vec2Index.y << endl;
 			auto path = cMap2D->PathFind(i32vec2Index,
 				cPlayer2D->i32vec2Index,
 				heuristic::euclidean,
@@ -425,53 +421,43 @@ void Monster2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-			if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
+		if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
+		{
+			auto path = cMap2D->PathFind(i32vec2Index,
+				cClone->i32vec2Index,
+				heuristic::euclidean,
+				10);
+
+			//cout << "===Printing out the path ===" << endl;
+
+			bool bFirstPosition = true;
+			for (const auto& coord : path)
 			{
-				// Attack
-				// Calculate a path to the player
-				//cMap2D->PrintSelf();
-				//cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
-				//cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "
-					//<< cPlayer2D->i32vec2Index.y << endl;
-				auto path = cMap2D->PathFind(i32vec2Index,
-					cClone->i32vec2Index,
-					heuristic::euclidean,
-					10);
-
-				//cout << "===Printing out the path ===" << endl;
-
-				bool bFirstPosition = true;
-				for (const auto& coord : path)
+				//std::cout << coord.x << "," << coord.y << "\n";
+				if (bFirstPosition == true)
 				{
-					//std::cout << coord.x << "," << coord.y << "\n";
-					if (bFirstPosition == true)
+					//Set a destination
+					i32vec2Destination = coord;
+					//Calculate the direction between enemy2D and this destiination
+					i32vec2Direction = i32vec2Destination - i32vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - i32vec2Destination) == i32vec2Direction)
 					{
 						//Set a destination
 						i32vec2Destination = coord;
-						//Calculate the direction between enemy2D and this destiination
-						i32vec2Direction = i32vec2Destination - i32vec2Index;
-						bFirstPosition = false;
 					}
 					else
-					{
-						if ((coord - i32vec2Destination) == i32vec2Direction)
-						{
-							//Set a destination
-							i32vec2Destination = coord;
-						}
-						else
-							break;
-					}
+						break;
 				}
-			//cout << "i32vec2Destination :" << i32vec2Destination.x << "," << i32vec2Destination.y << endl;
-		    //cout << "i32vec2Direction :" << i32vec2Direction.x << ", " << i32vec2Direction.y << endl;
-			//system("pause");
-
-			//Calcu
-			//UpdateDirection();
-
-			// Update the Enemy2D's position for attack
-			
+			}
+		}
+		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 5.0f)
+		{
+			sCurrentFSM = FLEE;
+			iFSMCounter = 0;
 		}
 		else
 		{
@@ -489,6 +475,50 @@ void Monster2D::Update(const double dElapsedTime)
 		}
 		cSoundController->PlaySoundByID(1);
 		break;
+	}
+	case FLEE:
+	{
+		{
+			bool bFirstPosition = true;
+			auto path = cMap2D->PathFind(i32vec2Index,
+				originalVector,
+				heuristic::euclidean,
+				10);
+
+			for (const auto& coord : path)
+			{
+				if (bFirstPosition == true)
+				{
+					//Set a destination
+					i32vec2Destination = coord;
+					//Calculate the direction between enemy2D and this destiination
+					i32vec2Direction = i32vec2Destination - i32vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - i32vec2Destination) == i32vec2Direction)
+					{
+						//Set a destination
+						i32vec2Destination = coord;
+
+					}
+				}
+
+				if (cPhysics2D.CalculateDistance(i32vec2Index, originalVector) >= 0.0f)
+				{
+					sCurrentFSM = IDLE;
+					iFSMCounter = 0;
+					cout << "switching from idle to attack: " << endl;
+				}
+				iFSMCounter++;
+
+			}
+		}
+		if (cPlayer2D->TimeStop == false) {
+			UpdatePosition();
+		}
+	}
 	default:
 		break;
 	}

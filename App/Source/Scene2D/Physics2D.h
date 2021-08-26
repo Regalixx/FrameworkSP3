@@ -65,7 +65,7 @@ protected:
 	glm::vec2 v2Displacement;		// Displacement
 	float fTime;					// Time
 
-	const glm::vec2 v2Gravity = glm::vec2( 0.0f, -19.f);		// Gravity constant
+	const glm::vec2 v2Gravity = glm::vec2( 0.0f, -15.f);		// Gravity constant
 
 	STATUS sCurrentStatus;
 };
