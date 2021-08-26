@@ -87,6 +87,9 @@ public:
 	bool canRespawnToClone;
 	bool respawnToClone;
 
+	
+	
+
 	//glm::i32vec2 i32vec2Index;
 	
 

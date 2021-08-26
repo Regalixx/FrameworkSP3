@@ -145,7 +145,7 @@ bool CBullet::Init(void)
 	cBlackhole = CBlackhole::GetInstance();
 
 	cPlayer2D = CPlayer2D::GetInstance();
-
+	
 	cInventoryManager = CInventoryManager::GetInstance();
 
 
@@ -179,6 +179,10 @@ void CBullet::Update(const double dElapsedTime)
 		}
 	}
 
+	if (changeColor == true)
+	{
+		currentColor = glm::vec4(1.0, 1.0, 0.0, 0.0);
+	}
 	if (cPlayer2D->useUltimate == true) 
 	{
 		//std::cout << "activated" << std::endl;

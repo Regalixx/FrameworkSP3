@@ -86,6 +86,8 @@ bool CEnemy3::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	cBlackhole = CBlackhole::GetInstance();
+
 
 	//create monster 2D CLASS
 	//derive from Enemy 2D
@@ -108,10 +110,15 @@ bool CEnemy3::Init(void)
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
+
 	// Set the start position of the Player to iRow and iCol
 	i32vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+
+
+	originalVector = i32vec2Index;
+
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -158,11 +165,45 @@ bool CEnemy3::Init(void)
 	return true;
 }
 
+bool CEnemy3::ResetEnemyPos()
+{
+	i32vec2Index = originalVector;
+	i32vec2NumMicroSteps.x = 0;
+
+	return true;
+}
+
 /**
  @brief Update this instance
  */
 void CEnemy3::Update(const double dElapsedTime)
 {
+
+	if (cPlayer2D->useUltimate == true)
+	{
+		//std::cout << "activated" << std::endl;
+		Seti32vec2Index(cBlackhole->i32vec2RespawnIndex.x, cBlackhole->i32vec2RespawnIndex.y);
+	}
+
+
+	if (cPlayer2D->resetEnemyPos == true)
+	{
+		cout << "Once" << endl;
+		ResetEnemyPos();
+	}
+
+	if (!bIsActive)
+		return;
+
+	if (cPlayer2D->TimeStop == true)
+	{
+		currentColor = glm::vec4(0, 1.0, 1.0, 1.0);
+	}
+
+	if (cPlayer2D->TimeStop == false)
+	{
+		currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
+	}
 
 	static float rageTimer = 0;
 
@@ -228,7 +269,7 @@ void CEnemy3::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 
-
+		 
 	case SHOOT:
 		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && this->i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
@@ -356,6 +397,8 @@ void CEnemy3::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int 
 	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
 	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
 }
+
+
 
 /**
  @brief Set the handle to cPlayer to this class instance
@@ -866,8 +909,15 @@ bool CEnemy3::Shoot(float y, float x, bool isRight)
 
 	cBullet2D->SetShader("2DColorShader");
 
+	cBullet2D->changeColor = true;
+
 	if (cBullet2D->Init() == true)
 	{
+		/*if (sCurrentFSM == SHOOT)
+		{
+			
+			cBullet2D->currentColor = glm::vec4(1.0, 1.0, 0.0, 0.0);
+		}*/
 		cBullet2D->Seti32vec2Index(i32vec2Index.x, i32vec2Index.y);
 		bulletVector.push_back(cBullet2D);
 		cout << "Shooting Pew Pew" << endl;

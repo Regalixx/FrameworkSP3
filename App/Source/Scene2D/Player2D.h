@@ -104,6 +104,7 @@ public:
 
 	float ultimateDuration;
 
+	bool CloneisRight;
 
 	CSpriteAnimation* animatedSprites;
 
@@ -168,6 +169,8 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
+
+	
 	
 	bool playerSprinting;
 	bool respawn;
