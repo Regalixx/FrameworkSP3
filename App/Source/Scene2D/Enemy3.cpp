@@ -142,13 +142,14 @@ bool CEnemy3::Init(void)
 
 
 	cInventoryManager = CInventoryManager::GetInstance();
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 22,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(5, 17,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	animatedSprites->AddAnimation("idle", 0, 9);
-	animatedSprites->AddAnimation("left", 22, 32);
-	animatedSprites->AddAnimation("right", 44, 54);
-	animatedSprites->AddAnimation("attack", 66, 87);
+	animatedSprites->AddAnimation("left", 17, 27);
+	animatedSprites->AddAnimation("right", 34, 44);
+	animatedSprites->AddAnimation("attack", 51, 67);
+	animatedSprites->AddAnimation("attackRight", 68, 84);
 	//CS: Play the "idle animation as default
 	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
@@ -273,7 +274,10 @@ void CEnemy3::Update(const double dElapsedTime)
 	case SHOOT:
 		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && this->i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
-			animatedSprites->PlayAnimation("attack", -1, 1.0f);
+			if(cPlayer2D->i32vec2Index.x > this->i32vec2Index.x)
+				animatedSprites->PlayAnimation("attackRight", -1, 1.0f);
+			else
+				animatedSprites->PlayAnimation("attack", -1, 1.0f);
 			Shoot(i32vec2Index.y, i32vec2Index.x, dir);
 			if (Shoot(i32vec2Index.y, i32vec2Index.x, dir) == true)
 			{
