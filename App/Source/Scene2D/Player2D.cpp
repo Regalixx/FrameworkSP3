@@ -1397,19 +1397,12 @@ void CPlayer2D::InteractWithMap(void)
 	//	cInventoryItem->Add(1);
 	//	break;
 	case 5:
-		// invisible powerup
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		cInventoryItem = cInventoryManager->GetItem("Ultimate");
 		cInventoryItem->Add(10);
 	//	cSoundController->PlaySoundByID(5);
 		break;
-	//case 6:
-	//	// higher jump
-	//	cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-	//	jumppoweractive = true;
-	//	playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
-	//	cSoundController->PlaySoundByID(5);
-	//	break;
+
 	case 7:
 		// teleport next level
 		if (activateDoor == true) {

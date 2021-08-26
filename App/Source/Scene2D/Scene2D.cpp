@@ -221,7 +221,7 @@ bool CScene2D::Init(void)
 	// Set a shader to this class
 	cMap2D->SetShader("2DShader");
 	// Initialise the instance
-	if (cMap2D->Init(5, 24, 32) == false)
+	if (cMap2D->Init(6, 24, 32) == false)
 	{
 		cout << "Failed to load CMap2D" << endl;
 		return false;
@@ -250,6 +250,11 @@ bool CScene2D::Init(void)
 		return false;
 	}
 	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_Test5.csv", 4) == false)
+	{
+		// The loading of a map has failed. Return false
+		return false;
+	}
+	if (cMap2D->LoadMap("Maps/WinScreen.csv", 5) == false)
 	{
 		// The loading of a map has failed. Return false
 		return false;
@@ -520,6 +525,13 @@ void CScene2D::Update(const double dElapsedTime)
 		cPlayer2D->clone = false;
 		cPlayer2D->canUseClone = true;
 		cGameManager->bLevelCompleted = false;
+	}
+
+	if (cGameManager->bPlayerWon == true)
+	{
+
+		CGameStateManager::GetInstance()->SetActiveGameState("VictoryState");
+		cSoundController->PlaySoundByID(7);
 	}
 
 	if (cMap2D->GetLevel() == 1) //Level 2
@@ -867,6 +879,33 @@ void CScene2D::Update(const double dElapsedTime)
 		}
 	}
 
+
+	if (cMap2D->GetLevel() == 5)
+	{
+		for (int i = 0; i < enemyVector3.size(); i++)
+		{
+			delete enemyVector3[i];
+			enemyVector3[i] = NULL;
+		}
+		enemyVector3.clear();
+
+		for (int i = 0; i < enemyVector4.size(); i++)
+		{
+			delete enemyVector4[i];
+			enemyVector4[i] = NULL;
+		}
+		enemyVector4.clear();
+
+		for (int i = 0; i < enemyVector5.size(); i++)
+		{
+			delete enemyVector5[i];
+			enemyVector5[i] = NULL;
+		}
+		enemyVector5.clear();
+
+		cGameManager->bPlayerWon = true;
+		std::cout << "game won" << std::endl;
+	}
 	//Check if the game has been won by the player
 	if (cGameManager->bPlayerWon == true)
 	{
