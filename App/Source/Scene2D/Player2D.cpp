@@ -1681,7 +1681,7 @@ void CPlayer2D::respawnRemote(void)
 {
 	if (cMap2D->GetLevel() == 2)
 	{
-		cMap2D->SetMapInfo(16, 13, 12);
+		cMap2D->SetMapInfo(11, 16, 12);
 	}
 	else if (cMap2D->GetLevel() == 3)
 	{
