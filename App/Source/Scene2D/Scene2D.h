@@ -43,28 +43,28 @@
 //Include SoundController
 #include "..\SoundController\SoundController.h"
 
-//Include CEnemey2D
+//Include CEnemy2D
 #include "Enemy2D.h"
-
+//Include CBullet2D
 #include "Bullet.h"
 
-
+//Include GameStateManager
 #include "../GameStateManagement/GameStateManager.h"
-
+//Include Monster2D.h
 #include "Monster2D.h"
 
-
+//Include Enemy
 #include "Enemy3.h"
-
+//Include Vector
 #include <vector>
 
-
+//Include BackgroundEntity
 #include "../Scene2D/BackgroundEntity.h"
-
+//Include Clone
 #include "Clone.h"
-
+//Include Portal
 #include "Portal.h"
-
+//Include B;ackhole
 #include "Blackhole.h"
 
 
@@ -146,9 +146,9 @@ protected:
 	vector<CEntity2D*> enemyVector; //for type1 enemy
 	vector<CEntity2D*> enemyVector2; //for type2 enemy
 	vector<CEntity2D*> enemyVector3; //for type3 enemy
-	vector<CEntity2D*> enemyVector4;
-	vector<CEntity2D*> enemyVector5;
-	vector<CEntity2D*> cloneVector; //for type3 enemy
+	vector<CEntity2D*> enemyVector4;//for type4 enemy
+	vector<CEntity2D*> enemyVector5;//for type5 enemy
+	vector<CEntity2D*> cloneVector; //for clone
 
 
 	CBackgroundEntity* background;
