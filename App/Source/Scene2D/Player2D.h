@@ -158,19 +158,14 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
-
-	
-	
 	bool playerSprinting;
 	bool respawn;
-
 	float cooldownTimer;
 	float cloneDuration;
-	
-	
-	
+	float poisonTimer;
 	bool canUsepower;
 	int switchesActivated;
+	bool isPoisoned;
 
 	//Remote Bool
 	bool isRemote = false;

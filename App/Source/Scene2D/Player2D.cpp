@@ -201,6 +201,7 @@ bool CPlayer2D::Init(void)
 	resetEnemyPos = false;
 	useUltimate = false;
 
+
 	
 
 	//CS: Create the animated sprite and setup the animation
@@ -223,6 +224,8 @@ bool CPlayer2D::Init(void)
 	powerupActive = false;
 	speedboost = false;
 	pitfallReset = false;
+	isPoisoned = false;
+	poisonTimer = 0;
 
 
 	//Set the physics to fall status by default
@@ -251,7 +254,22 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (clone == true)
 	{
 		cloneDuration += dElapsedTime;
-		
+
+	}
+
+	cInventoryItem = cInventoryManager->GetItem("Health");
+	if (isPoisoned == true)
+	{
+		cInventoryItem->Remove(0.1);
+		poisonTimer += dElapsedTime;
+		playerColour = glm::vec4(0.0, 1.0, 0.0, 1.0);
+		if (poisonTimer >= 5)
+		{
+			isPoisoned = false;
+			poisonTimer = 0;
+
+		}
+
 	}
 
 	if (cloneDuration >= 5)
@@ -558,7 +576,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_Z))
 		{
 
 			cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
@@ -590,7 +608,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_U))
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_V))
 	{
 		cInventoryItem = cInventoryManager->GetItem("Ultimate");
 
@@ -1527,10 +1545,7 @@ void CPlayer2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(i32vec2Index.y + 1, i32vec2Index.x, 140);
 		break;
 	case 21:
-		pitfallReset = true;
-		CGameManager::GetInstance()->bGameToRestart = true;
-		cInventoryItem = cInventoryManager->GetItem("Lives");
-		cInventoryItem->Remove(1);
+		isPoisoned = true;
 		break;
 
 	default:
@@ -1646,7 +1661,7 @@ void CPlayer2D::SwitchFlipped(string type, int amount, float row, float col)
 
 void CPlayer2D::Teleport(void)
 {
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_F) && isRemote) //Teleporting
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_X) && isRemote) //Teleporting
 	{
 		if (cMap2D->GetLevel() == 2)
 		{

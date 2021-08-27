@@ -371,6 +371,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.ogg"), 12, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemy1.ogg"), 13, true);
 	//sounds 15,16 in the menustate
+	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_menu.ogg"), 14, true, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 16, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 17, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 18, true);
@@ -503,6 +504,8 @@ void CScene2D::Update(const double dElapsedTime)
 	if (cGameManager->bPlayerLost == false) {
 		cSoundController->PlaySoundByID(6);
 	}
+
+	
 
 	if (cGameManager->bGameToRestart == true)
 	{

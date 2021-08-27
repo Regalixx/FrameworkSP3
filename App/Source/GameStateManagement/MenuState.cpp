@@ -65,10 +65,13 @@ bool CMenuState::Init(void)
 	CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 	cGameManager = CGameManager::GetInstance();
 
+
 	//Create Background Entity
 	background = new CBackgroundEntity("Image/MenuScreen.png");
 	background->SetShader("2DShader");
 	background->Init();
+
+	
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -100,7 +103,8 @@ bool CMenuState::Init(void)
 	CreditsButtonData.textureID = il->LoadTextureGetID(CreditsButtonData.fileName.c_str(), false);
 	cSoundController = CSoundController::GetInstance();
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_menu.ogg"), 14, true, true);
+
+	cSoundController->PlaySoundByID(21);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\buttonSound.ogg"), 15, true);
 	
 	return true;
