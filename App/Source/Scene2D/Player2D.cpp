@@ -127,7 +127,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Ultimate", "Image/powerup.tga", 100, 0);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
-	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 6);
+	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 0);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 	cInventoryItem = cInventoryManager->Add("ClonePowerup", "Image/clone_powerup.png", 6, 0);
@@ -200,13 +200,6 @@ bool CPlayer2D::Init(void)
 	respawn = true;
 	resetEnemyPos = false;
 	useUltimate = false;
-
-
-	
-
-	//CS: Create the animated sprite and setup the animation
-	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
-		//0.1, 0.13);
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
@@ -427,9 +420,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//CS: Play the "left" animation
 			animatedSprites->PlayAnimation("left", -1, 1.0f);
 
-
-			//CS: Change Color
-			//playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
 		}
 
 
@@ -519,9 +509,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//CS: Play the "right" animation
 			animatedSprites->PlayAnimation("right", -1, 1.0f);
 
-
-			//CS: Change Color
-			//playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
 		}
 
 
@@ -554,8 +541,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
 
-			//CS: Change Color
-			//playerColour = glm::vec4(1.0, 0.0, 1.0, 0.5);
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_SPACE))
 		{
@@ -576,7 +561,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_Z))
+		if (cKeyboardController->IsKeyReleased(GLFW_KEY_Z))
 		{
 
 			cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
@@ -608,7 +593,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_V))
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_V))
 	{
 		cInventoryItem = cInventoryManager->GetItem("Ultimate");
 

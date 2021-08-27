@@ -92,12 +92,7 @@ bool CEnemy2D::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
-	
 
-	//create monster 2D CLASS
-	//derive from Enemy 2D
-	//override the Init()
-	//override update function
 
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
@@ -148,8 +143,6 @@ bool CEnemy2D::Init(void)
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 6,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	//Enemy has no idle animation at the moment
-	//For some reason they are doing the opposite direction animation
 	animatedSprites->AddAnimation("right", 0, 5);
 	animatedSprites->AddAnimation("left", 6, 11);
 	animatedSprites->AddAnimation("attack", 12, 16);
@@ -194,6 +187,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	{
 		currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
 	}
+
 
 	switch (sCurrentFSM)
 	{

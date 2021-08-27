@@ -86,11 +86,6 @@ bool Monster2D::Init(void)
 
 	cBlackhole = CBlackhole::GetInstance();
 
-	//create monster 2D CLASS
-	//derive from Enemy 2D
-	//override the Init()
-	//override update function
-
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -98,15 +93,11 @@ bool Monster2D::Init(void)
 	unsigned int uiCol = -1;
 	if (cMap2D->FindValue(301, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
-	
-	//if (cMap2D->FindValue(301, uiRow, uiCol) == false)
-	//	return false;	// Unable to find the start position of the player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
 
-	
 	// Set the start position of the Player to iRow and iCol
 	i32vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
@@ -271,12 +262,12 @@ void Monster2D::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			cout << "Switching to Idle State" << endl;
 		}
-		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
+		else if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
 		{
 			sCurrentFSM = FREEZE;
 			iFSMCounter = 0;
 		}
-		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
+		else if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 3.0f)
 		{
 			sCurrentFSM = FREEZE;
 			iFSMCounter = 0;
@@ -295,7 +286,7 @@ void Monster2D::Update(const double dElapsedTime)
 	case POISON:
 
 		stateColour = glm::vec4(0.0, 1.0, 1.0, 1.0);
-		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
+		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
 		{
 
 			bool bFirstPosition = true;
@@ -303,6 +294,10 @@ void Monster2D::Update(const double dElapsedTime)
 				cPlayer2D->i32vec2Index,
 				heuristic::euclidean,
 				10);
+
+			//cout << "===Printing out the path ===" << endl;
+
+
 			for (const auto& coord : path)
 			{
 				//std::cout << coord.x << "," << coord.y << "\n";
@@ -326,7 +321,7 @@ void Monster2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
+		if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 3.0f)
 		{
 
 
@@ -361,11 +356,6 @@ void Monster2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 5.0f)
-		{
-			sCurrentFSM = FLEE;
-			iFSMCounter = 0;
-		}
 		else
 		{
 			if (iFSMCounter > iMaxFSMCounter)
@@ -383,10 +373,12 @@ void Monster2D::Update(const double dElapsedTime)
 		}
 		cSoundController->PlaySoundByID(1);
 		break;
+		
 
-
+	
 	case FREEZE:
 	{
+		cout << "switching to freeze state" << endl;
 		stateColour = glm::vec4(1.0, 0.5, 0.0, 1.0);
 		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
@@ -472,8 +464,8 @@ void Monster2D::Update(const double dElapsedTime)
 		}
 		if (cPlayer2D->TimeStop == false) {
 			UpdatePosition();
+			cSoundController->PlaySoundByID(1);
 		}
-		cSoundController->PlaySoundByID(1);
 		break;
 	}
 	case FLEE:
@@ -532,8 +524,6 @@ void Monster2D::Update(const double dElapsedTime)
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, i32vec2Index.x, false, i32vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, i32vec2Index.y, false, i32vec2NumMicroSteps.y*cSettings->MICRO_STEP_YAXIS);
-
-	
 }
 
 /**
@@ -1147,7 +1137,7 @@ void Monster2D::UpdatePosition(void)
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
+		//animatedSprites->PlayAnimation("idle", -1, 1.0f);
 	}
 
 }

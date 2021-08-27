@@ -177,18 +177,5 @@ protected:
 	// Update Jump or Fall
 	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
 
-	// Let enemy2D interact with the player
-	//bool InteractWithPlayer(void);
-
-	
-
-	// Update direction
-	void UpdateDirection(void);
-
-	// Flip horizontal direction. For patrol use only
-	//void FlipHorizontalDirection(void);
-
-	// Update position
-	void UpdatePosition(void);
 };
 
