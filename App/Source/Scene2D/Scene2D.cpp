@@ -1111,6 +1111,7 @@ void CScene2D::Render(void)
 		if (cPortal->renderPortal == true)
 		{
 
+
 			cPortal->PreRender();
 			//Call the cPlayer2D's Render()
 			cPortal->Render();
@@ -1159,17 +1160,22 @@ void CScene2D::Render(void)
 			enemyVector[i]->PostRender();
 		}
 
-		cBlackhole->PreRender();
-		//Call the cPlayer2D's Render()
-		cBlackhole->Render();
-		//Call the CPlayer2D's PostRender()
-		cBlackhole->PostRender();
+		if (cPlayer2D->useUltimate == true) {
+			cBlackhole->PreRender();
+			//Call the cPlayer2D's Render()
+			cBlackhole->Render();
+			//Call the CPlayer2D's PostRender()
+			cBlackhole->PostRender();
+		}
 
-		cPortal->PreRender();
-		//Call the cPlayer2D's Render()
-		cPortal->Render();
-		//Call the CPlayer2D's PostRender()
-		cPortal->PostRender();
+		if (cPortal->renderPortal == true) {
+			cPortal->PreRender();
+			//Call the cPlayer2D's Render()
+			cPortal->Render();
+			//Call the CPlayer2D's PostRender()
+			cPortal->PostRender();
+		}
+
 
 		cClone->PreRender();
 		//Call the cPlayer2D's Render()

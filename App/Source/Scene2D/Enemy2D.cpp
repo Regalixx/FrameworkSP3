@@ -195,8 +195,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 		currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
 	}
 
-	
-
 	switch (sCurrentFSM)
 	{
 	case IDLE:
@@ -231,10 +229,10 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			// Patrol around
 			// Update the Enemy2D's position for patrol
-			//if (cPlayer2D->TimeStop == false) {
+			if (cPlayer2D->TimeStop == false) {
 			UpdatePosition();
 			cSoundController->PlaySoundByID(13);
-			//}
+			}
 		}
 		iFSMCounter++;
 		break;

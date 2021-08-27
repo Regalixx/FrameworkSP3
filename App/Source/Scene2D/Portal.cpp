@@ -249,7 +249,9 @@ void CPortal::Render(void)
 	
 	//// Render the tile
 	////glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	quadMesh->Render();
+		
+			quadMesh->Render();
+	
 
 
 
