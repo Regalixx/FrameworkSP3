@@ -1457,7 +1457,7 @@ void CPlayer2D::InteractWithMap(void)
 			if (switchesActivated == 2) //5
 			{
 				//First switch in level 4
-				SwitchFlipped("horizontal", 2, 5, 18);
+				SwitchFlipped("horizontal", 2, 4, 18);
 			}
 		}
 
@@ -1529,7 +1529,10 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem->Add(1);
 		break;
 	case 20:
-		cMap2D->SetMapInfo(i32vec2Index.y + 1, i32vec2Index.x, 140);
+		if (cMap2D->GetMapInfo(i32vec2Index.y + 1, i32vec2Index.x) == 0)
+		{
+			cMap2D->SetMapInfo(i32vec2Index.y + 1, i32vec2Index.x, 140);
+		}
 		break;
 	case 21:
 		isPoisoned = true;
