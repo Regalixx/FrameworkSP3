@@ -188,7 +188,10 @@ void Monster2D::Update(const double dElapsedTime)
 
 	if (cPlayer2D->TimeStop == true)
 	{
+
 		currentColor = glm::vec4(0, 1.0, 1.0, 1.0);
+		sCurrentFSM = IDLE;
+		iFSMCounter = 0;
 	}
 
 	if (cPlayer2D->TimeStop == false)
@@ -246,7 +249,9 @@ void Monster2D::Update(const double dElapsedTime)
 
 	switch (sCurrentFSM)
 	{
+	
 	case IDLE:
+		currentColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
 		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = PATROL; //if it hits 2 seconds
@@ -256,7 +261,7 @@ void Monster2D::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case PATROL:
-		if (iFSMCounter > iMaxFSMCounter)
+		if (iFSMCounter > iMaxFSMCounter && cPlayer2D->TimeStop == false)
 		{
 			sCurrentFSM = POISON; //Change to poison
 			iFSMCounter = 0;
@@ -373,9 +378,9 @@ void Monster2D::Update(const double dElapsedTime)
 		}
 		cSoundController->PlaySoundByID(1);
 		break;
-		
 
-	
+
+
 	case FREEZE:
 	{
 		cout << "switching to freeze state" << endl;
@@ -513,7 +518,8 @@ void Monster2D::Update(const double dElapsedTime)
 	}
 	default:
 		break;
-	}
+		}
+
 
 	//Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
