@@ -149,7 +149,6 @@ bool CEnemy2D::Init(void)
 	//CS: Play the "idle animation as default
 	animatedSprites->PlayAnimation("left", -1, 1.0f);
 
-
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 

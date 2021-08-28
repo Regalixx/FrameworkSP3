@@ -224,6 +224,8 @@ bool CPlayer2D::Init(void)
 	//Set the physics to fall status by default
 	cPhysics2D.Init();
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+
+	return true;
 }
 
 /**
@@ -991,7 +993,7 @@ bool CPlayer2D::IsLiftSwitchStepped(string position)
 
 bool CPlayer2D::dimension(void)
 {
-	dimensionchange();
+	//dimensionchange();
 
 	
 	return false;
