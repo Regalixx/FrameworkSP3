@@ -454,6 +454,12 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		return false;
 	}
 
+	if (LoadTexture("Image/sideWall.png", 149) == false)
+	{
+		std::cout << "Failed to load sidetileFull texture" << std::endl;
+		return false;
+	}
+
 	
 	
 

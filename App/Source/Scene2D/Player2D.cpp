@@ -993,7 +993,7 @@ bool CPlayer2D::IsLiftSwitchStepped(string position)
 
 bool CPlayer2D::dimension(void)
 {
-	//dimensionchange();
+	dimensionchange();
 
 	
 	return false;
@@ -1037,7 +1037,7 @@ void CPlayer2D::dimensionchange()
 		}
 		while (cMap2D->FindValue(107, uiRow, uiCol) == true)
 		{
-			cMap2D->SetMapInfo(uiRow, uiCol, 127); //changes tile to dimensiontile
+			cMap2D->SetMapInfo(uiRow, uiCol, 127); 
 		}
 		while (cMap2D->FindValue(108, uiRow, uiCol) == true)
 		{
@@ -1086,6 +1086,11 @@ void CPlayer2D::dimensionchange()
 		while (cMap2D->FindValue(119, uiRow, uiCol) == true)
 		{
 			cMap2D->SetMapInfo(uiRow, uiCol, 139);
+		}
+
+		while (cMap2D->FindValue(141, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 149);
 		}
 	}
 	if (TimeStop ==false)
@@ -1169,6 +1174,10 @@ void CPlayer2D::dimensionchange()
 		while (cMap2D->FindValue(139, uiRow, uiCol) == true)
 		{
 			cMap2D->SetMapInfo(uiRow, uiCol, 119);
+		}
+		while (cMap2D->FindValue(149, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol, 141);
 		}
 	}
 

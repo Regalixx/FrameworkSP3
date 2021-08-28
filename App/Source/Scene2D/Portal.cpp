@@ -184,7 +184,7 @@ void CPortal::Update(const double dElapsedTime)
 	if (respawnPoint == false || renderPortal == false)
 	{
 		
-		i32vec2Index = cClone->i32vec2RespawnIndex;
+		i32vec2Index = cClone->i32vec2Index;
 	}
 	
 
