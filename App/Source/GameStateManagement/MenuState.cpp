@@ -65,10 +65,13 @@ bool CMenuState::Init(void)
 	CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 	cGameManager = CGameManager::GetInstance();
 
+
 	//Create Background Entity
 	background = new CBackgroundEntity("Image/MenuScreen.png");
 	background->SetShader("2DShader");
 	background->Init();
+
+	
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -100,7 +103,8 @@ bool CMenuState::Init(void)
 	CreditsButtonData.textureID = il->LoadTextureGetID(CreditsButtonData.fileName.c_str(), false);
 	cSoundController = CSoundController::GetInstance();
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_menu.ogg"), 14, true);
+
+	cSoundController->PlaySoundByID(21);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\buttonSound.ogg"), 15, true);
 	
 	return true;
@@ -148,10 +152,9 @@ bool CMenuState::Update(const double dElapsedTime)
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
 			cSoundController->PlaySoundByID(15);
-			cSoundController->SetVolumeTo0();
-
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
+			cSoundController->SetVolumeTo0();
 
 			// Load the menu state
 		//	cout << "Loading PlayGameState" << endl;

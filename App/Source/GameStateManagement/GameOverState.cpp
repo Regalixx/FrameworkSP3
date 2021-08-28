@@ -142,8 +142,9 @@ bool CGameOverState::Update(const double dElapsedTime)
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
 			// Reset the CKeyboardController
+			cSoundController->SetVolumeTo0();
 			CKeyboardController::GetInstance()->Reset();
-
+			cSoundController->PlaySoundByID(6);
 			// Load the menu state
 	//		cout << "Loading PlayGameState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");

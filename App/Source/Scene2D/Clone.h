@@ -58,26 +58,6 @@ public:
 	// PostRender
 	void PostRender(void);
 
-	// Set the indices of the enemy2D
-	void Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis);
-
-	// Set the number of microsteps of the enemy2D
-	void Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis);
-
-	// Set the UV coordinates of the enemy2D
-	void Setvec2UVCoordinates(const float fUVCoordinate_XAxis, const float fUVCoordinate_YAxis);
-
-	// Get the indices of the enemy2D
-	glm::i32vec2 Geti32vec2Index(void) const;
-
-	// Get the number of microsteps of the enemy2D
-	glm::i32vec2 Geti32vec2NumMicroSteps(void) const;
-
-	// Set the UV coordinates of the enemy2D
-	glm::vec2 Getvec2UVCoordinates(void) const;
-
-	// Set the handle to cPlayer to this class instance
-	void SetPlayer2D(CPlayer2D* cPlayer2D);
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
@@ -190,18 +170,7 @@ protected:
 	// Update Jump or Fall
 	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
 
-	// Let enemy2D interact with the player
-	//bool InteractWithPlayer(void);
 
-	
 
-	// Update direction
-	void UpdateDirection(void);
-
-	// Flip horizontal direction. For patrol use only
-	//void FlipHorizontalDirection(void);
-
-	// Update position
-	void UpdatePosition(void);
 };
 

@@ -116,7 +116,6 @@ protected:
 		IDLE = 0,
 		PATROL = 1,
 		SHOOT = 2,
-		FREEZE = 3,
 		NUM_FSM
 	};
 
@@ -182,11 +181,8 @@ protected:
 	float stunCooldown;
 	// Max count in a state
 	int iMaxFSMCounter = 90;
-	const int iMaxFSMRageCounter = 150;
 
 	bool playerStunned;
-
-
 
 	// Load a texture
 	bool LoadTexture(const char* filename, GLuint& iTextureID);

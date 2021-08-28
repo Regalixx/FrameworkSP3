@@ -82,6 +82,7 @@ bool CPlayer2D::Init(void)
 {
 
 	cooldownTimer = 0;
+	followDuration = 0;
 	freezeDuration = 0;
 	switchesActivated = 0;
 	
@@ -126,7 +127,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Ultimate", "Image/powerup.tga", 100, 0);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
-	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 6);
+	cInventoryItem = cInventoryManager->Add("TimestopTimer", "Image/time_powerup.png", 6, 0);
 	cInventoryItem->vec2Size = glm::vec2(35, 35);
 
 	cInventoryItem = cInventoryManager->Add("ClonePowerup", "Image/clone_powerup.png", 6, 0);
@@ -200,12 +201,6 @@ bool CPlayer2D::Init(void)
 	resetEnemyPos = false;
 	useUltimate = false;
 
-	
-
-	//CS: Create the animated sprite and setup the animation
-	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
-		//0.1, 0.13);
-
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
@@ -222,6 +217,8 @@ bool CPlayer2D::Init(void)
 	powerupActive = false;
 	speedboost = false;
 	pitfallReset = false;
+	isPoisoned = false;
+	poisonTimer = 0;
 
 
 	//Set the physics to fall status by default
@@ -250,6 +247,22 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (clone == true)
 	{
 		cloneDuration += dElapsedTime;
+
+	}
+
+	cInventoryItem = cInventoryManager->GetItem("Health");
+	if (isPoisoned == true)
+	{
+		cInventoryItem->Remove(0.1);
+		poisonTimer += dElapsedTime;
+		playerColour = glm::vec4(0.0, 1.0, 0.0, 1.0);
+		if (poisonTimer >= 5)
+		{
+			isPoisoned = false;
+			poisonTimer = 0;
+
+		}
+
 	}
 
 	if (cloneDuration >= 5)
@@ -258,7 +271,20 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cloneDuration = 0;
 		canUseClone = true;
 		cPortal->renderPortal = true;
+		renderClone = true;
+		
 
+	}
+
+	if (renderClone == true)
+	{
+		followDuration += dElapsedTime;
+	}
+	if (followDuration >= 8)
+	{
+	
+ 		followDuration = 0;
+		renderClone = false;
 	}
 
 	if (TimeStop == true)
@@ -394,9 +420,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//CS: Play the "left" animation
 			animatedSprites->PlayAnimation("left", -1, 1.0f);
 
-
-			//CS: Change Color
-			//playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
 		}
 
 
@@ -486,9 +509,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//CS: Play the "right" animation
 			animatedSprites->PlayAnimation("right", -1, 1.0f);
 
-
-			//CS: Change Color
-			//playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
 		}
 
 
@@ -521,8 +541,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
 
-			//CS: Change Color
-			//playerColour = glm::vec4(1.0, 0.0, 1.0, 0.5);
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_SPACE))
 		{
@@ -538,12 +556,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 				if (jumppoweractive == true)
 				{
-					cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 2.3f));
+					cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 32.0f));
 				}
 			}
 		}
 
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_T))
+		if (cKeyboardController->IsKeyReleased(GLFW_KEY_Z))
 		{
 
 			cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
@@ -575,7 +593,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_U))
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_V))
 	{
 		cInventoryItem = cInventoryManager->GetItem("Ultimate");
 
@@ -591,10 +609,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//cooldownTimer += dElapsedTime
 	}
 	
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_F))
-	{
-		Shoot(i32vec2Index.y, i32vec2Index.x, dir);
-	}
+	
 
 	if (canTeleport)
 	{
@@ -1382,19 +1397,12 @@ void CPlayer2D::InteractWithMap(void)
 	//	cInventoryItem->Add(1);
 	//	break;
 	case 5:
-		// invisible powerup
 		cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
 		cInventoryItem = cInventoryManager->GetItem("Ultimate");
 		cInventoryItem->Add(10);
 	//	cSoundController->PlaySoundByID(5);
 		break;
-	//case 6:
-	//	// higher jump
-	//	cMap2D->SetMapInfo(i32vec2Index.y, i32vec2Index.x, 0);
-	//	jumppoweractive = true;
-	//	playerColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
-	//	cSoundController->PlaySoundByID(5);
-	//	break;
+
 	case 7:
 		// teleport next level
 		if (activateDoor == true) {
@@ -1522,10 +1530,7 @@ void CPlayer2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(i32vec2Index.y + 1, i32vec2Index.x, 140);
 		break;
 	case 21:
-		pitfallReset = true;
-		CGameManager::GetInstance()->bGameToRestart = true;
-		cInventoryItem = cInventoryManager->GetItem("Lives");
-		cInventoryItem->Remove(1);
+		isPoisoned = true;
 		break;
 
 	default:
@@ -1641,7 +1646,7 @@ void CPlayer2D::SwitchFlipped(string type, int amount, float row, float col)
 
 void CPlayer2D::Teleport(void)
 {
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_4) && isRemote) //Teleporting
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_X) && isRemote) //Teleporting
 	{
 		if (cMap2D->GetLevel() == 2)
 		{
@@ -1673,7 +1678,7 @@ void CPlayer2D::respawnRemote(void)
 {
 	if (cMap2D->GetLevel() == 2)
 	{
-		cMap2D->SetMapInfo(16, 13, 12);
+		cMap2D->SetMapInfo(11, 16, 12);
 	}
 	else if (cMap2D->GetLevel() == 3)
 	{

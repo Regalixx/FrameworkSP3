@@ -81,29 +81,18 @@ public:
 	glm::vec4 playerColour;
 
 	float freezeDuration;
-
 	bool TimeStop;
-
 	bool clone;
-
 	bool canUseClone;
-
 	bool targetClone;
-
 	bool pitfallReset;
-	
-
 	bool canUseUltimate;
-	
+	float followDuration;
+	bool renderClone;
 	bool dir = true;
-
-
 	bool resetEnemyPos;
-
 	bool useUltimate;
-
 	float ultimateDuration;
-
 	bool CloneisRight;
 
 	CSpriteAnimation* animatedSprites;
@@ -169,18 +158,14 @@ protected:
 	bool isHealing;
 	bool slowMovementSpeed;
 	bool jumppoweractive;
-
-	
-	
 	bool playerSprinting;
 	bool respawn;
-
 	float cooldownTimer;
 	float cloneDuration;
-	
-	
+	float poisonTimer;
 	bool canUsepower;
 	int switchesActivated;
+	bool isPoisoned;
 
 	//Remote Bool
 	bool isRemote = false;

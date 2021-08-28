@@ -77,13 +77,11 @@ CScene2D::~CScene2D(void)
 
 	if (cEnemy3P)
 	{
-		//cEnemy3P->Destroy();
 		cEnemy3P = NULL;
 	}
 
 	if (cEnemy3D)
 	{
-		//cEnemy3P->Destroy();
 		cEnemy3D = NULL;
 	}
 
@@ -139,7 +137,7 @@ CScene2D::~CScene2D(void)
 		enemyVector5[i] = NULL;
 	}
 	enemyVector5.clear();
-
+//clear clone
 	for (int i = 0; i < cloneVector.size(); i++)
 	{
 		delete cloneVector[i];
@@ -211,8 +209,7 @@ void CScene2D::ResetLaser(int dir, float row, float col)
 */
 bool CScene2D::Init(void)
 {
-	//// Include Shader Manager
-	//CShaderManager::GetInstance()->Add("2DShader", "Shader//Scene2D.vs", "Shader//Scene2D.fs");
+	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("2DShader");
 	CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
@@ -221,7 +218,7 @@ bool CScene2D::Init(void)
 	// Set a shader to this class
 	cMap2D->SetShader("2DShader");
 	// Initialise the instance
-	if (cMap2D->Init(5, 24, 32) == false)
+	if (cMap2D->Init(6, 24, 32) == false)
 	{
 		cout << "Failed to load CMap2D" << endl;
 		return false;
@@ -254,6 +251,11 @@ bool CScene2D::Init(void)
 		// The loading of a map has failed. Return false
 		return false;
 	}
+	if (cMap2D->LoadMap("Maps/WinScreen.csv", 5) == false)
+	{
+		// The loading of a map has failed. Return false
+		return false;
+	}
 #pragma endregion
 
 	background = new CBackgroundEntity("Image/mapbackground3.png");
@@ -263,8 +265,6 @@ bool CScene2D::Init(void)
 	CImageLoader* il = CImageLoader::GetInstance();
 	healthbar.fileName = "Image/healthbar.png";
 	healthbar.textureID = il->LoadTextureGetID(healthbar.fileName.c_str(), false);
-
-	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), 5, 5);
 
 	//Load Scene 2DColor into ShaderManager
 	CShaderManager::GetInstance()->Add("2DColorShader", "Shader//Scene2DColor.vs", "Shader//Scene2DColor.fs");
@@ -349,7 +349,6 @@ bool CScene2D::Init(void)
 
 	//Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
-	//cSoundController->Init();
 
 #pragma region LoadSounds
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\robot2.ogg"), 1, true);
@@ -357,7 +356,7 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_jump.wav"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\coin_sound.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.wav"), 5, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_background.ogg"), 6, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_background.ogg"), 6, true, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_victory.ogg"), 7, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\gamevictory.ogg"), 8, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_die.wav"), 9, true);
@@ -366,10 +365,12 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_pickup.ogg"), 12, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemy1.ogg"), 13, true);
 	//sounds 15,16 in the menustate
+	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\music_menu.ogg"), 14, true, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_clone.ogg"), 16, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\respawn_clone.ogg"), 17, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\laser.ogg"), 18, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\player_blackhole.ogg"), 19, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\robot3.ogg"), 20, true);
 #pragma endregion
 
 	return true;
@@ -396,16 +397,12 @@ void CScene2D::Update(const double dElapsedTime)
 			}
 		}
 
-		////Call the cPlayer2D's update method
-		//cPlayer2D->Update(dElapsedTime);
-
 		cClone->Update(dElapsedTime);
 
 		cPortal->Update(dElapsedTime);
 
 		cBlackhole->Update(dElapsedTime);
 
-		// Start the Dear ImGui frame
 		// Start the Dear ImGui frame
 
 		//Call all the cEnemy2D's update method before Map2D
@@ -464,26 +461,6 @@ void CScene2D::Update(const double dElapsedTime)
 	//Call the cGUI_Scene2D's update method
 	cGUI_Scene2D->Update(dElapsedTime);
 
-	// Get keyboard updates
-	/*
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_F6))
-	{
-		// Save the current game to a save file
-		// Make sure the file is open
-		try {
-			if (cMap2D->SaveMap("Maps/DM2213_Map_Level_01_SAVEGAMEtest.csv", cMap2D->GetLevel()) == false)
-			{
-				throw runtime_error("Unable to save the current game to a file");
-			}
-		}
-		catch (runtime_error e)
-		{
-			cout << "Runtime error: " << e.what();
-			return;
-		}
-	}
-	*/
-
 	//Debugging
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_1))
 	{
@@ -497,6 +474,8 @@ void CScene2D::Update(const double dElapsedTime)
 	if (cGameManager->bPlayerLost == false) {
 		cSoundController->PlaySoundByID(6);
 	}
+
+	
 
 	if (cGameManager->bGameToRestart == true)
 	{
@@ -520,6 +499,19 @@ void CScene2D::Update(const double dElapsedTime)
 		cPlayer2D->clone = false;
 		cPlayer2D->canUseClone = true;
 		cGameManager->bLevelCompleted = false;
+	}
+
+	if (cGameManager->bPlayerWon == true)
+	{
+
+		CGameStateManager::GetInstance()->SetActiveGameState("VictoryState");
+		cSoundController->PlaySoundByID(7);
+	}
+
+	if (cGameManager->bPlayerWon == false)
+	{
+
+		cSoundController->PlaySoundByID(6);
 	}
 
 	if (cMap2D->GetLevel() == 1) //Level 2
@@ -640,23 +632,6 @@ void CScene2D::Update(const double dElapsedTime)
 
 	if (cMap2D->GetLevel() == 3) //Level 4
 	{
-		/*
-		CEnemy3* cEnemy3 = new CEnemy3();
-
-		//Pass shader to cEnemy2D
-		cEnemy3->SetShader("2DColorShader");
-
-		if (cEnemy3P == NULL)
-		{
-			cEnemy3P = cEnemy3;
-			cout << "Enemy3P Pointer going" << endl;
-		}
-		else if (cEnemy3D == NULL)
-		{
-			cEnemy3D = cEnemy3;
-			cout << "Enemy3D Pointer going" << endl;
-		}
-		*/
 
 		if (cEnemy3P != NULL)
 		{
@@ -867,6 +842,33 @@ void CScene2D::Update(const double dElapsedTime)
 		}
 	}
 
+
+	if (cMap2D->GetLevel() == 5)
+	{
+		for (int i = 0; i < enemyVector3.size(); i++)
+		{
+			delete enemyVector3[i];
+			enemyVector3[i] = NULL;
+		}
+		enemyVector3.clear();
+
+		for (int i = 0; i < enemyVector4.size(); i++)
+		{
+			delete enemyVector4[i];
+			enemyVector4[i] = NULL;
+		}
+		enemyVector4.clear();
+
+		for (int i = 0; i < enemyVector5.size(); i++)
+		{
+			delete enemyVector5[i];
+			enemyVector5[i] = NULL;
+		}
+		enemyVector5.clear();
+
+		cGameManager->bPlayerWon = true;
+		std::cout << "game won" << std::endl;
+	}
 	//Check if the game has been won by the player
 	if (cGameManager->bPlayerWon == true)
 	{
@@ -932,12 +934,6 @@ void CScene2D::PreRender(void)
 	// Reset the OpenGL rendering environment
 	glLoadIdentity();
 
-	// Clear the screen and buffer
-
-	/*if (cGameManager->bPlayerWon == false) {
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	}*/
-
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Enable 2D texture rendering
@@ -962,11 +958,6 @@ void CScene2D::Render(void)
 	}
 
 	if (cPlayer2D->TimeStop == false) {
-		//Render the tile=
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//CS: Render the tile
-		 //quadMesh->Render();
-
 		for (int i = 0; i < cPlayer2D->bulletVector.size(); ++i)
 		{
 			isFired = true;
@@ -1120,6 +1111,7 @@ void CScene2D::Render(void)
 		if (cPortal->renderPortal == true)
 		{
 
+
 			cPortal->PreRender();
 			//Call the cPlayer2D's Render()
 			cPortal->Render();
@@ -1168,17 +1160,22 @@ void CScene2D::Render(void)
 			enemyVector[i]->PostRender();
 		}
 
-		cBlackhole->PreRender();
-		//Call the cPlayer2D's Render()
-		cBlackhole->Render();
-		//Call the CPlayer2D's PostRender()
-		cBlackhole->PostRender();
+		if (cPlayer2D->useUltimate == true) {
+			cBlackhole->PreRender();
+			//Call the cPlayer2D's Render()
+			cBlackhole->Render();
+			//Call the CPlayer2D's PostRender()
+			cBlackhole->PostRender();
+		}
 
-		cPortal->PreRender();
-		//Call the cPlayer2D's Render()
-		cPortal->Render();
-		//Call the CPlayer2D's PostRender()
-		cPortal->PostRender();
+		if (cPortal->renderPortal == true) {
+			cPortal->PreRender();
+			//Call the cPlayer2D's Render()
+			cPortal->Render();
+			//Call the CPlayer2D's PostRender()
+			cPortal->PostRender();
+		}
+
 
 		cClone->PreRender();
 		//Call the cPlayer2D's Render()

@@ -31,7 +31,7 @@ CPlayGameState::CPlayGameState(void)
  */
 CPlayGameState::~CPlayGameState(void)
 {
-
+	
 }
 
 /**
@@ -49,14 +49,12 @@ bool CPlayGameState::Init(void)
 		return false;
 	}
 	cGameManager = CGameManager::GetInstance();
-	return true;
 
 	cSoundController = CSoundController::GetInstance();
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\bg_music2.ogg"), 6, true);
-	cSoundController->PlaySoundByID(6);
 
-	
+	return true;
 }
 
 /**
@@ -64,15 +62,19 @@ bool CPlayGameState::Init(void)
  */
 bool CPlayGameState::Update(const double dElapsedTime)
 {
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
+	if (CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_ESCAPE))
 	{
 		
+
+		cout << "exiting play" << endl;
+		cSoundController->SetVolumeTo0();
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
 
 		// Load the menu state
+	
 		cout << "Loading MenuState" << endl;
-		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
+		CGameStateManager::GetInstance()-> SetActiveGameState("MenuState");
 		CGameStateManager::GetInstance()->OffPauseGameState();
 		return true;
 

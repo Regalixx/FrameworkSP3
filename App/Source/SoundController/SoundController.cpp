@@ -240,7 +240,8 @@ bool CSoundController::VolumeDecrease(const int ID)
 
 void CSoundController::SetVolumeTo0()
 {
-	// Get the ISoundSource
+
+
 	cSoundEngine->stopAllSounds();
 	
 

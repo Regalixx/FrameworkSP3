@@ -86,11 +86,6 @@ bool Monster2D::Init(void)
 
 	cBlackhole = CBlackhole::GetInstance();
 
-	//create monster 2D CLASS
-	//derive from Enemy 2D
-	//override the Init()
-	//override update function
-
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -98,15 +93,11 @@ bool Monster2D::Init(void)
 	unsigned int uiCol = -1;
 	if (cMap2D->FindValue(301, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
-	
-	//if (cMap2D->FindValue(301, uiRow, uiCol) == false)
-	//	return false;	// Unable to find the start position of the player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
 
-	
 	// Set the start position of the Player to iRow and iCol
 	i32vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
@@ -297,7 +288,7 @@ void Monster2D::Update(const double dElapsedTime)
 		stateColour = glm::vec4(0.0, 1.0, 1.0, 1.0);
 		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 3.0f)
 		{
-			
+
 			bool bFirstPosition = true;
 			auto path = cMap2D->PathFind(i32vec2Index,
 				cPlayer2D->i32vec2Index,
@@ -306,7 +297,7 @@ void Monster2D::Update(const double dElapsedTime)
 
 			//cout << "===Printing out the path ===" << endl;
 
-		
+
 			for (const auto& coord : path)
 			{
 				//std::cout << coord.x << "," << coord.y << "\n";
@@ -384,16 +375,13 @@ void Monster2D::Update(const double dElapsedTime)
 		break;
 		
 
+	
 	case FREEZE:
+	{
+		cout << "switching to freeze state" << endl;
 		stateColour = glm::vec4(1.0, 0.5, 0.0, 1.0);
 		if (cPlayer2D->clone == false && cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 5.0f)
 		{
-			// Attack
-			// Calculate a path to the player
-			//cMap2D->PrintSelf();
-			//cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
-			//cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "
-				//<< cPlayer2D->i32vec2Index.y << endl;
 			auto path = cMap2D->PathFind(i32vec2Index,
 				cPlayer2D->i32vec2Index,
 				heuristic::euclidean,
@@ -425,53 +413,43 @@ void Monster2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-			if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
+		if (cPlayer2D->clone == true && cPhysics2D.CalculateDistance(i32vec2Index, cClone->i32vec2Index) < 5.0f)
+		{
+			auto path = cMap2D->PathFind(i32vec2Index,
+				cClone->i32vec2Index,
+				heuristic::euclidean,
+				10);
+
+			//cout << "===Printing out the path ===" << endl;
+
+			bool bFirstPosition = true;
+			for (const auto& coord : path)
 			{
-				// Attack
-				// Calculate a path to the player
-				//cMap2D->PrintSelf();
-				//cout << "StartPos: " << i32vec2Index.x << "," << i32vec2Index.y << endl;
-				//cout << "TargetPos: " << cPlayer2D->i32vec2Index.x << ", "
-					//<< cPlayer2D->i32vec2Index.y << endl;
-				auto path = cMap2D->PathFind(i32vec2Index,
-					cClone->i32vec2Index,
-					heuristic::euclidean,
-					10);
-
-				//cout << "===Printing out the path ===" << endl;
-
-				bool bFirstPosition = true;
-				for (const auto& coord : path)
+				//std::cout << coord.x << "," << coord.y << "\n";
+				if (bFirstPosition == true)
 				{
-					//std::cout << coord.x << "," << coord.y << "\n";
-					if (bFirstPosition == true)
+					//Set a destination
+					i32vec2Destination = coord;
+					//Calculate the direction between enemy2D and this destiination
+					i32vec2Direction = i32vec2Destination - i32vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - i32vec2Destination) == i32vec2Direction)
 					{
 						//Set a destination
 						i32vec2Destination = coord;
-						//Calculate the direction between enemy2D and this destiination
-						i32vec2Direction = i32vec2Destination - i32vec2Index;
-						bFirstPosition = false;
 					}
 					else
-					{
-						if ((coord - i32vec2Destination) == i32vec2Direction)
-						{
-							//Set a destination
-							i32vec2Destination = coord;
-						}
-						else
-							break;
-					}
+						break;
 				}
-			//cout << "i32vec2Destination :" << i32vec2Destination.x << "," << i32vec2Destination.y << endl;
-		    //cout << "i32vec2Direction :" << i32vec2Direction.x << ", " << i32vec2Direction.y << endl;
-			//system("pause");
-
-			//Calcu
-			//UpdateDirection();
-
-			// Update the Enemy2D's position for attack
-			
+			}
+		}
+		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) > 5.0f)
+		{
+			sCurrentFSM = FLEE;
+			iFSMCounter = 0;
 		}
 		else
 		{
@@ -486,9 +464,53 @@ void Monster2D::Update(const double dElapsedTime)
 		}
 		if (cPlayer2D->TimeStop == false) {
 			UpdatePosition();
+			cSoundController->PlaySoundByID(1);
 		}
-		cSoundController->PlaySoundByID(1);
 		break;
+	}
+	case FLEE:
+	{
+		{
+			bool bFirstPosition = true;
+			auto path = cMap2D->PathFind(i32vec2Index,
+				originalVector,
+				heuristic::euclidean,
+				10);
+
+			for (const auto& coord : path)
+			{
+				if (bFirstPosition == true)
+				{
+					//Set a destination
+					i32vec2Destination = coord;
+					//Calculate the direction between enemy2D and this destiination
+					i32vec2Direction = i32vec2Destination - i32vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - i32vec2Destination) == i32vec2Direction)
+					{
+						//Set a destination
+						i32vec2Destination = coord;
+
+					}
+				}
+
+				if (cPhysics2D.CalculateDistance(i32vec2Index, originalVector) >= 0.0f)
+				{
+					sCurrentFSM = IDLE;
+					iFSMCounter = 0;
+					cout << "switching from idle to attack: " << endl;
+				}
+				iFSMCounter++;
+
+			}
+		}
+		if (cPlayer2D->TimeStop == false) {
+			UpdatePosition();
+		}
+	}
 	default:
 		break;
 	}
@@ -502,8 +524,6 @@ void Monster2D::Update(const double dElapsedTime)
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, i32vec2Index.x, false, i32vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, i32vec2Index.y, false, i32vec2NumMicroSteps.y*cSettings->MICRO_STEP_YAXIS);
-
-	
 }
 
 /**
@@ -1117,7 +1137,7 @@ void Monster2D::UpdatePosition(void)
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
+		//animatedSprites->PlayAnimation("idle", -1, 1.0f);
 	}
 
 }

@@ -88,6 +88,8 @@ bool CEnemy3::Init(void)
 
 	cBlackhole = CBlackhole::GetInstance();
 
+	cSoundController = CSoundController::GetInstance();
+
 
 	//create monster 2D CLASS
 	//derive from Enemy 2D
@@ -139,16 +141,15 @@ bool CEnemy3::Init(void)
 	// Set the Physics to fall status by default
 	cPhysics2D.Init();
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-
-
 	cInventoryManager = CInventoryManager::GetInstance();
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 22,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(5, 17,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	animatedSprites->AddAnimation("idle", 0, 9);
-	animatedSprites->AddAnimation("left", 22, 32);
-	animatedSprites->AddAnimation("right", 44, 54);
-	animatedSprites->AddAnimation("attack", 66, 87);
+	animatedSprites->AddAnimation("left", 17, 27);
+	animatedSprites->AddAnimation("right", 34, 44);
+	animatedSprites->AddAnimation("attack", 51, 67);
+	animatedSprites->AddAnimation("attackRight", 68, 84);
 	//CS: Play the "idle animation as default
 	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 
@@ -210,6 +211,8 @@ void CEnemy3::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
+
+
 	if (playerStunned == true)
 	{
 		stunTimer += dElapsedTime;
@@ -237,11 +240,6 @@ void CEnemy3::Update(const double dElapsedTime)
 		cInventoryItem->Remove(0.1);
 	}
 
-	
-
-
-	
-
 	switch (sCurrentFSM)
 	{
 	case IDLE:
@@ -253,8 +251,12 @@ void CEnemy3::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case PATROL:
-		
-		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f)
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = IDLE;
+			iFSMCounter = 0;
+		}
+		if (cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f && i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
 			sCurrentFSM = SHOOT;
 			iFSMCounter = 0;
@@ -263,17 +265,28 @@ void CEnemy3::Update(const double dElapsedTime)
 		{
 			// Update the Enemy2D's position for patrol
 			if (cPlayer2D->TimeStop == false) {
+				cSoundController->PlaySoundByID(20);
 				UpdatePosition();
-			} // make enemy move
+			} 
 		}
 		iFSMCounter++;
 		break;
 
 		 
 	case SHOOT:
+
+		cout << "shooting" << endl;
 		if ((cPhysics2D.CalculateDistance(i32vec2Index, cPlayer2D->i32vec2Index) < 8.0f) && this->i32vec2Index.y == cPlayer2D->i32vec2Index.y)
 		{
-			animatedSprites->PlayAnimation("attack", -1, 1.0f);
+			if (cPlayer2D->i32vec2Index.x > i32vec2Index.x) {
+				animatedSprites->PlayAnimation("attackRight", -1, 1.0f);
+				cout << "attacking right" << endl;
+			}
+			else if (cPlayer2D->i32vec2Index.x < i32vec2Index.x)
+			{
+				animatedSprites->PlayAnimation("attack", -1, 1.0f);
+				cout << "attacking left" << endl;
+			}
 			Shoot(i32vec2Index.y, i32vec2Index.x, dir);
 			if (Shoot(i32vec2Index.y, i32vec2Index.x, dir) == true)
 			{
@@ -292,7 +305,6 @@ void CEnemy3::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		//UpdatePosition();
 		break;
 	default:
 		break;
@@ -831,7 +843,6 @@ void CEnemy3::UpdatePosition(void)
 		Constraint(LEFT);
 
 		//CS: play the "left animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
 
 
 
@@ -850,6 +861,9 @@ void CEnemy3::UpdatePosition(void)
 		}
 
 		// Interact with the Player
+		animatedSprites->PlayAnimation("left", -1, 1.0f);
+
+
 		InteractWithPlayer();
 	}
 	else if (i32vec2Direction.x > 0 && CheckPosition(RIGHT) == true)
@@ -898,7 +912,7 @@ void CEnemy3::UpdatePosition(void)
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 	}
 
 }
