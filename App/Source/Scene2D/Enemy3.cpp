@@ -90,14 +90,6 @@ bool CEnemy3::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
-
-	//create monster 2D CLASS
-	//derive from Enemy 2D
-	//override the Init()
-	//override update function
-
-
-
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
