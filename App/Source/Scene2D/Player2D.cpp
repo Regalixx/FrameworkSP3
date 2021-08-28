@@ -1200,6 +1200,7 @@ bool CPlayer2D::ResetMap()
 
 	//Respawn Remotes when lost
 	respawnRemote();
+	teleportActivated = 0;
 
 
 	if (cPortal->respawnPoint == true) {
