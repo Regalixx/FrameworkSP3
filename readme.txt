@@ -10,6 +10,8 @@ bring all portal pieces together to escape.
 
 Player Controls
 
+- G to pause Menu
+- Escape - Go back to main menu
 -Arrow Key Right (Move right)
 -Arrow Key left (Move left)
 -Arrow key Down(Move Down)

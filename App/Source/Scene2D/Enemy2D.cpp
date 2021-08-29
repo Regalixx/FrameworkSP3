@@ -179,7 +179,10 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 	if (cPlayer2D->TimeStop == true)
 	{
+
 		currentColor = glm::vec4(0, 1.0, 1.0, 1.0);
+		sCurrentFSM = IDLE;
+		iFSMCounter = 0;
 	}
 
 	if (cPlayer2D->TimeStop == false)
@@ -834,10 +837,10 @@ bool CEnemy2D::InteractWithPlayer(void)
 	{
 		//cout << "Gotcha!" << endl;
 
-		cPlayer2D->playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+		cPlayer2D->isDamaged = true;
+		//cPlayer2D->playerColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(25);
-
 		// Since the player has been caught, then reset the FSM
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;

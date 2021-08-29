@@ -323,6 +323,118 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGui::End();
 		}
 
+		if (CPlayer2D::GetInstance()->isDamaged == true)
+		{
+			ImGuiWindowFlags dimensionborderWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoBackground |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+
+
+
+			ImGui::Begin("damageborder", NULL, dimensionborderWindowFlags);
+			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
+			cInventoryItem = cInventoryManager->GetItem("damageborder");
+			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+				ImVec2(1890, 980),
+				ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::SameLine();
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+
+			ImGui::End();
+		}
+
+		if (CPlayer2D::GetInstance()->isPoisoned == true)
+		{
+			ImGuiWindowFlags dimensionborderWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoBackground |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+
+
+
+			ImGui::Begin("PoisonedBorder", NULL, dimensionborderWindowFlags);
+			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
+			cInventoryItem = cInventoryManager->GetItem("PoisonedBorder");
+			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+				ImVec2(1890, 980),
+				ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::SameLine();
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+
+			ImGui::End();
+		}
+
+		if (CPlayer2D::GetInstance()->isStunned == true)
+		{
+			ImGuiWindowFlags dimensionborderWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoBackground |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+
+
+
+			ImGui::Begin("StunnedBorder", NULL, dimensionborderWindowFlags);
+			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
+			cInventoryItem = cInventoryManager->GetItem("StunnedBorder");
+			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+				ImVec2(1890, 980),
+				ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::SameLine();
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+
+			ImGui::End();
+		}
+
+		if (CPlayer2D::GetInstance()->isElectrified == true)
+		{
+			ImGuiWindowFlags dimensionborderWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoBackground |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+
+
+
+			ImGui::Begin("ElectrifyBorder", NULL, dimensionborderWindowFlags);
+			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
+			cInventoryItem = cInventoryManager->GetItem("ElectrifyBorder");
+			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+				ImVec2(1890, 980),
+				ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::SameLine();
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+
+			ImGui::End();
+		}
+
 			//Render the Lives
 			ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 				ImGuiWindowFlags_NoBackground |
