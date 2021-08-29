@@ -92,8 +92,14 @@ public:
 	bool dir = true;
 	bool resetEnemyPos;
 	bool useUltimate;
+	bool isDamaged;
+	float damageTimer;
 	float ultimateDuration;
 	bool CloneisRight;
+	bool isPoisoned;
+	bool isStunned;
+	bool isElectrified;
+
 
 	CSpriteAnimation* animatedSprites;
 
@@ -165,7 +171,7 @@ protected:
 	float poisonTimer;
 	bool canUsepower;
 	int switchesActivated;
-	bool isPoisoned;
+	
 
 	//Remote Bool
 	bool isRemote = false;

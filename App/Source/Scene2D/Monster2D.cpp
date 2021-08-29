@@ -206,12 +206,12 @@ void Monster2D::Update(const double dElapsedTime)
 
 	if (StunPlayer == true) {
 		stunTimer += dElapsedTime;
-		cPlayer2D->playerColour = glm::vec4(1.0, 0.5, 0.0, 1.0);
 		cPlayer2D->i32vec2NumMicroSteps.x = 0;
 		cPlayer2D->i32vec2NumMicroSteps.y = 0;
 		cPlayer2D->i32vec2Index = cPlayer2D->i32vec2OldIndex;
 		if (stunTimer >= 2)
 		{
+			cPlayer2D->isStunned = false;
 			StunPlayer = false;
 			stunTimer = 0; //player is no longer stunned
 			canStunPlayer = false;
@@ -228,6 +228,7 @@ void Monster2D::Update(const double dElapsedTime)
 	if (stunCooldown >= 4)
 	{
 		stunCooldown = 0;
+		cPlayer2D->isStunned = false;
 		canStunPlayer = true;
 	}
 
@@ -237,11 +238,11 @@ void Monster2D::Update(const double dElapsedTime)
 	{
 		cInventoryItem->Remove(0.2);
 		poisonTimer += dElapsedTime;
-		cPlayer2D->playerColour = glm::vec4(0.0, 1.0, 1.0, 1.0);
 
 		if (poisonTimer >= 3)
 		{
 			playerPoisoned = false;
+			cPlayer2D->isElectrified = false;
 			poisonTimer = 0;
 
 		}
@@ -990,12 +991,14 @@ bool Monster2D::InteractWithPlayer(void)
 		if(canStunPlayer == true && sCurrentFSM == FREEZE)
 		{ 
 			std::cout << "froze" << std::endl;
+			cPlayer2D->isStunned = true;
 			StunPlayer = true;
 			canStunPlayer = false;
 			
 		}
 		if (sCurrentFSM == POISON)
 		{
+			cPlayer2D->isElectrified = true;
 			playerPoisoned = true;
 		}
 		cout << "Gotcha!" << endl;

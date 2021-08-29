@@ -139,6 +139,18 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("border", "Image/dimensionborder.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+	cInventoryItem = cInventoryManager->Add("damageborder", "Image/blood2.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("PoisonedBorder", "Image/poison.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("ElectrifyBorder", "Image/electrify.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("StunnedBorder", "Image/stunned.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 	cInventoryItem = cInventoryManager->Add("dimensiontext", "Image/dimensiontext.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
@@ -150,6 +162,7 @@ bool CPlayer2D::Init(void)
 	fallTimer = 2;
 	liftTimer = 2;
 	ultimateDuration = 0;
+	damageTimer = 0;
 	CloneisRight = false;
 	
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -200,6 +213,10 @@ bool CPlayer2D::Init(void)
 	respawn = true;
 	resetEnemyPos = false;
 	useUltimate = false;
+	isDamaged = false;
+	isStunned = false;
+	isPoisoned = false;
+	isElectrified = false;
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 6,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
@@ -303,6 +320,18 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (canUsepower == false)
 	{
 		cooldownTimer += dElapsedTime;
+	}
+
+	if (isDamaged == true)
+	{
+		damageTimer += dElapsedTime;
+
+		if (damageTimer >= 3)
+		{
+			isDamaged = false;
+			damageTimer = 0;
+		}
+
 	}
 	
 
