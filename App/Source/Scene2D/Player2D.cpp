@@ -1451,11 +1451,9 @@ void CPlayer2D::InteractWithMap(void)
 			teleportActivated = 0;
 			isRemote = false;
 			cGameManager->bLevelCompleted = true;
+			cInventoryItem = cInventoryManager->GetItem("Lives");
+			cInventoryItem->Add(3);
 			cSoundController->PlaySoundByID(10);
-			//cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Add(100);
-			//cInventoryItem = cInventoryManager->GetItem("Tree");
-			cInventoryItem->Remove(5);
 			powerupActive = false;
 			jumppoweractive = false;
 		}

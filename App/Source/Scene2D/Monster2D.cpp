@@ -219,7 +219,6 @@ void Monster2D::Update(const double dElapsedTime)
 	}
 
 	
-
 	if (canStunPlayer == false)
 	{
 		stunCooldown += dElapsedTime;
