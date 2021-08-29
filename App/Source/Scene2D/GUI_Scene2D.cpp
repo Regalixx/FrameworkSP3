@@ -104,6 +104,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
+	/*
 	ImGui::Begin("Invisible window", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
 	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
@@ -111,40 +112,37 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	//Display the FPS
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
 	ImGui::End();
-	
-
+	*/
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 1.0f, 0.25f));
 
 	ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar;
 
+
 	ImGui::Begin("Health", NULL, healthWindowFlags);
-	ImGui::SetWindowPos(ImVec2(25.0f, 25.0f));
+	ImGui::SetWindowPos(ImVec2(15.0f, 0.0f));
 	ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
 	cInventoryItem = cInventoryManager->GetItem("Health");
 	ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
 		ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
 		ImVec2(0, 1), ImVec2(1, 0));
 	ImGui::SameLine();
-	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 	ImGui::ProgressBar(cInventoryItem->GetCount() /
 		(float)cInventoryItem->GetMaxCount(), ImVec2(200.0f, 20.0f));
+	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 
 	ImGui::End();
 
-	
-
-
-
 	ImGuiWindowFlags staminaWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoResize |
@@ -152,7 +150,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGuiWindowFlags_NoScrollbar;
 
 	ImGui::Begin("Stamina", NULL, staminaWindowFlags);
-	ImGui::SetWindowPos(ImVec2(25.0f, 50.0f));
+	ImGui::SetWindowPos(ImVec2(15.0f, 50.0f));
 	ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
 	cInventoryItem = cInventoryManager->GetItem("Stamina");
 	ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
@@ -161,15 +159,16 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 1.0f, 1.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 	ImGui::ProgressBar(cInventoryItem->GetCount() /
 		(float)cInventoryItem->GetMaxCount(), ImVec2(200.0f, 20.0f));
+	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 
 	ImGui::End();
 
 	ImGuiWindowFlags ultimateBar = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoResize |
@@ -177,7 +176,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGuiWindowFlags_NoScrollbar;
 
 	ImGui::Begin("Ultimate", NULL, ultimateBar);
-	ImGui::SetWindowPos(ImVec2(25.0f, 80.0f));
+	ImGui::SetWindowPos(ImVec2(15.0f, 100.0f));
 	ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
 	cInventoryItem = cInventoryManager->GetItem("Ultimate");
 	ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
@@ -186,8 +185,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1.0f, 0.0f, 1.0f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 	ImGui::ProgressBar(cInventoryItem->GetCount() /
 		(float)cInventoryItem->GetMaxCount(), ImVec2(200.0f, 20.0f));
+	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 
@@ -396,7 +397,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 			//Render the Lives
 			ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-				ImGuiWindowFlags_NoBackground |
 				ImGuiWindowFlags_NoTitleBar |
 				ImGuiWindowFlags_NoMove |
 				ImGuiWindowFlags_NoResize |
@@ -404,22 +404,19 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGuiWindowFlags_NoScrollbar;
 
 			ImGui::Begin("Lives", NULL, livesWindowFlags);
-			ImGui::SetWindowPos(ImVec2(700.0f, 0.0f));
+			ImGui::SetWindowPos(ImVec2(600.0f, 0.0f));
 			ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("Lives");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-				ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
+				ImVec2(cInventoryItem->vec2Size.x * 1.2, cInventoryItem->vec2Size.y * 1.2),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
-			ImGui::SetWindowFontScale(1.5f);
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "%d / %d",
-				cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
+			ImGui::SetWindowFontScale(2.f);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d",
+				cInventoryItem->GetCount());
 			ImGui::End();
-		
 
-			//Render the Lives
 			ImGuiWindowFlags timerWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-				ImGuiWindowFlags_NoBackground |
 				ImGuiWindowFlags_NoTitleBar |
 				ImGuiWindowFlags_NoMove |
 				ImGuiWindowFlags_NoResize |
@@ -427,21 +424,20 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGuiWindowFlags_NoScrollbar;
 
 			ImGui::Begin("TimestopTimer", NULL, timerWindowFlags);
-			ImGui::SetWindowPos(ImVec2(1300.0f, 0.0f));
+			ImGui::SetWindowPos(ImVec2(1600.0f, 0.0f));
 			ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("TimestopTimer");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
 				ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
-			ImGui::SetWindowFontScale(1.5f);
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "%d / %d",
+			ImGui::SetWindowFontScale(2.f);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
 				cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 			ImGui::End();
 
 			//Render the clone powerup
 			ImGuiWindowFlags cloneWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-				ImGuiWindowFlags_NoBackground |
 				ImGuiWindowFlags_NoTitleBar |
 				ImGuiWindowFlags_NoMove |
 				ImGuiWindowFlags_NoResize |
@@ -449,25 +445,20 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGuiWindowFlags_NoScrollbar;
 
 			ImGui::Begin("ClonePowerup", NULL, cloneWindowFlags);
-			ImGui::SetWindowPos(ImVec2(1400.0f, 0.0f));
+			ImGui::SetWindowPos(ImVec2(1740.0f, 0.0f));
 			ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("ClonePowerup");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
 				ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
-			ImGui::SetWindowFontScale(1.5f);
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "%d / %d",
-				cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
+			ImGui::SetWindowFontScale(2.f);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d",
+				cInventoryItem->GetCount());
 			ImGui::End();
 
 	//Render Coins Collected
-		
-
-
-
 		ImGuiWindowFlags CoinsWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoResize |
@@ -475,7 +466,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGuiWindowFlags_NoScrollbar;
 
 		ImGui::Begin("Coins", NULL, CoinsWindowFlags);
-		ImGui::SetWindowPos(ImVec2(700.0f,  30.0f));
+		ImGui::SetWindowPos(ImVec2(680,  0.0f));
 		ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
 		cInventoryItem = cInventoryManager->GetItem("Coins");
 		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
@@ -487,12 +478,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 		ImGui::End();
 
-
-
-
 	//Render the inventory items
-	cInventoryItem = cInventoryManager->GetItem("Tree");
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+	cInventoryItem = cInventoryManager->GetItem("Tree"); //Time pieces
 	ImGuiWindowFlags inventoryWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
@@ -501,28 +489,20 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGuiWindowFlags_NoScrollbar;
 	ImGui::Begin("Image", NULL, inventoryWindowFlags);
 
-	ImGui::Begin("Image");
-		ImGui::SetWindowPos(ImVec2(25.0f, 850.0f));
-		ImGui::SetWindowSize(ImVec2(200.0f, 25.0f));
+	//ImGui::Begin("Image");
+		ImGui::SetWindowPos(ImVec2(780.0f, 0.0f));
+		ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
 		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-			ImVec2(cInventoryItem->vec2Size.x, cInventoryItem->vec2Size.y),
+			ImVec2(cInventoryItem->vec2Size.x * 1.2f, cInventoryItem->vec2Size.y * 1.2f),
 			ImVec2(0, 1), ImVec2(1, 0));
-
 		ImGui::SameLine();
-		ImGui::SetWindowFontScale(1.5f);
+		ImGui::SetWindowFontScale(2.f);
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Pieces: %d / %d",
 		cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
-
-		
-	ImGui::End();
-	ImGui::End();
+	//ImGui::End();
 	ImGui::PopStyleColor();
+	ImGui::End();
 
-	
-	
-	
-
-	
 }
 
 /**
