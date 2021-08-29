@@ -141,27 +141,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 	
 
-	//Render The Health
-	//ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-	//	ImGuiWindowFlags_NoBackground |
-	//	ImGuiWindowFlags_NoTitleBar |
-	//	ImGuiWindowFlags_NoMove |
-	//	ImGuiWindowFlags_NoResize |
-	//	ImGuiWindowFlags_NoCollapse |
-	//	ImGuiWindowFlags_NoScrollbar;
-
-	//ImGui::Begin("Health", NULL, healthWindowFlags);
-	//ImGui::SetWindowPos(ImVec2(25.0f, 25.0f));
-	//ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
-	//cInventoryItem = cInventoryManager->GetItem("Health");
-	//ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-	//	ImVec2(351, 90),
-	//	ImVec2(0, 1), ImVec2(1, 0));
-	//ImGui::SameLine();
-	
-
-
-//	ImGui::End();
 
 
 	ImGuiWindowFlags staminaWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
@@ -214,27 +193,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 	ImGui::End();
 
-	//Render The Health
-	//ImGuiWindowFlags progressFlags = ImGuiWindowFlags_AlwaysAutoResize |
-	//	ImGuiWindowFlags_NoBackground |
-	//	ImGuiWindowFlags_NoTitleBar |
-	//	ImGuiWindowFlags_NoMove |
-	//	ImGuiWindowFlags_NoResize |
-	//	ImGuiWindowFlags_NoCollapse |
-	//	ImGuiWindowFlags_NoScrollbar;
-
-	//ImGui::Begin("Health", NULL, progressFlags);
-	//ImGui::SetWindowPos(ImVec2(65.0f, -35.0f));
-	//ImGui::SetWindowSize(ImVec2(100.0f, 25.0f));
-	//cInventoryItem = cInventoryManager->GetItem("Health");
-	//ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
-	//ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-	//ImGui::ProgressBar(cInventoryItem->GetCount() /
-	//	(float)cInventoryItem->GetMaxCount(), ImVec2(250.0f, 10.0f));
-	//ImGui::PopStyleColor();
-	//ImGui::PopStyleColor();
 	
-	//ImGui::End();
 	//Render background
 		if (CPlayer2D::GetInstance()->TimeStop == true)
 		{
@@ -278,11 +237,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 			ImGui::Begin("border", NULL, dimensionborderWindowFlags);
-			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowPos(ImVec2(0.f, 0.f));
 			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("border");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-				ImVec2(1890, 980),
+				ImVec2(1920, 1080),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
 			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -308,7 +267,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 			ImGui::Begin("dimensiontext", NULL, dimensionborderWindowFlags);
-			ImGui::SetWindowPos(ImVec2(60.f, 40.f));
+			ImGui::SetWindowPos(ImVec2(120.f, 40.f));
 			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("dimensiontext");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
@@ -336,11 +295,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 			ImGui::Begin("damageborder", NULL, dimensionborderWindowFlags);
-			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowPos(ImVec2(0.f, 0.f));
 			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("damageborder");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-				ImVec2(1890, 980),
+				ImVec2(1920, 1080),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
 			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -364,11 +323,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 			ImGui::Begin("PoisonedBorder", NULL, dimensionborderWindowFlags);
-			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowPos(ImVec2(0.f, 0.f));
 			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("PoisonedBorder");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-				ImVec2(1890, 980),
+				ImVec2(1920, 1080),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
 			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -392,11 +351,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 			ImGui::Begin("StunnedBorder", NULL, dimensionborderWindowFlags);
-			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowPos(ImVec2(0.f, 0.f));
 			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("StunnedBorder");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-				ImVec2(1890, 980),
+				ImVec2(1920, 1080),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
 			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -420,11 +379,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 			ImGui::Begin("ElectrifyBorder", NULL, dimensionborderWindowFlags);
-			ImGui::SetWindowPos(ImVec2(-10.f, -10.f));
+			ImGui::SetWindowPos(ImVec2(0.f, 0.f));
 			ImGui::SetWindowSize(ImVec2(25.0f, 25.0f));
 			cInventoryItem = cInventoryManager->GetItem("ElectrifyBorder");
 			ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-				ImVec2(1890, 980),
+				ImVec2(1920, 1080),
 				ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::SameLine();
 			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
