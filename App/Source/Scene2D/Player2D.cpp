@@ -587,7 +587,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 				if (jumppoweractive == true)
 				{
-					cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 32.0f));
+					cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 45.0f));
 				}
 			}
 		}
